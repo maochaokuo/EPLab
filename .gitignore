@@ -10,3 +10,11 @@
 /EPLab.web/UnitTestProject1/bin
 /EPLab.web/XUnitTestProject1/obj
 /EPLab.web/XUnitTestProject1/bin
+/EPLab.web/EPLab.dbService/obj
+/EPLab.web/EPLab.dbService/bin
+/EPLab.web/EPLab.entity/obj
+/EPLab.web/EPLab.entity/bin
+/EPLab.web/SQLserverPrj/obj
+/EPLab.web/SQLserverPrj/bin
+/EPLab.web/SQLserverPrj/*.user
+/EPLab.web/EPLab.web/*.user
