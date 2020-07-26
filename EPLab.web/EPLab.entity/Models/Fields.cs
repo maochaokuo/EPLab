@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace EPLab.entity.Models
+{
+    public partial class Fields
+    {
+        public Guid FieldId { get; set; }
+        public Guid TableId { get; set; }
+        public string FieldName { get; set; }
+        public string FieldDesc { get; set; }
+        public int? PrimaryOrder { get; set; }
+    }
+}
