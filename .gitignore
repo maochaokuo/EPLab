@@ -18,3 +18,5 @@
 /EPLab.web/SQLserverPrj/bin
 /EPLab.web/SQLserverPrj/*.user
 /EPLab.web/EPLab.web/*.user
+*.dbmdl
+*.jfm
