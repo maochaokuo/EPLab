@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using EPLab.entity.Models;
+using EPLab.web.Lib;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +17,7 @@ namespace EPLab.web
 {
     public class Startup
     {
+        //private IConfiguration _config;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,6 +29,12 @@ namespace EPLab.web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            //var ConnectionSetting = Configuration.GetSection("ConnectionSetting");
+            //services.Configure<SettingLib>(ConnectionSetting);
+            services.AddDbContext<EPLlabDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("EPLlabDB")));
+            string conn = Configuration.GetConnectionString("myConn");
+            Thread.Sleep(0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
