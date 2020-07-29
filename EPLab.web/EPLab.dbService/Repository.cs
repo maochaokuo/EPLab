@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace EPLab.dbService
@@ -7,11 +9,21 @@ namespace EPLab.dbService
     public class Repository<T> : IDisposable
     {
         protected string connS = "";
+        protected SqlConnection conn = null;
         private bool disposedValue;
 
         public Repository(string connS)
         {
             this.connS = connS;
+        }
+        protected IDbConnection GetConn()
+        {
+            if (conn==null || conn.State!=ConnectionState.Open)
+            {
+                conn = new SqlConnection(connS);
+                conn.Open();
+            }
+            return conn;
         }
         public List<T> GetAll()
         {
@@ -47,6 +59,8 @@ namespace EPLab.dbService
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
+                    conn.Close();
+                    conn = null;
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
