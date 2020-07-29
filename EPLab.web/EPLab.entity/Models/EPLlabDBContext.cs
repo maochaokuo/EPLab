@@ -24,11 +24,11 @@ namespace EPLab.entity.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer("Server=.;Database=EPLlabDB;User Id=sa;Password=sa;");
-//            }
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=.;Database=EPLlabDB;User Id=sa;Password=sa;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -84,9 +84,9 @@ namespace EPLab.entity.Models
 
                 entity.Property(e => e.FieldId).HasColumnName("fieldId");
 
-                entity.Property(e => e.FieldText1)
+                entity.Property(e => e.FieldStrMax)
                     .IsRequired()
-                    .HasColumnName("fieldText")
+                    .HasColumnName("fieldStrMax")
                     .HasDefaultValueSql("('')");
 
                 entity.Property(e => e.RowId).HasColumnName("rowId");
@@ -150,6 +150,8 @@ namespace EPLab.entity.Models
                     .IsRequired()
                     .HasColumnName("fieldName")
                     .HasMaxLength(50);
+
+                entity.Property(e => e.ForeignFieldId).HasColumnName("foreignFieldId");
 
                 entity.Property(e => e.PrimaryOrder)
                     .HasColumnName("primaryOrder")

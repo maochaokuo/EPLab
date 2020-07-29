@@ -31,9 +31,9 @@ namespace EPLab.web
             services.AddControllersWithViews();
             //var ConnectionSetting = Configuration.GetSection("ConnectionSetting");
             //services.Configure<SettingLib>(ConnectionSetting);
-            services.AddDbContext<EPLlabDBContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("EPLlabDB")));
-            string conn = Configuration.GetConnectionString("myConn");
+            //services.AddDbContext<EPLlabDBContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("EPLlabDB")));
+            string conn = Configuration.GetConnectionString("EPLlabDB");
             Thread.Sleep(0);
         }
 

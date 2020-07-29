@@ -10,5 +10,6 @@ namespace EPLab.entity.Models
         public string FieldName { get; set; }
         public string FieldDesc { get; set; }
         public int? PrimaryOrder { get; set; }
+        public Guid? ForeignFieldId { get; set; }
     }
 }

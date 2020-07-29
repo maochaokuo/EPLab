@@ -20,3 +20,5 @@
 /EPLab.web/EPLab.web/*.user
 *.dbmdl
 *.jfm
+/EPLab.web/EPLab.model/obj
+/EPLab.web/EPLab.model/bin

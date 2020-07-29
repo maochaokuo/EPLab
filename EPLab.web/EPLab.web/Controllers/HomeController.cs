@@ -27,7 +27,7 @@ namespace EPLab.web.Controllers
 
         public IActionResult Index()
         {
-            string conn = _configuration.GetConnectionString("myConn");
+            string conn = _configuration.GetConnectionString("EPLlabDB");
             //string conns=configurationm
             //EPLlabDBContext db = new EPLlabDBContext();
             //string conn = ConfigManager.Server;// _configManager.GetConnectionString("Server");
