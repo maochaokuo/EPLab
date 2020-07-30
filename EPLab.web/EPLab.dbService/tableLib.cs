@@ -43,7 +43,8 @@ namespace EPLab.dbService
             {
                 string sql = $"insert into tables (tableName,tableDesc) " +
                     $"vales (@tableName,@tableDesc)";
-                con.Execute(sql, new { tablesName = rec.TableName, 
+                con.Execute(sql, 
+                    new { tablesName = rec.TableName, 
                     tableDesc = rec.TableDesc });
             }
             return ret;
@@ -55,7 +56,8 @@ namespace EPLab.dbService
             {
                 string sql = $"update tables set tableDesc=@tableDesc " +
                     $"where tableId=@tableId";
-                con.Execute(sql, new { tableId=rec.TableId
+                con.Execute(sql, 
+                    new { tableId = rec.TableId
                     ,tableDesc = rec.TableDesc });
             }
             return ret;

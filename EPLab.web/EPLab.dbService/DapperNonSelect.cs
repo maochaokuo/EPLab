@@ -7,50 +7,63 @@ using System.Text;
 
 namespace EPLab.dbService
 {
-    public class Repository<T> : IDisposable
+    public class DapperNonSelect : IDisposable
     {
+        public string sql { get; set; }
+        public DynamicParameters whereParas { get; set; }
+        public DynamicParameters setParas { get; set; }
+        public DynamicParameters allParas { get; set; }
+
         protected string connS = "";
         protected SqlConnection conn = null;
+        protected IDbTransaction trans = null;          //交易用物件，慎用
         private bool disposedValue;
 
-        public Repository(string connS)
+        public DapperNonSelect(string connS)
         {
+            whereParas = new DynamicParameters();
             this.connS = connS;
         }
         protected IDbConnection GetConn()
         {
-            if (conn==null || conn.State!=ConnectionState.Open)
+            if (conn == null || conn.State != ConnectionState.Open)
             {
                 conn = new SqlConnection(connS);
                 conn.Open();
             }
             return conn;
         }
-        public List<T> GetAll()
+        protected IDbTransaction BeginTransaction(bool updateInternal)
         {
-            List<T> ret = null; 
-            return ret;
+            IDbTransaction transRet = conn.BeginTransaction();
+            if (updateInternal)
+                trans = transRet;
+            return transRet;
         }
-        public T GetOne()
+        protected void Commit()
         {
-            T ret = default(T);
-            return ret;
+            if (trans != null)
+            {
+                Commit();
+                trans = null;
+            }
         }
-        public string Insert(T obj)
+        protected void Rollback()
         {
-            string ret = "";
-            return ret;
+            if (trans != null)
+            {
+                Rollback();
+                trans = null;
+            }
         }
-        public string Update(T obj)
+        public int NonSelectExec(IDbTransaction tran)
         {
-            string ret = "";
-            return ret;
-        }
-        public string Delete(T obj)
-        {
-            string ret = "";
-
-            return ret;
+            int rows = 0;
+            using (var con=GetConn())
+            {
+                rows = con.Execute(sql, allParas, tran);
+            }
+            return rows;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -60,8 +73,6 @@ namespace EPLab.dbService
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
-                    conn.Close();
-                    conn = null;
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
@@ -71,7 +82,7 @@ namespace EPLab.dbService
         }
 
         // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~Repository()
+        // ~DapperNonSelect()
         // {
         //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         //     Dispose(disposing: false);

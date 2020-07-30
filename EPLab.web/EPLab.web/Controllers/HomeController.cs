@@ -10,27 +10,45 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using EPLab.entity.Models;
 using System.Configuration;
+using EPLab.dbService;
+using System.Data;
 
 namespace EPLab.web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        public IConfiguration _configuration { get; set; }
+        protected readonly ILogger<HomeController> _logger;
+        protected IConfiguration _configuration { get; set; }
+        protected string connIndices = "";
+        protected string connEPLabDB = "";
 
         public HomeController(ILogger<HomeController> logger
             , IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
+            connIndices = _configuration.GetConnectionString("indices2");
+            connEPLabDB = _configuration.GetConnectionString("EPLlabDB");
         }
 
         public IActionResult Index()
         {
-            string conn = _configuration.GetConnectionString("EPLlabDB");
-            //string conns=configurationm
-            //EPLlabDBContext db = new EPLlabDBContext();
-            //string conn = ConfigManager.Server;// _configManager.GetConnectionString("Server");
+            string sql = @"
+select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
+from indices2.dbo.ohlc
+where dealdate<='20180630'
+order by dealdate, dealtime
+";
+            Dapper2DataTable dtd = new Dapper2DataTable(connIndices);
+            DataTable dt = dtd.Select2DataTable(sql);
+
+            string sql2 = @"
+SELECT dealdate, dealtime, [close], sVolume, aVolume, lastdate, lastclose, lastSvolume, lastAvolume
+FROM [indices2].[dbo].[dealdates]
+where dealdate<='20180630'
+order by dealdate
+";
+            DataTable dt2 = dtd.Select2DataTable(sql2);
             return View();
         }
 
