@@ -26,27 +26,27 @@ namespace EPLab.dbService
             }
             return conn;
         }
-        public List<T> GetAll()
+        public virtual List<T> GetAll()
         {
             List<T> ret = null; 
             return ret;
         }
-        public T GetOne()
+        public virtual T GetOne(Guid gid)
         {
             T ret = default(T);
             return ret;
         }
-        public string Insert(T obj)
+        public virtual string Insert(T obj)
         {
             string ret = "";
             return ret;
         }
-        public string Update(T obj)
+        public virtual string Update(T obj)
         {
             string ret = "";
             return ret;
         }
-        public string Delete(T obj)
+        public virtual string Delete(T obj)
         {
             string ret = "";
 
@@ -59,18 +59,18 @@ namespace EPLab.dbService
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    // TO DO: dispose managed state (managed objects)
                     conn.Close();
                     conn = null;
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
+                // TO DO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TO DO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // // TO DO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
         // ~Repository()
         // {
         //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method

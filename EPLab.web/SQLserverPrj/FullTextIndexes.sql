@@ -13,9 +13,11 @@ CREATE FULLTEXT INDEX ON [dbo].[fieldValues]
 
 GO
 CREATE FULLTEXT INDEX ON [dbo].[fieldText]
-    ([fieldText] LANGUAGE 1033)
+    ([fieldStrMax] LANGUAGE 1033)
     KEY INDEX [PK_fieldText]
     ON [c];
+
+
 
 
 GO

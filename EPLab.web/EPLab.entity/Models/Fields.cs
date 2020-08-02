@@ -11,5 +11,6 @@ namespace EPLab.entity.Models
         public string FieldDesc { get; set; }
         public int? PrimaryOrder { get; set; }
         public Guid? ForeignFieldId { get; set; }
+        public string DefaultValue { get; set; }
     }
 }

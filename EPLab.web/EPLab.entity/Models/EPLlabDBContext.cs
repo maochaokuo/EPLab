@@ -142,6 +142,10 @@ namespace EPLab.entity.Models
                     .HasColumnName("fieldId")
                     .HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.DefaultValue)
+                    .HasColumnName("defaultValue")
+                    .HasMaxLength(450);
+
                 entity.Property(e => e.FieldDesc)
                     .HasColumnName("fieldDesc")
                     .HasMaxLength(999);

@@ -33,19 +33,19 @@ namespace EPLab.web.Controllers
 
         public IActionResult Index()
         {
-            string sql = @"
-select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
-from indices2.dbo.ohlc
-where dealdate<='20180630'
-order by dealdate, dealtime
-";
             Dapper2DataTable dtd = new Dapper2DataTable(connIndices);
-            DataTable dt = dtd.Select2DataTable(sql);
+//            string sql = @"
+//select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
+//from indices2.dbo.ohlc
+//where dealdate<='20180630'
+//order by dealdate, dealtime
+//";
+//            DataTable dt = dtd.Select2DataTable(sql);
 
             string sql2 = @"
 SELECT dealdate, dealtime, [close], sVolume, aVolume, lastdate, lastclose, lastSvolume, lastAvolume
 FROM [indices2].[dbo].[dealdates]
-where dealdate<='20180630'
+where dealdate<='20180731'
 order by dealdate
 ";
             DataTable dt2 = dtd.Select2DataTable(sql2);

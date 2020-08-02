@@ -10,14 +10,14 @@ namespace EPLab.dbService
 {
     public class tableLib : Repository<Tables>
     {
-        // todo !!... 不想用ef, 出問題很難查, 就用dapper吧
-        // todo !!... 研究一下dynamic parameter,
+        // todo (3) !!... 不想用ef, 出問題很難查, 就用dapper吧
+        //  !!... 研究一下dynamic parameter,
         //看看能否把各method都抽象化，傳入sql or table name, 然後
         //dynamic parameter array
         public tableLib(string connS) : base(connS)
         {
         }
-        public List<Tables> GetAll()
+        public override List<Tables> GetAll()
         {
             using (var con = GetConn())
             {
@@ -26,22 +26,24 @@ namespace EPLab.dbService
                 return qry;
             }
         }
-        public Tables GetOne(Guid gid)
+        public override Tables GetOne(Guid gid)
         {
             using (var con = GetConn())
             {
-                string sql = $"select * from tables where tableId=@tableId";
-                var qry = conn.Query<Tables>(sql, new { tableId = gid })
-                    .FirstOrDefault();
+                string sql = $"select * from tables " +
+                    $"where tableId=@tableId";
+                var qry = conn.Query<Tables>(sql, 
+                    new { tableId = gid }).FirstOrDefault();
                 return qry;
             }
         }
-        public string Insert(Tables rec)
+        public override string Insert(Tables rec)
         {
             string ret = "";
             using(var con = GetConn())
             {
-                string sql = $"insert into tables (tableName,tableDesc) " +
+                string sql = $"insert into tables " +
+                    $"(tableName,tableDesc) " +
                     $"vales (@tableName,@tableDesc)";
                 con.Execute(sql, 
                     new { tablesName = rec.TableName, 
@@ -49,12 +51,13 @@ namespace EPLab.dbService
             }
             return ret;
         }
-        public string Update(Tables rec)
+        public override string Update(Tables rec)
         {
             string ret = "";
             using (var con=GetConn())
             {
-                string sql = $"update tables set tableDesc=@tableDesc " +
+                string sql = $"update tables " +
+                    $"set tableDesc=@tableDesc " +
                     $"where tableId=@tableId";
                 con.Execute(sql, 
                     new { tableId = rec.TableId
@@ -62,12 +65,13 @@ namespace EPLab.dbService
             }
             return ret;
         }
-        public string Delete(Tables rec)
+        public override string Delete(Tables rec)
         {
             string ret = "";
             using (var con = GetConn())
             {
-                string sql = $"delete from tables where tableId=@tableId";
+                string sql = $"delete from tables " +
+                    $"where tableId=@tableId";
                 con.Execute(sql, new
                 {
                     tableId = rec.TableId

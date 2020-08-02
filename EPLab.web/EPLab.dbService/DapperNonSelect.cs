@@ -72,16 +72,16 @@ namespace EPLab.dbService
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    // TO DO: dispose managed state (managed objects)
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
+                // TO DO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TO DO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // // TO DO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
         // ~DapperNonSelect()
         // {
         //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method

@@ -2,9 +2,11 @@
     [fieldTextId] BIGINT           IDENTITY (1, 1) NOT NULL,
     [rowId]       UNIQUEIDENTIFIER NOT NULL,
     [fieldId]     UNIQUEIDENTIFIER NOT NULL,
-    [fieldText]   NVARCHAR (MAX)   CONSTRAINT [DF_fieldText_fieldText] DEFAULT ('') NOT NULL,
+    [fieldStrMax] NVARCHAR (MAX)   CONSTRAINT [DF_fieldText_fieldText] DEFAULT ('') NOT NULL,
     CONSTRAINT [PK_fieldText] PRIMARY KEY CLUSTERED ([fieldTextId] ASC)
 );
+
+
 
 
 GO
