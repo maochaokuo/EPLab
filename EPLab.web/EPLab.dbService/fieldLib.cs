@@ -31,7 +31,7 @@ namespace EPLab.dbService
                 string sql = $"select * from fields " +
                     $"where fieldId=@fieldId";
                 var qry = conn.Query<Fields>(sql, 
-                    new { fieldId = gid }).FirstOrDefault();
+                    new { fieldId = gid }).SingleOrDefault();
                 return qry;
             }
         }
@@ -42,17 +42,20 @@ namespace EPLab.dbService
             using (var con = GetConn())
             {
                 string sql = $"insert into fields " +
-                    $"(tableName,tableDesc) " +
-                    $"vales (@tableName,@tableDesc)";
+                    $"(FieldId,TableId,FieldName,FieldDesc," +
+                    $"PrimaryOrder,ForeignFieldId,DefaultValue) " +
+                    $"vales (@FieldId,@TableId,@FieldName,@FieldDesc," +
+                    $"@PrimaryOrder,@ForeignFieldId,@DefaultValue)";
                 con.Execute(sql,
                     new
                     {
+                        FieldId = rec.FieldId,
                         TableId = rec.TableId,
                         FieldName = rec.FieldName,
                         FieldDesc = rec.FieldDesc,
                         PrimaryOrder = rec.PrimaryOrder,
                         ForeignFieldId = rec.ForeignFieldId,
-                        //ForeignFieldId = rec.def
+                        DefaultValue = rec.DefaultValue
                     });
             }
             return ret;
@@ -60,11 +63,42 @@ namespace EPLab.dbService
 
         public override string Update(Fields rec)
         {
-            return base.Update(rec);
+            string ret = "";
+            using (var con = GetConn())
+            {
+                string sql = $"update fields " +
+                    $"set TableId=@TableId, FieldName=@FieldName, " +
+                    $"FieldDesc=@FieldDesc, PrimaryOrder=@PrimaryOrder," +
+                    $"ForeignFieldId=@ForeignFieldId, " +
+                    $"DefaultValue=@DefaultValue" +
+                    $"where FieldId=@FieldId";
+                con.Execute(sql,
+                    new
+                    {
+                        FieldId = rec.FieldId,
+                        TableId = rec.TableId,
+                        FieldName = rec.FieldName,
+                        FieldDesc = rec.FieldDesc,
+                        PrimaryOrder = rec.PrimaryOrder,
+                        ForeignFieldId = rec.ForeignFieldId,
+                        DefaultValue = rec.DefaultValue
+                    });
+            }
+            return ret;
         }
         public override string Delete(Fields rec)
         {
-            return base.Delete(rec);
+            string ret = "";
+            using (var con = GetConn())
+            {
+                string sql = $"delete from fields " +
+                    $"where FieldId=@FieldId";
+                con.Execute(sql, new
+                {
+                    FieldId = rec.FieldId
+                });
+            }
+            return ret;
         }
 
     }

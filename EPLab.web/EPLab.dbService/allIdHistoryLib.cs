@@ -8,7 +8,7 @@ using System.Text;
 
 namespace EPLab.dbService
 {
-    class fieldValueLib
+    class allIdHistoryLib
     {
     }
 }

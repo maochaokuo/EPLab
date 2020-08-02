@@ -33,7 +33,7 @@ namespace EPLab.dbService
                 string sql = $"select * from tables " +
                     $"where tableId=@tableId";
                 var qry = conn.Query<Tables>(sql, 
-                    new { tableId = gid }).FirstOrDefault();
+                    new { tableId = gid }).SingleOrDefault();
                 return qry;
             }
         }
