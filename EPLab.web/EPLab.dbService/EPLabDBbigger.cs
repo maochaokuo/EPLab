@@ -65,6 +65,10 @@ namespace EPLab.dbService
             tableL.Delete(tbl);
             return ret;
         }
-        //public string insertTable(string table)
+        public string insertTable(Tables newTable)
+        {
+            string ret = tableL.Insert(newTable);
+            return ret;
+        }
     }
 }

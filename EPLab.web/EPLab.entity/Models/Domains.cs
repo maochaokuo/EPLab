@@ -9,5 +9,6 @@ namespace EPLab.entity.Models
         public string DomainName { get; set; }
         public string DomainDescription { get; set; }
         public string BasicType { get; set; }
+        public Guid? IsDomainCaseId { get; set; }
     }
 }

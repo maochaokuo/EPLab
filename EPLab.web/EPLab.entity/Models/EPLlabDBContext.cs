@@ -124,6 +124,8 @@ namespace EPLab.entity.Models
                     .HasColumnName("domainName")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.IsDomainCaseId).HasColumnName("isDomainCaseId");
             });
 
             modelBuilder.Entity<FieldText>(entity =>

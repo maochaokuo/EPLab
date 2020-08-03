@@ -3,8 +3,11 @@
     [domainName]        VARCHAR (50)     NOT NULL,
     [domainDescription] NVARCHAR (999)   NULL,
     [basicType]         NVARCHAR (50)    NULL,
+    [isDomainCaseId]    UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_domains] PRIMARY KEY CLUSTERED ([domainId] ASC)
 );
+
+
 
 
 GO
