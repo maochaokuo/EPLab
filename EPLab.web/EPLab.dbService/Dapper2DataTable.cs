@@ -14,10 +14,12 @@ namespace EPLab.dbService
         protected string connS = "";
         protected SqlConnection conn = null;
 
-        protected tableLib tableL = null;
-        protected fieldLib fieldL = null;
-        protected rowLib rowL = null;
-        protected fieldValueLib fieldValueL = null;
+        //protected tableLib tableL = null;
+        //protected fieldLib fieldL = null;
+        //protected rowLib rowL = null;
+        //protected fieldValueLib fieldValueL = null;
+
+        protected EPLabDBbigger dbBig = null;
 
         private bool disposedValue;
 
@@ -30,10 +32,7 @@ namespace EPLab.dbService
         public Dapper2DataTable(string connS)
         {
             this.connS = connS;
-            tableL = new tableLib(connS);
-            fieldL = new fieldLib(connS);
-            rowL = new rowLib(connS);
-            fieldValueL = new fieldValueLib(connS);
+            dbBig = new EPLabDBbigger(connS);
         }
         protected IDbConnection GetConn()
         {
@@ -96,29 +95,15 @@ namespace EPLab.dbService
         }
         protected bool isDataTableExisted(DataTable dt)
         {
-            bool ret = false;
-            Tables tbl = tableL.TableByName(DataTableName(dt));
-            if (tbl != null)
-                ret = true;
-            // isDataTableExisted
+            bool ret;
+            string tableName = DataTableName(dt);
+            ret = dbBig.isDataTableExisted(tableName);
             return ret;
         }
         protected string deleteDataTable(DataTable dt)
         {
             string ret = "";
             string tableName = DataTableName(dt);
-            Tables tbl = tableL.TableByName(tableName);
-            if (tbl == null)
-                return ret;
-            List<Rows> rows = rowL.RowsByTableId(tbl.TableId);
-            foreach(Rows rec in rows)
-            {
-                List<FieldValues> fieldValues = fieldValueL.FieldValueByRowId(rec.RowId);
-                foreach (FieldValues rec2 in fieldValues)
-                    fieldValueL.Delete(rec2);
-                rowL.Delete(rec);
-            }
-            tableL.Delete(tbl);
             return ret;
         }
         //public string ImportDataTableAppend(DataTable dt)
@@ -143,9 +128,10 @@ namespace EPLab.dbService
             // todo (1) !!...import datatable save as new table
             // if new table existed, append false to overwrite
 
+            // delete target table
             if (!append)
-                Thread.Sleep(0);//todo !!... delete target table
-
+                dbBig.deleteTable(saveAsNewTablename);
+            
             // write to tables
 
             // write to fields

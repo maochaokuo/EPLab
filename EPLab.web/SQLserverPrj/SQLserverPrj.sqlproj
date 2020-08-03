@@ -69,5 +69,7 @@
     <Build Include="dbo\Tables\allIdHistory.sql" />
     <Build Include="Storage\c.sql" />
     <Build Include="FullTextIndexes.sql" />
+    <Build Include="dbo\Tables\domains.sql" />
+    <Build Include="dbo\Tables\domainCases.sql" />
   </ItemGroup>
 </Project>

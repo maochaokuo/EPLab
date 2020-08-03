@@ -3,8 +3,11 @@
     [rowId]        UNIQUEIDENTIFIER NOT NULL,
     [fieldId]      UNIQUEIDENTIFIER NOT NULL,
     [fieldValue]   NVARCHAR (450)   CONSTRAINT [DF_fieldValues_fieldValue] DEFAULT ('') NOT NULL,
+    [domainCaseId] UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_fieldValues] PRIMARY KEY CLUSTERED ([fieldValueId] ASC)
 );
+
+
 
 
 GO
@@ -25,4 +28,9 @@ CREATE NONCLUSTERED INDEX [IX_fieldValues_1]
 GO
 CREATE NONCLUSTERED INDEX [IX_fieldValues_4]
     ON [dbo].[fieldValues]([rowId] ASC, [fieldId] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_fieldValues]
+    ON [dbo].[fieldValues]([domainCaseId] ASC);
 

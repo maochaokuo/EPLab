@@ -1,8 +1,18 @@
 use EPLlabDB
 
+select * 
+from tables
+
+select *
+from fields
+
+select *
+from rows
+
+select * 
+from fieldValues
 
 /*
-select * from tables
 
 select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
 from indices2.dbo.ohlc

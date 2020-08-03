@@ -9,5 +9,6 @@ namespace EPLab.entity.Models
         public Guid RowId { get; set; }
         public Guid FieldId { get; set; }
         public string FieldValue { get; set; }
+        public Guid? DomainCaseId { get; set; }
     }
 }

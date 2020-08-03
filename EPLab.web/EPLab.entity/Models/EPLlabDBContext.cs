@@ -16,6 +16,8 @@ namespace EPLab.entity.Models
         }
 
         public virtual DbSet<AllIdHistory> AllIdHistory { get; set; }
+        public virtual DbSet<DomainCases> DomainCases { get; set; }
+        public virtual DbSet<Domains> Domains { get; set; }
         public virtual DbSet<FieldText> FieldText { get; set; }
         public virtual DbSet<FieldValues> FieldValues { get; set; }
         public virtual DbSet<Fields> Fields { get; set; }
@@ -66,6 +68,64 @@ namespace EPLab.entity.Models
                 entity.Property(e => e.Uid).HasColumnName("uid");
             });
 
+            modelBuilder.Entity<DomainCases>(entity =>
+            {
+                entity.HasKey(e => new { e.DomainId, e.DomainCaseName });
+
+                entity.ToTable("domainCases");
+
+                entity.Property(e => e.DomainId).HasColumnName("domainId");
+
+                entity.Property(e => e.DomainCaseName)
+                    .HasColumnName("domainCaseName")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.DomainCaseDescription)
+                    .HasColumnName("domainCaseDescription")
+                    .HasMaxLength(999);
+
+                entity.Property(e => e.DomainCaseId)
+                    .HasColumnName("domainCaseId")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.RangeMax)
+                    .HasColumnName("rangeMax")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.RangeMin)
+                    .HasColumnName("rangeMin")
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Domains>(entity =>
+            {
+                entity.HasKey(e => e.DomainId);
+
+                entity.ToTable("domains");
+
+                entity.HasIndex(e => e.DomainName)
+                    .HasName("IX_domains")
+                    .IsUnique();
+
+                entity.Property(e => e.DomainId)
+                    .HasColumnName("domainId")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.BasicType)
+                    .HasColumnName("basicType")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.DomainDescription)
+                    .HasColumnName("domainDescription")
+                    .HasMaxLength(999);
+
+                entity.Property(e => e.DomainName)
+                    .IsRequired()
+                    .HasColumnName("domainName")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<FieldText>(entity =>
             {
                 entity.ToTable("fieldText");
@@ -98,6 +158,9 @@ namespace EPLab.entity.Models
 
                 entity.ToTable("fieldValues");
 
+                entity.HasIndex(e => e.DomainCaseId)
+                    .HasName("IX_fieldValues");
+
                 entity.HasIndex(e => e.FieldId)
                     .HasName("IX_fieldValues_2");
 
@@ -111,6 +174,8 @@ namespace EPLab.entity.Models
                     .HasName("IX_fieldValues_4");
 
                 entity.Property(e => e.FieldValueId).HasColumnName("fieldValueId");
+
+                entity.Property(e => e.DomainCaseId).HasColumnName("domainCaseId");
 
                 entity.Property(e => e.FieldId).HasColumnName("fieldId");
 
@@ -127,6 +192,9 @@ namespace EPLab.entity.Models
                 entity.HasKey(e => e.FieldId);
 
                 entity.ToTable("fields");
+
+                entity.HasIndex(e => e.DomainId)
+                    .HasName("IX_fields");
 
                 entity.HasIndex(e => e.FieldName)
                     .HasName("IX_fields_1");
@@ -145,6 +213,8 @@ namespace EPLab.entity.Models
                 entity.Property(e => e.DefaultValue)
                     .HasColumnName("defaultValue")
                     .HasMaxLength(450);
+
+                entity.Property(e => e.DomainId).HasColumnName("domainId");
 
                 entity.Property(e => e.FieldDesc)
                     .HasColumnName("fieldDesc")
