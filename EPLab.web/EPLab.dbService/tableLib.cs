@@ -10,8 +10,8 @@ namespace EPLab.dbService
 {
     public class tableLib : Repository<Tables>
     {
-        // todo (3) !!... 不想用ef, 出問題很難查, 就用dapper吧
-        //  !!... 研究一下dynamic parameter,
+        // 不想用ef, 出問題很難查, 就用dapper吧
+        // todo (3) !!... 研究一下dynamic parameter,
         //看看能否把各method都抽象化，傳入sql or table name, 然後
         //dynamic parameter array
         public tableLib(string connS) : base(connS)
@@ -34,6 +34,17 @@ namespace EPLab.dbService
                     $"where tableId=@tableId";
                 var qry = conn.Query<Tables>(sql, 
                     new { tableId = gid }).SingleOrDefault();
+                return qry;
+            }
+        }
+        public Tables TableByName(string tableName)
+        {
+            using (var con = GetConn())
+            {
+                string sql = $"select * from tables " +
+                    $"where tableName=@tableName";
+                var qry = conn.Query<Tables>(sql,
+                    new { tableName = tableName }).SingleOrDefault();
                 return qry;
             }
         }

@@ -23,7 +23,17 @@ namespace EPLab.dbService
                 return qry;
             }
         }
-
+        public List<Fields> FieldsByTableId(Guid tableId)
+        {
+            using (var con = GetConn())
+            {
+                string sql = $"select * from fields " +
+                    $"where tableId=@TableId";
+                var qry = con.Query<Fields>(sql,
+                    new { TableId = tableId }).ToList();
+                return qry;
+            }
+        }
         public override Fields GetOne(Guid gid)
         {
             using (var con = GetConn())

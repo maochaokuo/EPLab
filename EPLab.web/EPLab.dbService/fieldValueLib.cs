@@ -8,7 +8,113 @@ using System.Text;
 
 namespace EPLab.dbService
 {
-    class fieldValueLib
+    public class fieldValueLib : Repository<FieldValues>
     {
+        public fieldValueLib(string connS) : base(connS)
+        {
+        }
+
+        public override List<FieldValues> GetAll()
+        {
+            using (var con = GetConn())
+            {
+                string sql = $"select * from fieldValues ";
+                var qry = con.Query<FieldValues>(sql).ToList();
+                return qry;
+            }
+        }
+
+        public List<FieldValues> FieldValueByRowId(Guid rowId)
+        {
+            using (var con = GetConn())
+            {
+                string sql = $"select * from fieldValues " +
+                    $"where rowId=@RowId";
+                var qry = con.Query<FieldValues>(sql,
+                    new { RowId = rowId }).ToList();
+                return qry;
+            }
+        }
+
+        public List<FieldValues> FieldValueByFieldId(Guid fieldId)
+        {
+            using (var con = GetConn())
+            {
+                string sql = $"select * from fieldValues " +
+                    $"where fieldId=@FieldId";
+                var qry = con.Query<FieldValues>(sql,
+                    new { FieldId = fieldId }).ToList();
+                return qry;
+            }
+        }
+
+        public override FieldValues GetOne(Guid gid)
+        {
+            using (var con = GetConn())
+            {
+                string sql = $"select * from fieldValues " +
+                    $"where fieldValueId=@fieldValueId";
+                var qry = conn.Query<FieldValues>(sql,
+                    new { fieldValueId = gid }).SingleOrDefault();
+                return qry;
+            }
+        }
+
+        public override string Insert(FieldValues rec)
+        {
+            string ret = "";
+            using (var con = GetConn())
+            {
+                string sql = $"insert into fieldValues " +
+                    $"(FieldValueId,RowId,FieldId,FieldValue) " +
+                    $"vales (@FieldValueId,@RowId,@FieldId,@FieldValue)";
+                con.Execute(sql,
+                    new
+                    {
+                        FieldValueId = rec.FieldValueId,
+                        RowId = rec.RowId,
+                        FieldId = rec.FieldId,
+                        FieldValue = rec.FieldValue
+                    });
+            }
+            return ret;
+        }
+
+        public override string Update(FieldValues rec)
+        {
+            string ret = "";
+            using (var con = GetConn())
+            {
+                string sql = $"update fieldValues " +
+                    $"set FieldValue=@FieldValue " +
+                    $"where FieldValueId=@FieldValueId";
+                con.Execute(sql,
+                    new
+                    {
+                        FieldValueId = rec.FieldValueId,
+                        //RowId = rec.RowId,
+                        //FieldId = rec.FieldId,
+                        FieldValue = rec.FieldValue
+                    });
+            }
+            return ret;
+        }
+        public override string Delete(FieldValues rec)
+        {
+            string ret = "";
+            using (var con = GetConn())
+            {
+                string sql = $"delete from fieldValues " +
+                    $"where FieldValueId=@FieldValueId";
+                con.Execute(sql, new
+                {
+                    FieldValueId = rec.FieldValueId,
+                    //RowId = rec.RowId,
+                    //FieldId = rec.FieldId,
+                });
+            }
+            return ret;
+        }
+
     }
 }

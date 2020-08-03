@@ -10,6 +10,7 @@ namespace EPLab.web.Controllers
     {
         public IActionResult Index()
         {
+            // todo !!... (2) table list and link 
             return View();
         }
     }

@@ -10,6 +10,7 @@ namespace EPLab.web.Controllers
     {
         public IActionResult Index()
         {
+            // todo !!... (2) row list of a table, including all fields, just like datatable
             return View();
         }
     }

@@ -10,6 +10,12 @@ namespace EPLab.web.Controllers
     {
         public IActionResult Index()
         {
+            // todo !!... (2) field list of a table 
+            return View();
+        }
+        public IActionResult AddUpdate()
+        {
+            // todo !!... (3) add new field(s) with formula/calculation
             return View();
         }
     }

@@ -14,13 +14,24 @@ namespace EPLab.dbService
         {
         }
 
-
         public override List<Rows> GetAll()
         {
             using (var con = GetConn())
             {
                 string sql = $"select * from rows ";
                 var qry = con.Query<Rows>(sql).ToList();
+                return qry;
+            }
+        }
+
+        public  List<Rows> RowsByTableId(Guid tableId)
+        {
+            using (var con = GetConn())
+            {
+                string sql = $"select * from rows " +
+                    $"where tableId=@TableId";
+                var qry = con.Query<Rows>(sql,
+                    new { TableId = tableId }).ToList();
                 return qry;
             }
         }

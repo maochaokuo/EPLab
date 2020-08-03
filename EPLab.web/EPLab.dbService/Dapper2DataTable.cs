@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading;
 using Dapper;
+using EPLab.entity.Models;
 using Microsoft.Data.SqlClient;
 
 namespace EPLab.dbService
@@ -11,6 +13,12 @@ namespace EPLab.dbService
     {
         protected string connS = "";
         protected SqlConnection conn = null;
+
+        protected tableLib tableL = null;
+        protected fieldLib fieldL = null;
+        protected rowLib rowL = null;
+        protected fieldValueLib fieldValueL = null;
+
         private bool disposedValue;
 
         //todo (1) !!... use datatable to deal with
@@ -22,6 +30,10 @@ namespace EPLab.dbService
         public Dapper2DataTable(string connS)
         {
             this.connS = connS;
+            tableL = new tableLib(connS);
+            fieldL = new fieldLib(connS);
+            rowL = new rowLib(connS);
+            fieldValueL = new fieldValueLib(connS);
         }
         protected IDbConnection GetConn()
         {
@@ -50,30 +62,98 @@ namespace EPLab.dbService
             da.Dispose();
             return dt;
         }
+        protected string DataTableName(DataTable dt)
+        {
+            string ret = dt.TableName;
+            return ret;
+        }
+        protected List<string> DataTableColumnNames(DataTable dt)
+        {
+            List<string> ret = new List<string>();
+            foreach (DataColumn dc in dt.Columns)
+                ret.Add(dc.ColumnName);
+            return ret;
+        }
+        protected List<string> DataTableColumnTypes(DataTable dt)
+        {
+            List<string> ret = new List<string>();
+            foreach (DataColumn dc in dt.Columns)
+                ret.Add(dc.DataType.Name);
+            return ret;
+        }
+        protected List<List<string>> DataTableCellValue(DataTable dt)
+        {
+            List<List<string>> ret = new List<List<string>>();
+            foreach(DataRow dr in dt.Rows)
+            {
+                List<string> rowColumns = new List<string>();
+                foreach (DataColumn dc in dt.Columns)
+                    rowColumns.Add(dr[dc.ColumnName]+"");
+                ret.Add(rowColumns);
+                rowColumns = null;
+            }
+            return ret;
+        }
         protected bool isDataTableExisted(DataTable dt)
         {
             bool ret = false;
-            //todo (1) !!... isDataTableExisted
+            Tables tbl = tableL.TableByName(DataTableName(dt));
+            if (tbl != null)
+                ret = true;
+            // isDataTableExisted
             return ret;
         }
-        public string ImportDataTableAppend(DataTable dt)
+        protected string deleteDataTable(DataTable dt)
         {
             string ret = "";
-            // todo (1) !!...import datatable append to existed table
+            string tableName = DataTableName(dt);
+            Tables tbl = tableL.TableByName(tableName);
+            if (tbl == null)
+                return ret;
+            List<Rows> rows = rowL.RowsByTableId(tbl.TableId);
+            foreach(Rows rec in rows)
+            {
+                List<FieldValues> fieldValues = fieldValueL.FieldValueByRowId(rec.RowId);
+                foreach (FieldValues rec2 in fieldValues)
+                    fieldValueL.Delete(rec2);
+                rowL.Delete(rec);
+            }
+            tableL.Delete(tbl);
             return ret;
         }
-        public string ImportDataTableOverwrite(DataTable dt)
-        {
-            string ret = "";
-            // todo (1) !!...import datatable overwrite existed table
-            return ret;
-        }
+        //public string ImportDataTableAppend(DataTable dt)
+        //{
+        //    string ret = "";
+        //    // todo (1) !!...import datatable append to existed table
+        //    return ret;
+        //}
+        //public string ImportDataTableOverwrite(DataTable dt)
+        //{
+        //    string ret = "";
+        //    // todo (1) !!...import datatable overwrite existed table
+        //    return ret;
+        //}
         public string ImportDataTableSaveas(DataTable dt
-            , string saveAsNewTablename, bool append=false)
+            , string saveAsNewTablename="", bool append=false)
         {
             string ret = "";
+
+            if (saveAsNewTablename == "")
+                saveAsNewTablename = DataTableName(dt);
             // todo (1) !!...import datatable save as new table
             // if new table existed, append false to overwrite
+
+            if (!append)
+                Thread.Sleep(0);//todo !!... delete target table
+
+            // write to tables
+
+            // write to fields
+
+            // write to rows
+
+            // write to field values
+
             return ret;
         }
 

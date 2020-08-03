@@ -1,5 +1,7 @@
 use EPLlabDB
 
+
+/*
 select * from tables
 
 select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
@@ -11,3 +13,4 @@ SELECT dealdate, dealtime, [close], sVolume, aVolume, lastdate, lastclose, lastS
 FROM [indices2].[dbo].[dealdates]
 where dealdate<='20180630'
 order by dealdate
+*/
