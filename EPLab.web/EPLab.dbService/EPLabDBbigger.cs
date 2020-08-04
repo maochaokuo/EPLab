@@ -50,7 +50,7 @@ namespace EPLab.dbService
         public string deleteTable(string tableName)
         {
             string ret = "";
-
+            //undone (1)!!... does not work
             Tables tbl = tableL.TableByName(tableName);
             if (tbl == null)
                 return ret;
@@ -65,9 +65,42 @@ namespace EPLab.dbService
             tableL.Delete(tbl);
             return ret;
         }
-        public string insertTable(Tables newTable)
+        protected Guid getNewId(string tableName)
         {
-            string ret = tableL.Insert(newTable);
+            Guid ret = Guid.NewGuid();
+            // undone !!... (3) temporarily for now, later update allIdHistory
+            return ret;
+        }
+        public string insertTable(Tables newTable, out Guid tableId)
+        {
+            string ret;
+            newTable.TableId = getNewId("tables");
+            tableId = newTable.TableId;
+            ret = tableL.Insert(newTable);
+            //undone !!... (1) tableid returned different
+            return ret;
+        }
+        public string insertField(Fields newField, out Guid fieldId)
+        {
+            string ret;
+            newField.FieldId = getNewId("fields");
+            fieldId = newField.FieldId;
+            ret = fieldL.Insert(newField);
+            return ret;
+        }
+        public string insertRow(Rows newRow, out Guid rowId)
+        {
+            string ret;
+            newRow.RowId = getNewId("rows");
+            rowId = newRow.RowId;
+            ret = rowL.Insert(newRow);
+            return ret;
+        }
+        public string insertFieldValue(FieldValues newFieldValue)
+        {
+            string ret;
+            //newFieldValue.FieldValueId = getNewId("fieldValues");
+            ret = fieldValueL.Insert(newFieldValue);
             return ret;
         }
     }

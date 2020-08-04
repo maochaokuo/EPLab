@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Text;
 using System.Threading;
 using Dapper;
@@ -80,14 +81,16 @@ namespace EPLab.dbService
                 ret.Add(dc.DataType.Name);
             return ret;
         }
-        protected List<List<string>> DataTableCellValue(DataTable dt)
+        protected List<Dictionary<string, string>> DataTableCellValue(DataTable dt)
         {
-            List<List<string>> ret = new List<List<string>>();
+            List<Dictionary<string, string>> ret = 
+                new List<Dictionary<string, string>>();
             foreach(DataRow dr in dt.Rows)
             {
-                List<string> rowColumns = new List<string>();
+                Dictionary<string, string> rowColumns = 
+                    new Dictionary<string, string>();
                 foreach (DataColumn dc in dt.Columns)
-                    rowColumns.Add(dr[dc.ColumnName]+"");
+                    rowColumns.Add(dc.ColumnName, dr[dc.ColumnName]+"");
                 ret.Add(rowColumns);
                 rowColumns = null;
             }
@@ -131,15 +134,47 @@ namespace EPLab.dbService
             // delete target table
             if (!append)
                 dbBig.deleteTable(saveAsNewTablename);
-            
+
             // write to tables
+            Tables tbl = new Tables();
+            tbl.TableName = saveAsNewTablename;
+            Guid tableId;
+            ret = dbBig.insertTable(tbl, out tableId);
 
             // write to fields
+            List<string> colNames = DataTableColumnNames(dt);
+            List<string> colTypes = DataTableColumnTypes(dt);
+            Dictionary<string, Guid> name2id = new Dictionary<string, Guid>();
+            for(int i=0; i<colNames.Count && i<colTypes.Count; i++)
+            {
+                Fields fld = new Fields();
+                fld.FieldName = colNames[i];
+                fld.FieldDesc = colTypes[i];
+                fld.TableId = tableId;
+                Guid fieldId = Guid.Empty;
+                ret = dbBig.insertField(fld, out fieldId);
+                name2id.Add(fld.FieldName, fieldId);
+            }
 
-            // write to rows
+            List<Dictionary<string, string>> dtCells = DataTableCellValue(dt);
+            foreach(Dictionary<string, string> rowCols in dtCells)
+            {
+                // write to rows
+                Guid rowId = Guid.Empty;
+                Rows rw = new Rows();
+                rw.TableId = tableId;
+                ret = dbBig.insertRow(rw, out rowId);
 
-            // write to field values
-
+                // write to field values
+                foreach (KeyValuePair<string, string> pair in rowCols)
+                {
+                    FieldValues fv = new FieldValues();
+                    fv.RowId = rowId;
+                    fv.FieldId = name2id[pair.Key];
+                    fv.FieldValue = pair.Value;
+                    ret = dbBig.insertFieldValue(fv);
+                }
+            }
             return ret;
         }
 

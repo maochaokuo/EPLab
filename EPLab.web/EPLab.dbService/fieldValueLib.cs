@@ -66,12 +66,12 @@ namespace EPLab.dbService
             using (var con = GetConn())
             {
                 string sql = $"insert into fieldValues " +
-                    $"(FieldValueId,RowId,FieldId,FieldValue) " +
-                    $"vales (@FieldValueId,@RowId,@FieldId,@FieldValue)";
+                    $"(RowId,FieldId,FieldValue) " +
+                    $"values (@RowId,@FieldId,@FieldValue)";
                 con.Execute(sql,
                     new
                     {
-                        FieldValueId = rec.FieldValueId,
+                        //FieldValueId = rec.FieldValueId,
                         RowId = rec.RowId,
                         FieldId = rec.FieldId,
                         FieldValue = rec.FieldValue

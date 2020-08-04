@@ -44,7 +44,7 @@ namespace EPLab.dbService
                 string sql = $"select * from tables " +
                     $"where tableName=@tableName";
                 var qry = conn.Query<Tables>(sql,
-                    new { tableName = tableName }).SingleOrDefault();
+                    new { tableName = tableName }).FirstOrDefault();
                 return qry;
             }
         }
@@ -55,9 +55,9 @@ namespace EPLab.dbService
             {
                 string sql = $"insert into tables " +
                     $"(tableName,tableDesc) " +
-                    $"vales (@tableName,@tableDesc)";
+                    $"values (@tableName,@tableDesc)";
                 con.Execute(sql, 
-                    new { tablesName = rec.TableName, 
+                    new { tableName = rec.TableName, 
                     tableDesc = rec.TableDesc });
             }
             return ret;

@@ -16,9 +16,12 @@ Install-Package Microsoft.EntityFrameworkCore.Tools
 ```
 
 ## change log
+### 2020/8/5
+1. finally import DataTable to generic data first version done
+
 ### 2020/7/29
 1. connection string from app setting json finally corrrect
-2. 
+
 ### 2020/7/27
 1. create database EPLlabDB
 2. entity framework class library

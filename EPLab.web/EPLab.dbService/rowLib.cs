@@ -55,7 +55,7 @@ namespace EPLab.dbService
             {
                 string sql = $"insert into rows " +
                     $"(RowId,TableId) " +
-                    $"vales (@RowId,@TableId)";
+                    $"values (@RowId,@TableId)";
                 con.Execute(sql,
                     new
                     {

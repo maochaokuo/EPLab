@@ -54,7 +54,7 @@ namespace EPLab.dbService
                 string sql = $"insert into fields " +
                     $"(FieldId,TableId,FieldName,FieldDesc," +
                     $"PrimaryOrder,ForeignFieldId,DefaultValue) " +
-                    $"vales (@FieldId,@TableId,@FieldName,@FieldDesc," +
+                    $"values (@FieldId,@TableId,@FieldName,@FieldDesc," +
                     $"@PrimaryOrder,@ForeignFieldId,@DefaultValue)";
                 con.Execute(sql,
                     new

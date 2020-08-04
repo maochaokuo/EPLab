@@ -44,7 +44,7 @@ namespace EPLab.dbService
                 string sql = $"insert into domainCases " +
                     $"(domainCaseId,domainId,domainCaseName," +
                     $"rangeMin,rangeMax,domainCaseDescription) " +
-                    $"vales (@DomainCaseId,@DomainId,@DomainCaseName," +
+                    $"values (@DomainCaseId,@DomainId,@DomainCaseName," +
                     $"@RangeMin,@RangeMax,@DomainCaseDescription)";
                 con.Execute(sql,
                     new

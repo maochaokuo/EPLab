@@ -33,14 +33,15 @@ namespace EPLab.web.Controllers
 
         public IActionResult Index()
         {
-            Dapper2DataTable dtd = new Dapper2DataTable(connIndices);
-//            string sql = @"
-//select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
-//from indices2.dbo.ohlc
-//where dealdate<='20180630'
-//order by dealdate, dealtime
-//";
-//            DataTable dt = dtd.Select2DataTable(sql);
+            Dapper2DataTable dtdSrc = new Dapper2DataTable(connIndices);
+            Dapper2DataTable dtdTar = new Dapper2DataTable(connEPLabDB);
+            //            string sql = @"
+            //select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
+            //from indices2.dbo.ohlc
+            //where dealdate<='20180630'
+            //order by dealdate, dealtime
+            //";
+            //            DataTable dt = dtd.Select2DataTable(sql);
 
             string sql2 = @"
 SELECT dealdate, dealtime, [close], sVolume, aVolume, lastdate, lastclose, lastSvolume, lastAvolume
@@ -48,7 +49,9 @@ FROM [indices2].[dbo].[dealdates]
 where dealdate<='20180731'
 order by dealdate
 ";
-            DataTable dt2 = dtd.Select2DataTable(sql2);
+            DataTable dt2 = dtdSrc.Select2DataTable(sql2);
+            string err = dtdTar.ImportDataTableSaveas(dt2
+                , "dealdates");
             return View();
         }
 
