@@ -1,21 +1,25 @@
 use EPLlabDB
 
 select * 
-from tables
+-- delete
+from [tables]
 
 select *
+-- delete
+from [rows]
+
+select *
+-- delete
 from fields
 
-select *
-from rows
-
 select * 
+-- delete
 from fieldValues
+
+/*
 
 select *
 from allIdHistory
-
-/*
 
 select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
 from indices2.dbo.ohlc

@@ -44,7 +44,7 @@ namespace EPLab.dbService
                 string sql = $"select * from tables " +
                     $"where tableName=@tableName";
                 var qry = conn.Query<Tables>(sql,
-                    new { tableName = tableName }).FirstOrDefault();
+                    new { tableName = tableName }).SingleOrDefault();
                 return qry;
             }
         }
