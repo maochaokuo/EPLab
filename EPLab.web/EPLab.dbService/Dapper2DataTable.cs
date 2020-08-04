@@ -24,10 +24,10 @@ namespace EPLab.dbService
 
         private bool disposedValue;
 
-        //todo (1) !!... use datatable to deal with
+        // use datatable to deal with
         //general select query, to import to 
         //a new table in generic data
-        //undone !!... dapper does not support
+        // dapper does not support
         //so we use pure ado.net
 
         public Dapper2DataTable(string connS)
@@ -103,22 +103,10 @@ namespace EPLab.dbService
             ret = dbBig.isDataTableExisted(tableName);
             return ret;
         }
-        protected string deleteDataTable(DataTable dt)
-        {
-            string ret = "";
-            string tableName = DataTableName(dt);
-            return ret;
-        }
-        //public string ImportDataTableAppend(DataTable dt)
+        //protected string deleteDataTable(DataTable dt)
         //{
         //    string ret = "";
-        //    // todo (1) !!...import datatable append to existed table
-        //    return ret;
-        //}
-        //public string ImportDataTableOverwrite(DataTable dt)
-        //{
-        //    string ret = "";
-        //    // todo (1) !!...import datatable overwrite existed table
+        //    string tableName = DataTableName(dt);
         //    return ret;
         //}
         public string ImportDataTableSaveas(DataTable dt
@@ -128,18 +116,20 @@ namespace EPLab.dbService
 
             if (saveAsNewTablename == "")
                 saveAsNewTablename = DataTableName(dt);
-            // todo (1) !!...import datatable save as new table
+            // import datatable save as new table
             // if new table existed, append false to overwrite
+            string tag = "dealdates";
 
             // delete target table
             if (!append)
-                dbBig.deleteTable(saveAsNewTablename);
-
+                dbBig.deleteTable(saveAsNewTablename
+                    , tag);
+            
             // write to tables
             Tables tbl = new Tables();
             tbl.TableName = saveAsNewTablename;
-            Guid tableId;
-            ret = dbBig.insertTable(tbl, out tableId);
+            Guid tableId;//undone (1) !!... tableId inconsistent
+            ret = dbBig.insertTable(tbl, out tableId, tag);
 
             // write to fields
             List<string> colNames = DataTableColumnNames(dt);
@@ -152,7 +142,7 @@ namespace EPLab.dbService
                 fld.FieldDesc = colTypes[i];
                 fld.TableId = tableId;
                 Guid fieldId = Guid.Empty;
-                ret = dbBig.insertField(fld, out fieldId);
+                ret = dbBig.insertField(fld, out fieldId, tag);
                 name2id.Add(fld.FieldName, fieldId);
             }
 
@@ -163,7 +153,7 @@ namespace EPLab.dbService
                 Guid rowId = Guid.Empty;
                 Rows rw = new Rows();
                 rw.TableId = tableId;
-                ret = dbBig.insertRow(rw, out rowId);
+                ret = dbBig.insertRow(rw, out rowId, tag);
 
                 // write to field values
                 foreach (KeyValuePair<string, string> pair in rowCols)

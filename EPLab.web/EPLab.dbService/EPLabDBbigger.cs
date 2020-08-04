@@ -16,6 +16,7 @@ namespace EPLab.dbService
         protected fieldLib fieldL = null;
         protected rowLib rowL = null;
         protected fieldValueLib fieldValueL = null;
+        protected allIdHistoryLib allIdHistoryL = null;
 
         public EPLabDBbigger(string connS)
         {
@@ -24,6 +25,7 @@ namespace EPLab.dbService
             fieldL = new fieldLib(connS);
             rowL = new rowLib(connS);
             fieldValueL = new fieldValueLib(connS);
+            allIdHistoryL = new allIdHistoryLib(connS);
         }
         protected IDbConnection GetConn()
         {
@@ -47,10 +49,11 @@ namespace EPLab.dbService
             // isDataTableExisted
             return ret;
         }
-        public string deleteTable(string tableName)
+        public string deleteTable(string tableName, string tag)
         {
             string ret = "";
             //undone (1)!!... does not work
+            //undone (1) fields seem not deleted, check row, fieldvalue
             Tables tbl = tableL.TableByName(tableName);
             if (tbl == null)
                 return ret;
@@ -63,35 +66,43 @@ namespace EPLab.dbService
                 rowL.Delete(rec);
             }
             tableL.Delete(tbl);
+            allIdHistoryL.Delete(tag);
             return ret;
         }
-        protected Guid getNewId(string tableName)
+        protected Guid getNewId(string tableName, string tag="")
         {
-            Guid ret = Guid.NewGuid();
-            // undone !!... (3) temporarily for now, later update allIdHistory
-            return ret;
+            AllIdHistory aih = new AllIdHistory();
+            aih.Uid = Guid.NewGuid();
+            aih.FromTable = tableName;
+            aih.CreateBy = "Import";
+            aih.Tag = tag;
+            allIdHistoryL.Insert(aih);
+            // update allIdHistory
+            return aih.Uid;
         }
-        public string insertTable(Tables newTable, out Guid tableId)
+        public string insertTable(Tables newTable, out Guid tableId
+            , string tag="")
         {
             string ret;
-            newTable.TableId = getNewId("tables");
+            newTable.TableId = getNewId("tables", tag);
             tableId = newTable.TableId;
             ret = tableL.Insert(newTable);
-            //undone !!... (1) tableid returned different
             return ret;
         }
-        public string insertField(Fields newField, out Guid fieldId)
+        public string insertField(Fields newField, out Guid fieldId
+            , string tag = "")
         {
             string ret;
-            newField.FieldId = getNewId("fields");
+            newField.FieldId = getNewId("fields", tag);
             fieldId = newField.FieldId;
             ret = fieldL.Insert(newField);
             return ret;
         }
-        public string insertRow(Rows newRow, out Guid rowId)
+        public string insertRow(Rows newRow, out Guid rowId
+            , string tag = "")
         {
             string ret;
-            newRow.RowId = getNewId("rows");
+            newRow.RowId = getNewId("rows", tag);
             rowId = newRow.RowId;
             ret = rowL.Insert(newRow);
             return ret;

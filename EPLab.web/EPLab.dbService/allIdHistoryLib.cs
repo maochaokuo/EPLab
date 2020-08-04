@@ -42,15 +42,16 @@ namespace EPLab.dbService
             using (var con = GetConn())
             {
                 string sql = $"insert into allIdHistory " +
-                    $"(uid,fromTable,createBy,modifyBy) " +
-                    $"values (@uid,@fromTable,@createBy,@modifyBy)";
+                    $"(uid,fromTable,createBy,modifyBy,tag) " +
+                    $"values (@uid,@fromTable,@createBy,@modifyBy,@tag)";
                 con.Execute(sql,
                     new
                     {
                         uid = rec.Uid,
                         fromTable = rec.FromTable,
                         createBy = rec.CreateBy,
-                        modifyBy = rec.ModifyBy
+                        modifyBy = rec.ModifyBy,
+                        tag = rec.Tag
                     });
             }
             return ret;
@@ -62,7 +63,8 @@ namespace EPLab.dbService
             using (var con = GetConn())
             {
                 string sql = $"update allIdHistory " +
-                    $"set fromTable=@fromTable,modifyBy=@modifyBy " +
+                    $"set fromTable=@fromTable," +
+                    $"modifyBy=@modifyBy,tag=@tag " +
                     $"where uid=@uid";
                 con.Execute(sql,
                     new
@@ -70,7 +72,8 @@ namespace EPLab.dbService
                         uid = rec.Uid,
                         fromTable = rec.FromTable,
                         //createBy = rec.CreateBy,
-                        modifyBy = rec.ModifyBy
+                        modifyBy = rec.ModifyBy,
+                        tag = rec.Tag
                     });
             }
             return ret;
@@ -85,6 +88,20 @@ namespace EPLab.dbService
                 con.Execute(sql, new
                 {
                     uid = rec.Uid
+                });
+            }
+            return ret;
+        }
+        public string Delete(string tag)
+        {
+            string ret = "";
+            using (var con = GetConn())
+            {
+                string sql = $"delete from allIdHistory " +
+                    $"where tag=@tag";
+                con.Execute(sql, new
+                {
+                    tag = tag
                 });
             }
             return ret;

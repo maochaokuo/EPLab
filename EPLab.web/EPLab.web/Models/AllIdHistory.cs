@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EPLab.entity.Models
+namespace EPLab.web.Models
 {
     public partial class AllIdHistory
     {

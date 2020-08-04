@@ -16,10 +16,10 @@ select *
 -- delete
 from fieldValues
 
-/*
-
 select *
 from allIdHistory
+
+/*
 
 select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
 from indices2.dbo.ohlc
