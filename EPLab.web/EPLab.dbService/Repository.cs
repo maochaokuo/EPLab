@@ -52,6 +52,12 @@ namespace EPLab.dbService
 
             return ret;
         }
+        public virtual string DeleteByTag(string tag)
+        {
+            string ret = "";
+
+            return ret;
+        }
 
         protected virtual void Dispose(bool disposing)
         {

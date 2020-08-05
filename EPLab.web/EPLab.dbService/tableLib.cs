@@ -54,11 +54,14 @@ namespace EPLab.dbService
             using(var con = GetConn())
             {
                 string sql = $"insert into tables " +
-                    $"(tableName,tableDesc) " +
-                    $"values (@tableName,@tableDesc)";
+                    $"(tableId,tableName,tableDesc) " +
+                    $"values (@tableId,@tableName,@tableDesc)";
                 con.Execute(sql, 
-                    new { tableName = rec.TableName, 
-                    tableDesc = rec.TableDesc });
+                    new {
+                        tableId = rec.TableId,
+                        tableName = rec.TableName, 
+                        tableDesc = rec.TableDesc 
+                    });
             }
             return ret;
         }
@@ -86,6 +89,24 @@ namespace EPLab.dbService
                 con.Execute(sql, new
                 {
                     tableId = rec.TableId
+                });
+            }
+            return ret;
+        }
+
+        public override string DeleteByTag(string tag)
+        {
+            string ret = "";
+            using (var con = GetConn())
+            {
+                string sql = @"
+delete a
+from tables a
+join allIdHistory b on a.tableId = uid
+where b.tag = @tag";
+                con.Execute(sql, new
+                {
+                    tag = tag
                 });
             }
             return ret;

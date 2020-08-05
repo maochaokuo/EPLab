@@ -27,9 +27,9 @@ select
 	   and kcu.TABLE_NAME = tc.TABLE_NAME
 	 where tc.CONSTRAINT_TYPE = 'PRIMARY KEY') p 
 		on p.TABLE_NAME=st.name and p.COLUMN_NAME=sc.name
-    where 
+    --where 
 		--st.name in ('fieldValues')
-		st.name in ('allIdHistory')
+		--st.name in ('allIdHistory')
 		--st.name in ('projectVersion')
 		--st.name in ('systemEntity', 'systems', 'systemTemplate')
 		--st.name in ('globalEvent')

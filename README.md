@@ -16,6 +16,10 @@ Install-Package Microsoft.EntityFrameworkCore.Tools
 ```
 
 ## change log
+### 2020/8/6
+1. import done without bug
+2. building query, lost field order (initial
+
 ### 2020/8/5
 1. finally import DataTable to generic data first version done
 

@@ -118,18 +118,20 @@ namespace EPLab.dbService
                 saveAsNewTablename = DataTableName(dt);
             // import datatable save as new table
             // if new table existed, append false to overwrite
-            string tag = "dealdates";
 
             // delete target table
             if (!append)
-                dbBig.deleteTable(saveAsNewTablename
-                    , tag);
+            {
+                dbBig.deleteTable(saveAsNewTablename);
+                dbBig.deleteTag(saveAsNewTablename);
+            }
             
             // write to tables
             Tables tbl = new Tables();
             tbl.TableName = saveAsNewTablename;
             Guid tableId;//undone (1) !!... tableId inconsistent
-            ret = dbBig.insertTable(tbl, out tableId, tag);
+            ret = dbBig.insertTable(tbl, out tableId, 
+                saveAsNewTablename);
 
             // write to fields
             List<string> colNames = DataTableColumnNames(dt);
@@ -142,18 +144,21 @@ namespace EPLab.dbService
                 fld.FieldDesc = colTypes[i];
                 fld.TableId = tableId;
                 Guid fieldId = Guid.Empty;
-                ret = dbBig.insertField(fld, out fieldId, tag);
+                ret = dbBig.insertField(fld, out fieldId, 
+                    saveAsNewTablename);
                 name2id.Add(fld.FieldName, fieldId);
             }
 
-            List<Dictionary<string, string>> dtCells = DataTableCellValue(dt);
+            List<Dictionary<string, string>> dtCells = 
+                DataTableCellValue(dt);
             foreach(Dictionary<string, string> rowCols in dtCells)
             {
                 // write to rows
                 Guid rowId = Guid.Empty;
                 Rows rw = new Rows();
                 rw.TableId = tableId;
-                ret = dbBig.insertRow(rw, out rowId, tag);
+                ret = dbBig.insertRow(rw, out rowId, 
+                    saveAsNewTablename);
 
                 // write to field values
                 foreach (KeyValuePair<string, string> pair in rowCols)

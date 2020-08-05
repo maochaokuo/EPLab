@@ -49,7 +49,7 @@ namespace EPLab.dbService
             // isDataTableExisted
             return ret;
         }
-        public string deleteTable(string tableName, string tag)
+        public string deleteTable(string tableName)
         {
             string ret = "";
             //undone (1)!!... does not work
@@ -66,7 +66,16 @@ namespace EPLab.dbService
                 rowL.Delete(rec);
             }
             tableL.Delete(tbl);
-            allIdHistoryL.Delete(tag);
+            return ret;
+        }
+        public string deleteTag(string tag)
+        {
+            string ret = "";
+            ret = tableL.DeleteByTag(tag);
+            ret = fieldL.DeleteByTag(tag);
+            ret = rowL.DeleteByTag(tag);
+            ret = fieldValueL.DeleteByTag(tag);
+            ret = allIdHistoryL.DeleteByTag(tag);
             return ret;
         }
         protected Guid getNewId(string tableName, string tag="")

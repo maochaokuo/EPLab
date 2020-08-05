@@ -48,6 +48,7 @@ namespace EPLab.dbService
 
         public override string Insert(Fields rec)
         {
+            //undone (1) !!... defaultOrder
             string ret = "";
             using (var con = GetConn())
             {
@@ -111,5 +112,22 @@ namespace EPLab.dbService
             return ret;
         }
 
+        public override string DeleteByTag(string tag)
+        {
+            string ret = "";
+            using (var con = GetConn())
+            {
+                string sql = @"
+delete a
+from fields a
+join allIdHistory b on a.fieldId = uid 
+where b.tag = @tag";
+                con.Execute(sql, new
+                {
+                    tag = tag
+                });
+            }
+            return ret;
+        }
     }
 }

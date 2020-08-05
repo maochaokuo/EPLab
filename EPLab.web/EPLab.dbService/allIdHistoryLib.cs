@@ -92,7 +92,7 @@ namespace EPLab.dbService
             }
             return ret;
         }
-        public string Delete(string tag)
+        public override string DeleteByTag(string tag)
         {
             string ret = "";
             using (var con = GetConn())

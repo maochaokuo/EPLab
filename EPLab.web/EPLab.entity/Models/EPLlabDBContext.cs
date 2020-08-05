@@ -39,6 +39,9 @@ namespace EPLab.entity.Models
             {
                 entity.ToTable("allIdHistory");
 
+                entity.HasIndex(e => e.Tag)
+                    .HasName("IX_allIdHistory_1");
+
                 entity.HasIndex(e => e.Uid)
                     .HasName("IX_allIdHistory");
 
@@ -50,7 +53,8 @@ namespace EPLab.entity.Models
 
                 entity.Property(e => e.Createtime)
                     .HasColumnName("createtime")
-                    .HasColumnType("datetime");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.FromTable)
                     .HasColumnName("fromTable")
@@ -63,7 +67,12 @@ namespace EPLab.entity.Models
 
                 entity.Property(e => e.Modifytime)
                     .HasColumnName("modifytime")
-                    .HasColumnType("datetime");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Tag)
+                    .HasColumnName("tag")
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.Uid).HasColumnName("uid");
             });
@@ -211,6 +220,10 @@ namespace EPLab.entity.Models
                 entity.Property(e => e.FieldId)
                     .HasColumnName("fieldId")
                     .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.DefaultOrder)
+                    .HasColumnName("defaultOrder")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.DefaultValue)
                     .HasColumnName("defaultValue")

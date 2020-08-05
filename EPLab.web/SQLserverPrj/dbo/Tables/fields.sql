@@ -7,8 +7,11 @@
     [foreignFieldId] UNIQUEIDENTIFIER NULL,
     [defaultValue]   NVARCHAR (450)   NULL,
     [domainId]       UNIQUEIDENTIFIER NULL,
+    [defaultOrder]   INT              CONSTRAINT [DF_fields_defaultOrder] DEFAULT ((0)) NULL,
     CONSTRAINT [PK_fields] PRIMARY KEY CLUSTERED ([fieldId] ASC)
 );
+
+
 
 
 

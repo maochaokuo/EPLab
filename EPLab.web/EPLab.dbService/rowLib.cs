@@ -97,5 +97,22 @@ namespace EPLab.dbService
             }
             return ret;
         }
+        public override string DeleteByTag(string tag)
+        {
+            string ret = "";
+            using (var con = GetConn())
+            {
+                string sql = @"
+delete a
+from rows a
+join allIdHistory b on a.tableId = uid or a.rowId = uid
+where b.tag = @tag";
+                con.Execute(sql, new
+                {
+                    tag = tag
+                });
+            }
+            return ret;
+        }
     }
 }
