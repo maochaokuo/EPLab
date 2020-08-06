@@ -129,7 +129,7 @@ namespace EPLab.dbService
             // write to tables
             Tables tbl = new Tables();
             tbl.TableName = saveAsNewTablename;
-            Guid tableId;//undone (1) !!... tableId inconsistent
+            Guid tableId;
             ret = dbBig.insertTable(tbl, out tableId, 
                 saveAsNewTablename);
 
@@ -143,6 +143,7 @@ namespace EPLab.dbService
                 fld.FieldName = colNames[i];
                 fld.FieldDesc = colTypes[i];
                 fld.TableId = tableId;
+                fld.DefaultOrder = i + 1;
                 Guid fieldId = Guid.Empty;
                 ret = dbBig.insertField(fld, out fieldId, 
                     saveAsNewTablename);

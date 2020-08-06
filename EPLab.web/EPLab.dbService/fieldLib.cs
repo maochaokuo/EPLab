@@ -54,9 +54,9 @@ namespace EPLab.dbService
             {
                 string sql = $"insert into fields " +
                     $"(FieldId,TableId,FieldName,FieldDesc," +
-                    $"PrimaryOrder,ForeignFieldId,DefaultValue) " +
+                    $"PrimaryOrder,ForeignFieldId,DefaultValue,DefaultOrder) " +
                     $"values (@FieldId,@TableId,@FieldName,@FieldDesc," +
-                    $"@PrimaryOrder,@ForeignFieldId,@DefaultValue)";
+                    $"@PrimaryOrder,@ForeignFieldId,@DefaultValue,@DefaultOrder)";
                 con.Execute(sql,
                     new
                     {
@@ -66,7 +66,8 @@ namespace EPLab.dbService
                         FieldDesc = rec.FieldDesc,
                         PrimaryOrder = rec.PrimaryOrder,
                         ForeignFieldId = rec.ForeignFieldId,
-                        DefaultValue = rec.DefaultValue
+                        DefaultValue = rec.DefaultValue,
+                        DefaultOrder = rec.DefaultOrder
                     });
             }
             return ret;

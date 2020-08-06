@@ -35,18 +35,18 @@ namespace EPLab.web.Controllers
         {
             Dapper2DataTable dtdSrc = new Dapper2DataTable(connIndices);
             Dapper2DataTable dtdTar = new Dapper2DataTable(connEPLabDB);
-            //            string sql = @"
-            //select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
-            //from indices2.dbo.ohlc
-            //where dealdate<='20180630'
-            //order by dealdate, dealtime
-            //";
-            //            DataTable dt = dtd.Select2DataTable(sql);
+//            string sql = @"
+//select dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
+//from indices2.dbo.ohlc
+//where dealdate between '20180702' and '20180706' and section=1
+//order by dealdate, dealtime
+//            ";
+//            DataTable dt = dtdSrc.Select2DataTable(sql);
 
             string sql2 = @"
 SELECT dealdate, dealtime, [close], sVolume, aVolume, lastdate, lastclose, lastSvolume, lastAvolume
 FROM [indices2].[dbo].[dealdates]
-where dealdate<='20180731'
+where dealdate between '20180702' and '20180706'
 order by dealdate
 ";
             DataTable dt2 = dtdSrc.Select2DataTable(sql2);

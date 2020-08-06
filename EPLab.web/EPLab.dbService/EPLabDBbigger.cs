@@ -52,8 +52,6 @@ namespace EPLab.dbService
         public string deleteTable(string tableName)
         {
             string ret = "";
-            //undone (1)!!... does not work
-            //undone (1) fields seem not deleted, check row, fieldvalue
             Tables tbl = tableL.TableByName(tableName);
             if (tbl == null)
                 return ret;
