@@ -113,7 +113,7 @@ namespace EPLab.dbService
             , string saveAsNewTablename="", bool append=false)
         {
             string ret = "";
-
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss")+ " ImportDataTableSaveas 1");
             if (saveAsNewTablename == "")
                 saveAsNewTablename = DataTableName(dt);
             // import datatable save as new table
@@ -122,10 +122,13 @@ namespace EPLab.dbService
             // delete target table
             if (!append)
             {
-                dbBig.deleteTable(saveAsNewTablename);
+                Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " ImportDataTableSaveas 2b");
                 dbBig.deleteTag(saveAsNewTablename);
+                Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " ImportDataTableSaveas 2");
+                dbBig.deleteTable(saveAsNewTablename);
             }
-            
+
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " ImportDataTableSaveas 3");
             // write to tables
             Tables tbl = new Tables();
             tbl.TableName = saveAsNewTablename;
@@ -133,6 +136,7 @@ namespace EPLab.dbService
             ret = dbBig.insertTable(tbl, out tableId, 
                 saveAsNewTablename);
 
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " ImportDataTableSaveas 4");
             // write to fields
             List<string> colNames = DataTableColumnNames(dt);
             List<string> colTypes = DataTableColumnTypes(dt);
@@ -148,10 +152,13 @@ namespace EPLab.dbService
                 ret = dbBig.insertField(fld, out fieldId, 
                     saveAsNewTablename);
                 name2id.Add(fld.FieldName, fieldId);
+                //Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " ImportDataTableSaveas 5 i="+i);
             }
 
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " ImportDataTableSaveas 6");
             List<Dictionary<string, string>> dtCells = 
                 DataTableCellValue(dt);
+            int j = 0;
             foreach(Dictionary<string, string> rowCols in dtCells)
             {
                 // write to rows
@@ -161,6 +168,9 @@ namespace EPLab.dbService
                 ret = dbBig.insertRow(rw, out rowId, 
                     saveAsNewTablename);
 
+                if (++j % 10000 == 0)
+                    Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + 
+                        $" ImportDataTableSaveas 7 [{j}/{dtCells.Count}]" );
                 // write to field values
                 foreach (KeyValuePair<string, string> pair in rowCols)
                 {
@@ -171,6 +181,7 @@ namespace EPLab.dbService
                     ret = dbBig.insertFieldValue(fv);
                 }
             }
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " ImportDataTableSaveas 8 end");
             return ret;
         }
 

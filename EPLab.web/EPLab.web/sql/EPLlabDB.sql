@@ -1,5 +1,121 @@
 use EPLlabDB
 
+select r.rowId, fv1.fieldValue dealdate, fv2.fieldValue [close], fv3.fieldValue sVolume, fv4.fieldValue aVolume
+	, fv5.fieldValue lastdate, fv6.fieldValue lastclose, fv7.fieldValue lastSvolume, fv8.fieldValue lastAvolume
+from [rows] r
+join [tables] t on r.tableId=t.tableId and t.tableName='dealdates'
+join fieldValues fv1 on r.rowId=fv1.rowId 
+join fields f1 on fv1.fieldId=f1.fieldId and f1.defaultOrder=1
+join fieldValues fv2 on r.rowId=fv2.rowId
+join fields f2 on fv2.fieldId=f2.fieldId and f2.defaultOrder=2
+join fieldValues fv3 on r.rowId=fv3.rowId
+join fields f3 on fv3.fieldId=f3.fieldId and f3.defaultOrder=3
+join fieldValues fv4 on r.rowId=fv4.rowId
+join fields f4 on fv4.fieldId=f4.fieldId and f4.defaultOrder=4
+join fieldValues fv5 on r.rowId=fv5.rowId
+join fields f5 on fv5.fieldId=f5.fieldId and f5.defaultOrder=5
+join fieldValues fv6 on r.rowId=fv6.rowId
+join fields f6 on fv6.fieldId=f6.fieldId and f6.defaultOrder=6
+join fieldValues fv7 on r.rowId=fv7.rowId
+join fields f7 on fv7.fieldId=f7.fieldId and f7.defaultOrder=7
+join fieldValues fv8 on r.rowId=fv8.rowId
+join fields f8 on fv8.fieldId=f8.fieldId and f8.defaultOrder=8
+
+/*
+select f.*, t.tableName
+from fields f
+join [tables] t on f.tableId=t.tableId
+where t.tableName='dealdates'
+order by f.tableId, f.defaultOrder
+
+select f.*, t.tableName
+from fields f
+join [tables] t on f.tableId=t.tableId
+where t.tableName='dealdates'
+order by f.tableId, f.defaultOrder
+
+select *
+from [tables]
+
+select f1.rowId, f1.fieldValue, f2.fieldValue, f3.fieldValue
+	, f4.fieldValue, f5.fieldValue, f6.fieldValue
+	, f7.fieldValue, f8.fieldValue, f9.fieldValue, f10.fieldValue
+from
+(
+select fv.rowId, fv.fieldValue
+from fieldValues fv 
+join fields f on fv.fieldId=f.fieldId and f.defaultOrder=1
+) f1
+join
+(
+select fv.rowId, fv.fieldValue
+from fieldValues fv 
+join fields f on fv.fieldId=f.fieldId and f.defaultOrder=2
+) f2 on f1.rowId = f2.rowId
+join
+(
+select fv.rowId, fv.fieldValue
+from fieldValues fv 
+join fields f on fv.fieldId=f.fieldId and f.defaultOrder=3
+) f3 on f1.rowId = f3.rowId
+join
+(
+select fv.rowId, fv.fieldValue
+from fieldValues fv 
+join fields f on fv.fieldId=f.fieldId and f.defaultOrder=4
+) f4 on f1.rowId = f4.rowId
+join
+(
+select fv.rowId, fv.fieldValue
+from fieldValues fv 
+join fields f on fv.fieldId=f.fieldId and f.defaultOrder=5
+) f5 on f1.rowId = f5.rowId
+join
+(
+select fv.rowId, fv.fieldValue
+from fieldValues fv 
+join fields f on fv.fieldId=f.fieldId and f.defaultOrder=6
+) f6 on f1.rowId = f6.rowId
+join
+(
+select fv.rowId, fv.fieldValue
+from fieldValues fv 
+join fields f on fv.fieldId=f.fieldId and f.defaultOrder=7
+) f7 on f1.rowId = f7.rowId
+join
+(
+select fv.rowId, fv.fieldValue
+from fieldValues fv 
+join fields f on fv.fieldId=f.fieldId and f.defaultOrder=8
+) f8 on f1.rowId = f8.rowId
+join
+(
+select fv.rowId, fv.fieldValue
+from fieldValues fv 
+join fields f on fv.fieldId=f.fieldId and f.defaultOrder=9
+) f9 on f1.rowId = f9.rowId
+join
+(
+select fv.rowId, fv.fieldValue
+from fieldValues fv 
+join fields f on fv.fieldId=f.fieldId and f.defaultOrder=10
+) f10 on f1.rowId = f10.rowId
+order by f1.fieldValue, f2.fieldValue
+
+select *
+from fields 
+where tableId='238F769B-8A57-402E-A6CB-D3026F19B524'
+order by defaultOrder
+
+select
+from [rows] r
+join fieldValues fv on r.rowId=fv.rowId 
+left join fields f1 on fv.fieldId=f1.fieldId and f1.fieldName='dealdate'
+
+select distinct fv.fieldValue
+from fieldValues fv
+join fields f on fv.fieldId=f.fieldId and f.fieldName='dealdate'
+
 --declare @fieldlst varchar(999)=''
 
 --SELECT 
@@ -16,7 +132,7 @@ use EPLlabDB
 --select fieldName
 --from fields f
 --order by f.defaultOrder
-/*
+
 DECLARE 
     @columns NVARCHAR(MAX) = '', 
     @sql     NVARCHAR(MAX) = '';
@@ -52,7 +168,7 @@ PIVOT(
 
 -- execute the dynamic SQL
 EXECUTE sp_executesql @sql;
-*/
+
 select f.fieldName, fv.fieldValue
 from fieldValues fv
 join
@@ -69,7 +185,6 @@ join fields f1 on fv1.fieldId=f1.fieldId and f1.fieldName='dealdatetime'
 join fields f on fv.fieldId=f.fieldId
 order by b.fieldValue,f.defaultOrder
 
-/*
 --select dealdate+dealtime dealdatetime, dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
 --from indices2.dbo.ohlc
 --where dealdate between '20180702' /*and '20180706'*/ and section=1

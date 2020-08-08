@@ -124,9 +124,18 @@ namespace EPLab.dbService
                 string sql = @"
 delete a
 from fieldValues a
-join allIdHistory b on a.fieldId = uid or a.rowId = uid
+join allIdHistory b on a.fieldId = uid 
 where b.tag = @tag";
                 con.Execute(sql, new
+                {
+                    tag = tag
+                });
+                string sql2 = @"
+delete a
+from fieldValues a
+join allIdHistory b on a.rowId = uid
+where b.tag = @tag";
+                con.Execute(sql2, new
                 {
                     tag = tag
                 });
