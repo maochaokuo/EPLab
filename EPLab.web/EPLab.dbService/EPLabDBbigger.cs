@@ -9,6 +9,9 @@ namespace EPLab.dbService
 {
     public class EPLabDBbigger
     {
+        /* undone (5) EPLabDBbigger, overlap with Dapper2DataTable
+         * query/insert./update delete for whole table, bigger view
+         */
         protected string connS = "";
         protected SqlConnection conn = null;
 
@@ -36,9 +39,6 @@ namespace EPLab.dbService
             }
             return conn;
         }
-        /* undone (2) !!...EPLabDBbigger, overlap with Dapper2DataTable
-         * query/insert./update delete for whole table, bigger view
-         */
 
         public bool isDataTableExisted(string tableName)
         {

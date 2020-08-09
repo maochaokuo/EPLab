@@ -390,6 +390,10 @@ namespace EPLab.entity.Models
                     .HasColumnName("displayOrder")
                     .HasComment("for display field, 0: hidden, >0 order by this field");
 
+                entity.Property(e => e.Editable)
+                    .HasColumnName("editable")
+                    .HasComment("1 editable, but displayOrder must > 0");
+
                 entity.Property(e => e.FieldId).HasColumnName("fieldId");
 
                 entity.Property(e => e.OrderByOrder)

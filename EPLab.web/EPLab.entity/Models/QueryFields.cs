@@ -10,5 +10,6 @@ namespace EPLab.entity.Models
         public Guid FieldId { get; set; }
         public int DisplayOrder { get; set; }
         public int OrderByOrder { get; set; }
+        public bool Editable { get; set; }
     }
 }

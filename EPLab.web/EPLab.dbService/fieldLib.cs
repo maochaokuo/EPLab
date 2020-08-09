@@ -48,7 +48,6 @@ namespace EPLab.dbService
 
         public override string Insert(Fields rec)
         {
-            //undone (1) !!... defaultOrder
             string ret = "";
             using (var con = GetConn())
             {
