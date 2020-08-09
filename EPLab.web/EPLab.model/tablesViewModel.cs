@@ -5,6 +5,7 @@ using System.Text;
 
 namespace EPLab.model
 {
+    [Serializable]
     public class tablesViewModel : ViewModelBase
     { 
         //public string TableName { get; set; }

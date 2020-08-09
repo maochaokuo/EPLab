@@ -22,3 +22,6 @@
 *.jfm
 /EPLab.web/EPLab.model/obj
 /EPLab.web/EPLab.model/bin
+/EPLab.web/EPLab.web.fwk/bin
+/EPLab.web/EPLab.web.fwk/obj
+/EPLab.web/packages
