@@ -18,9 +18,13 @@ namespace EPLab.entity.Models
         public virtual DbSet<AllIdHistory> AllIdHistory { get; set; }
         public virtual DbSet<DomainCases> DomainCases { get; set; }
         public virtual DbSet<Domains> Domains { get; set; }
+        public virtual DbSet<Expressions> Expressions { get; set; }
         public virtual DbSet<FieldText> FieldText { get; set; }
         public virtual DbSet<FieldValues> FieldValues { get; set; }
         public virtual DbSet<Fields> Fields { get; set; }
+        public virtual DbSet<Operators> Operators { get; set; }
+        public virtual DbSet<Queries> Queries { get; set; }
+        public virtual DbSet<QueryFields> QueryFields { get; set; }
         public virtual DbSet<Rows> Rows { get; set; }
         public virtual DbSet<Tables> Tables { get; set; }
 
@@ -137,6 +141,53 @@ namespace EPLab.entity.Models
                 entity.Property(e => e.IsDomainCaseId).HasColumnName("isDomainCaseId");
             });
 
+            modelBuilder.Entity<Expressions>(entity =>
+            {
+                entity.HasKey(e => e.ExpressionId);
+
+                entity.ToTable("expressions");
+
+                entity.HasIndex(e => e.OperatorId)
+                    .HasName("IX_expressions_2");
+
+                entity.HasIndex(e => e.QueryId)
+                    .HasName("IX_expressions_1");
+
+                entity.HasIndex(e => e.Source)
+                    .HasName("IX_expressions");
+
+                entity.Property(e => e.ExpressionId)
+                    .HasColumnName("expressionId")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.ExpressionDesc)
+                    .HasColumnName("expressionDesc")
+                    .HasMaxLength(999);
+
+                entity.Property(e => e.OperatorId).HasColumnName("operatorId");
+
+                entity.Property(e => e.ParaField1id).HasColumnName("paraField1id");
+
+                entity.Property(e => e.ParaField2id).HasColumnName("paraField2id");
+
+                entity.Property(e => e.ParaField3id).HasColumnName("paraField3id");
+
+                entity.Property(e => e.ParaField4id).HasColumnName("paraField4id");
+
+                entity.Property(e => e.ParaField5id).HasColumnName("paraField5id");
+
+                entity.Property(e => e.QueryId).HasColumnName("queryId");
+
+                entity.Property(e => e.ResultFieldId).HasColumnName("resultFieldId");
+
+                entity.Property(e => e.Source)
+                    .IsRequired()
+                    .HasColumnName("source")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasComment("currently, sql for sql server, or c#");
+            });
+
             modelBuilder.Entity<FieldText>(entity =>
             {
                 entity.ToTable("fieldText");
@@ -247,6 +298,105 @@ namespace EPLab.entity.Models
                     .HasComment("non null if it is one of the primary keys");
 
                 entity.Property(e => e.TableId).HasColumnName("tableId");
+            });
+
+            modelBuilder.Entity<Operators>(entity =>
+            {
+                entity.HasKey(e => e.OperatorId);
+
+                entity.ToTable("operators");
+
+                entity.HasIndex(e => e.QueryId)
+                    .HasName("IX_operators_1");
+
+                entity.HasIndex(e => e.Source)
+                    .HasName("IX_operators");
+
+                entity.Property(e => e.OperatorId)
+                    .HasColumnName("operatorId")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.IsPrefix)
+                    .HasColumnName("isPrefix")
+                    .HasComment("in real code, operator lead (1), or (0) betweeen two parameters");
+
+                entity.Property(e => e.OperatorDesc)
+                    .HasColumnName("operatorDesc")
+                    .HasMaxLength(999);
+
+                entity.Property(e => e.ParaNum)
+                    .HasColumnName("paraNum")
+                    .HasComment("number of parameters, must > 0");
+
+                entity.Property(e => e.QueryId).HasColumnName("queryId");
+
+                entity.Property(e => e.Source)
+                    .IsRequired()
+                    .HasColumnName("source")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasComment("currently, sql for sql server, or c#");
+
+                entity.Property(e => e.StringInSourceCode)
+                    .IsRequired()
+                    .HasColumnName("stringInSourceCode")
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Queries>(entity =>
+            {
+                entity.HasKey(e => e.QueryId);
+
+                entity.ToTable("queries");
+
+                entity.HasIndex(e => e.QueryName)
+                    .HasName("IX_queries")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.WhereExpressionId)
+                    .HasName("IX_queries_1");
+
+                entity.Property(e => e.QueryId)
+                    .HasColumnName("queryId")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.QueryDesc)
+                    .HasColumnName("queryDesc")
+                    .HasMaxLength(999);
+
+                entity.Property(e => e.QueryName)
+                    .IsRequired()
+                    .HasColumnName("queryName")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.TableAlias)
+                    .HasColumnName("tableAlias")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.TableId).HasColumnName("tableId");
+
+                entity.Property(e => e.WhereExpressionId).HasColumnName("whereExpressionId");
+            });
+
+            modelBuilder.Entity<QueryFields>(entity =>
+            {
+                entity.HasKey(e => e.QueryFieldId);
+
+                entity.ToTable("queryFields");
+
+                entity.Property(e => e.QueryFieldId).HasColumnName("queryFieldId");
+
+                entity.Property(e => e.DisplayOrder)
+                    .HasColumnName("displayOrder")
+                    .HasComment("for display field, 0: hidden, >0 order by this field");
+
+                entity.Property(e => e.FieldId).HasColumnName("fieldId");
+
+                entity.Property(e => e.OrderByOrder)
+                    .HasColumnName("orderByOrder")
+                    .HasComment("for order by field, 0: hidden, >0 order by this field");
+
+                entity.Property(e => e.QueryId).HasColumnName("queryId");
             });
 
             modelBuilder.Entity<Rows>(entity =>

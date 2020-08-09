@@ -71,5 +71,9 @@
     <Build Include="FullTextIndexes.sql" />
     <Build Include="dbo\Tables\domains.sql" />
     <Build Include="dbo\Tables\domainCases.sql" />
+    <Build Include="dbo\Tables\queryFields.sql" />
+    <Build Include="dbo\Tables\queries.sql" />
+    <Build Include="dbo\Tables\operators.sql" />
+    <Build Include="dbo\Tables\expressions.sql" />
   </ItemGroup>
 </Project>

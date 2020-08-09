@@ -1,5 +1,6 @@
 use EPLlabDB
 
+/*
 select r.rowId, fv1.fieldValue dealdate, fv2.fieldValue [close], fv3.fieldValue sVolume, fv4.fieldValue aVolume
 	, fv5.fieldValue lastdate, fv6.fieldValue lastclose, fv7.fieldValue lastSvolume, fv8.fieldValue lastAvolume
 from [rows] r
@@ -21,7 +22,6 @@ join fields f7 on fv7.fieldId=f7.fieldId and f7.defaultOrder=7
 join fieldValues fv8 on r.rowId=fv8.rowId
 join fields f8 on fv8.fieldId=f8.fieldId and f8.defaultOrder=8
 
-/*
 select f.*, t.tableName
 from fields f
 join [tables] t on f.tableId=t.tableId

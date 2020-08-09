@@ -16,6 +16,10 @@ Install-Package Microsoft.EntityFrameworkCore.Tools
 ```
 
 ## change log
+### 2020/8/9
+1. query
+2. expression and operator
+
 ### 2020/8/6
 1. import done without bug
 2. building query, lost field order (initial
