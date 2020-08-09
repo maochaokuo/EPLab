@@ -26,6 +26,15 @@ namespace EPLab.dbService
                 return qry;
             }
         }
+        public List<T> Query<T>(string sql, DynamicParameters paras)
+        {
+            using (var con = GetConn())
+            {
+                //string sql = $"select * from tables {whereCond}";
+                var qry = con.Query<T>(sql, paras).ToList();
+                return qry;
+            }
+        }
         public override Tables GetOne(Guid gid)
         {
             using (var con = GetConn())
@@ -51,45 +60,71 @@ namespace EPLab.dbService
         public override string Insert(Tables rec)
         {
             string ret = "";
-            using(var con = GetConn())
+            try
             {
-                string sql = $"insert into tables " +
-                    $"(tableId,tableName,tableDesc) " +
-                    $"values (@tableId,@tableName,@tableDesc)";
-                con.Execute(sql, 
-                    new {
-                        tableId = rec.TableId,
-                        tableName = rec.TableName, 
-                        tableDesc = rec.TableDesc 
-                    });
+                using (var con = GetConn())
+                {
+                    string sql = $"insert into tables " +
+                        $"(tableId,tableName,tableDesc) " +
+                        $"values (@tableId,@tableName,@tableDesc)";
+                    con.Execute(sql,
+                        new
+                        {
+                            tableId = rec.TableId,
+                            tableName = rec.TableName,
+                            tableDesc = rec.TableDesc
+                        });
+                }
+            }
+            catch (Exception ex)
+            {
+                ret = ex.Message;
             }
             return ret;
         }
         public override string Update(Tables rec)
         {
             string ret = "";
-            using (var con=GetConn())
+            try
             {
-                string sql = $"update tables " +
-                    $"set tableDesc=@tableDesc " +
-                    $"where tableId=@tableId";
-                con.Execute(sql, 
-                    new { tableId = rec.TableId
-                    ,tableDesc = rec.TableDesc });
+                using (var con = GetConn())
+                {
+                    string sql = $"update tables " +
+                        $"set tableDesc=@tableDesc " +
+                        $"where tableId=@tableId";
+                    con.Execute(sql,
+                        new
+                        {
+                            tableId = rec.TableId
+                        ,
+                            tableDesc = rec.TableDesc
+                        });
+                }
+            }
+            catch(Exception ex)
+            {
+                ret = ex.Message;
             }
             return ret;
         }
         public override string Delete(Tables rec)
         {
             string ret = "";
-            using (var con = GetConn())
+            try
             {
-                string sql = $"delete from tables " +
-                    $"where tableId=@tableId";
-                con.Execute(sql, new
+                using (var con = GetConn())
                 {
-                    tableId = rec.TableId
-                });
+                    string sql = $"delete from tables " +
+                        $"where tableId=@tableId";
+                    con.Execute(sql, new
+                    {
+                        tableId = rec.TableId
+                    });
+                }
+            }
+            catch(Exception ex)
+            {
+                ret = ex.Message;
             }
             return ret;
         }
@@ -97,17 +132,24 @@ namespace EPLab.dbService
         public override string DeleteByTag(string tag)
         {
             string ret = "";
-            using (var con = GetConn())
+            try
             {
-                string sql = @"
+                using (var con = GetConn())
+                {
+                    string sql = @"
 delete a
 from tables a
 join allIdHistory b on a.tableId = uid
 where b.tag = @tag";
-                con.Execute(sql, new
-                {
-                    tag = tag
-                });
+                    con.Execute(sql, new
+                    {
+                        tag = tag
+                    });
+                }
+            }
+            catch(Exception ex)
+            {
+                ret = ex.Message;
             }
             return ret;
         }

@@ -1,5 +1,8 @@
 use EPLlabDB
 
+select *
+from tables
+
 /*
 select r.rowId, fv1.fieldValue dealdate, fv2.fieldValue [close], fv3.fieldValue sVolume, fv4.fieldValue aVolume
 	, fv5.fieldValue lastdate, fv6.fieldValue lastclose, fv7.fieldValue lastSvolume, fv8.fieldValue lastAvolume

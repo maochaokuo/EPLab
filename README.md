@@ -19,10 +19,11 @@ Install-Package Microsoft.EntityFrameworkCore.Tools
 ### 2020/8/9
 1. query
 2. expression and operator
+3. table editing web initial version 
 
 ### 2020/8/6
 1. import done without bug
-2. building query, lost field order (initial
+2. building query, lost field order (initial)
 
 ### 2020/8/5
 1. finally import DataTable to generic data first version done

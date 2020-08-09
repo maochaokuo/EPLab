@@ -27,7 +27,7 @@ select
 	   and kcu.TABLE_NAME = tc.TABLE_NAME
 	 where tc.CONSTRAINT_TYPE = 'PRIMARY KEY') p 
 		on p.TABLE_NAME=st.name and p.COLUMN_NAME=sc.name
-    --where 
+    where 
 		--st.name in ('fieldValues')
 		--st.name in ('allIdHistory')
 		--st.name in ('projectVersion')
@@ -36,5 +36,5 @@ select
 		--st.name in ('stateMachineEvent', 'globalEvent')
 		--st.name in ('stateMachine','stateMachineState','stateMachineEvent','stateMachineEvent2State')
 		--st.name in ('stateMachineEvent')--,'globalEvent','stateMachine')
-		--st.name in ('tables')
+		st.name in ('tables')
 	order by st.name, sc.column_id

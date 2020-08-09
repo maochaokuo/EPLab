@@ -76,12 +76,14 @@ namespace EPLab.dbService
             ret = allIdHistoryL.DeleteByTag(tag);
             return ret;
         }
-        protected Guid getNewId(string tableName, string tag="")
+        public Guid getNewId(string tableName, string tag="")
         {
             AllIdHistory aih = new AllIdHistory();
             aih.Uid = Guid.NewGuid();
             aih.FromTable = tableName;
             aih.CreateBy = "Import";
+            if (tag == "")
+                tag = tableName;
             aih.Tag = tag;
             allIdHistoryL.Insert(aih);
             // update allIdHistory

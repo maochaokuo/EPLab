@@ -28,6 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EPLab.dbService\EPLab.dbService.csproj" />
     <ProjectReference Include="..\EPLab.entity\EPLab.entity.csproj" />
+    <ProjectReference Include="..\EPLab.model\EPLab.model.csproj" />
   </ItemGroup>
 
 </Project>
