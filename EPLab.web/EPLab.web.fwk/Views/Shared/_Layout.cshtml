@@ -25,6 +25,18 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
             </div>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Data
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li>@Html.ActionLink("Table", "Index", "Table")</li>
+                    <li>@Html.ActionLink("Field", "Index", "Field")</li>
+                    <li>@Html.ActionLink("Row", "Index", "Row")</li>
+                    <li>@Html.ActionLink("RowValue", "Index", "RowValue")</li>
+                </div>
+            </li>
         </div>
     </div>
     <div class="container body-content">
