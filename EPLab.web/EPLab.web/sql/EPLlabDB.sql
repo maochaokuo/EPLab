@@ -3,6 +3,15 @@ use EPLlabDB
 select *
 from tables
 
+select *
+from fields 
+order by tableId, defaultOrder
+
+select r.tableId, count(r.rowId) counts
+from [rows] r
+join [tables] t on r.tableId=t.tableId
+group by r.tableId
+
 /*
 select r.rowId, fv1.fieldValue dealdate, fv2.fieldValue [close], fv3.fieldValue sVolume, fv4.fieldValue aVolume
 	, fv5.fieldValue lastdate, fv6.fieldValue lastclose, fv7.fieldValue lastSvolume, fv8.fieldValue lastAvolume
