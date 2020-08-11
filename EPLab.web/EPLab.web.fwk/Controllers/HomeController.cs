@@ -17,7 +17,7 @@ namespace EPLab.web.fwk.Controllers
         public HomeController()
         {
             connIndices = ConfigurationManager.ConnectionStrings["indices2"].ConnectionString;
-            connEPLabDB = ConfigurationManager.ConnectionStrings["EPLlabDB"].ConnectionString;
+            connEPLabDB = ConfigurationManager.ConnectionStrings["EPlabContext"].ConnectionString;
         }
         private string import2tables()
         {

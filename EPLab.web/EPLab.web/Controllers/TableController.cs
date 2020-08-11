@@ -17,7 +17,7 @@ namespace EPLab.web.Controllers
     public class TableController : Controller
     //public class TableController : ControllerBase
     {
-        //todo(1)!!!!!...... 可惡！再移回framework做
+        //move back to framework
         protected readonly ILogger<HomeController> _logger;
         protected IConfiguration _configuration { get; set; }
         protected string connEPLabDB = "";

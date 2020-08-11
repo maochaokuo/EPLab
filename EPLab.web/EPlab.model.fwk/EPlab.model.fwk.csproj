@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tableDisp.cs" />
-    <Compile Include="tableEditViewModel.cs" />
     <Compile Include="tablesViewModel.cs" />
     <Compile Include="ViewModelBase.cs" />
   </ItemGroup>

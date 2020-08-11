@@ -10,24 +10,22 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-
 namespace EPLab.web.Controllers
 {
-    public class TableController : Controller
+    public class TableController : ControllerBase
     //public class TableController : ControllerBase
     {
-        //todo(1)!!!!!...... 可惡！再移回framework做
-        protected string connEPLabDB = "";
+        //move back to framework
 
-        protected const string PageStatus = "pageStatus";
-        protected const string MultiSelect = "multiSelect";
-        protected readonly string modelName;
-        protected readonly string modelMessage;
-        public TableController()
+        //protected const string PageStatus = "pageStatus";
+        //protected const string MultiSelect = "multiSelect";
+        //protected readonly string modelName;
+        //protected readonly string modelMessage;
+        public TableController() : base("tablesViewModel"
+            , "table")
         {
-            connEPLabDB = ConfigurationManager.ConnectionStrings["EPLlabDB"].ConnectionString;
-            this.modelName = "tablesViewModel"; 
-            this.modelMessage = "table";
+            //this.modelName = ; 
+            //this.modelMessage = "table";
         }
         public ActionResult Index()
         {
@@ -40,9 +38,10 @@ namespace EPLab.web.Controllers
             ViewBag.pageStatus = TempData[PageStatus];
             if (ViewBag.pageStatus == null)
                 ViewBag.pageStatus = (int)PAGE_STATUS.QUERY;
+            ViewBag.tableList = ddO.tableList();
             TempData[modelName] = viewModel;
             TempData[PageStatus] = ViewBag.pageStatus;
-            return View();
+            return View(viewModel);
         }
         protected string query(ref tablesViewModel viewModel)
         {
@@ -50,8 +49,8 @@ namespace EPLab.web.Controllers
             tableDisp tmpModel = viewModel.editModel;
             tableLib tlib = new tableLib(connEPLabDB);
             var paras = new Dapper.DynamicParameters();
-            paras.Add("TableName", tmpModel.tableName, DbType.String);
-            paras.Add("TableDesc", tmpModel.tableDesc, DbType.String);
+            paras.Add("TableName", tmpModel.tableName+"", DbType.String);
+            paras.Add("TableDesc", tmpModel.tableDesc+"", DbType.String);
             string sql = @"
 select * 
 from tables 
