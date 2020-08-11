@@ -163,7 +163,7 @@ where (@TableName='' or tablename=@TableName)
                         viewModel.errorMsg = dapperLib.Insert(model);
                         if (string.IsNullOrWhiteSpace(viewModel.errorMsg))
                         {
-                            viewModel.successMsg = $"new {modelMessage} saved";
+                            viewModel.successMsg = $"new {modelMessage} added";
                             ViewBag.pageStatus = (int)PAGE_STATUS.ADDSAVED;
                         }
                     }
@@ -177,7 +177,7 @@ where (@TableName='' or tablename=@TableName)
                             viewModel.errorMsg = dapperLib.Update(model);
                             if (string.IsNullOrWhiteSpace(viewModel.errorMsg))
                             {
-                                viewModel.successMsg = $"{modelMessage} not found";
+                                viewModel.successMsg = $"{modelMessage} updated";
                                 ViewBag.pageStatus = (int)PAGE_STATUS.SAVED;
                             }
                         }
