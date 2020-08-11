@@ -31,34 +31,34 @@
                 <div class="col-12">&nbsp; </div>
             </div>
             <div class="row">
-                @*<div class="col-2">
-                    tableId
-                </div>
-                <div class="col-4">
-                    @Html.DropDownListFor(m => m.editModel.tableId, (SelectList)ViewBag.tableList, "", new { @class = "form-control" })
-                </div>*@
                 <div class="col-2">
                     tableName
                 </div>
                 <div class="col-4">
                     @Html.TextBoxFor(m => m.editModel.tableName, new { @class = "form-control" })
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12">&nbsp; </div>
-            </div>
-            <div class="row">
                 <div class="col-2">
                     tableDesc
                 </div>
                 <div class="col-4">
                     @Html.TextBoxFor(m => m.editModel.tableDesc, new { @class = "form-control" })
                 </div>
-                <div class="col-2">                    
+            </div>
+            <div class="row">
+                <div class="col-12">&nbsp; </div>
+            </div>
+            @*<div class="row">
+                <div class="col-2">
+                    tableId
+                </div>
+                <div class="col-4">
+                    @Html.DropDownListFor(m => m.editModel.tableId, (SelectList)ViewBag.tableList, null, new { @class = "form-control" })
+                </div>
+                <div class="col-2">
                 </div>
                 <div class="col-4">
                 </div>
-            </div>
+            </div>*@
             <div class="row">
                 <div class="col-12">&nbsp; </div>
             </div>
