@@ -59,7 +59,7 @@ order by dealdate
         }
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "Table");
+            //return RedirectToAction("Index", "Table");
             return View();
         }
 
