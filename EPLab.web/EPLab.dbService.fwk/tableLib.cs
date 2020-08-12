@@ -44,6 +44,17 @@ namespace EPLab.dbService
                 return qry;
             }
         }
+        public string TableNameById(Guid gid)
+        {
+            using (var con = GetConn())
+            {
+                string sql = $"select * from tables " +
+                    $"where tableId=@tableId";
+                var qry = conn.Query<tables>(sql,
+                    new { tableId = gid }).SingleOrDefault();
+                return qry.tableName;
+            }
+        }
         public tables TableByName(string tableName)
         {
             using (var con = GetConn())

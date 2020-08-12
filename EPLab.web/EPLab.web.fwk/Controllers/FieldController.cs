@@ -18,6 +18,8 @@ namespace EPLab.web.Controllers
 
         public ActionResult Index()
         {
+            if (Session["tableName"] == null)
+                return RedirectToAction("Index", "Table");
             fieldsViewModel viewModel;
             var queryModel = TempData[modelName];
             if (queryModel == null)
@@ -27,7 +29,7 @@ namespace EPLab.web.Controllers
             ViewBag.pageStatus = TempData[PageStatus];
             if (ViewBag.pageStatus == null)
                 ViewBag.pageStatus = (int)PAGE_STATUS.QUERY;
-            ViewBag.tableList = ddO.tableList();
+            //todo .... ViewBag.tableList = ddO.tableList();
             TempData[modelName] = viewModel;
             TempData[PageStatus] = ViewBag.pageStatus;
             return View(viewModel);

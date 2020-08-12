@@ -80,7 +80,8 @@ where (@TableName='' or tablename=@TableName)
                 ViewBag.pageStatus = (int)PAGE_STATUS.QUERY;
             tableLib dapperLib = new tableLib(connEPLabDB);
             EPLabDBbigger bigLib = new EPLabDBbigger(connEPLabDB);
-            //ViewBag.stateMachineName =HttpContext.Session.GetString("stateMachineName") + "";
+            string tableId;
+            string tableName;
             tables model;
             switch (viewModel.cmd)
             {
@@ -117,6 +118,32 @@ where (@TableName='' or tablename=@TableName)
                         TempData[PageStatus] = (int)PAGE_STATUS.EDIT;
                         TempData[modelName] = tmpVM;
                         ar = RedirectToAction("Index");
+                        return ar;
+                    }
+                    viewModel.errorMsg = $"error reading this {modelMessage}";
+                    ar = View(viewModel);
+                    break;
+                case "fields":
+                    tableId = viewModel.singleSelect;
+                    tableName = dapperLib.TableNameById(new Guid( tableId));
+                    if (!string.IsNullOrWhiteSpace(tableName))
+                    {
+                        Session["tableId"] = tableId;
+                        Session["tableName"] = tableName;
+                        ar = RedirectToAction("Index", "Field");
+                        return ar;
+                    }
+                    viewModel.errorMsg = $"error reading this {modelMessage}";
+                    ar = View(viewModel);
+                    break;
+                case "rows":
+                    tableId = viewModel.singleSelect;
+                    tableName = dapperLib.TableNameById(new Guid(tableId));
+                    if (!string.IsNullOrWhiteSpace(tableName))
+                    {
+                        Session["tableId"] = tableId;
+                        Session["tableName"] = tableName;
+                        ar = RedirectToAction("Index", "Row");
                         return ar;
                     }
                     viewModel.errorMsg = $"error reading this {modelMessage}";

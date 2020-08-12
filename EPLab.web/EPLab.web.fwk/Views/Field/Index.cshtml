@@ -1,4 +1,6 @@
-﻿
+﻿@using EPlab.model.fwk
+@model EPlab.model.fwk.fieldsViewModel
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,3 +8,4 @@
 
 <h2>Fields</h2>
 
+<h6>table @Session["tableName"]</h6>

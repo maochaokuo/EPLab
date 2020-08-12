@@ -69,6 +69,10 @@
       <Project>{18b831ab-0873-4c11-a0be-b6ee871d6b60}</Project>
       <Name>EPlab.entity.fwk</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EPlab.model.fwk\EPlab.model.fwk.csproj">
+      <Project>{a5c11bed-f57a-40e1-b4a0-9236ba0f5664}</Project>
+      <Name>EPlab.model.fwk</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
