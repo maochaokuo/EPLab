@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EPLab.model
+namespace EPlab.model.fwk
 {
     public enum PAGE_STATUS
     {

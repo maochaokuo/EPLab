@@ -1,13 +1,10 @@
 ﻿using EPlab.entity.fwk;
+using EPlab.model.fwk;
 using EPLab.dbService;
-using EPLab.model;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EPLab.web.Controllers

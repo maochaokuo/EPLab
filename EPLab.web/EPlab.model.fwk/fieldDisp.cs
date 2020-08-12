@@ -6,8 +6,8 @@ using System.Text;
 
 namespace EPlab.model.fwk
 {
-    [Serializable]
-    public class tableDisp : tables
+    public class fieldDisp : fields
     {
+        public string tableName { get; set; }
     }
 }
