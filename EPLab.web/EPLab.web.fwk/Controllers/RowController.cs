@@ -12,7 +12,7 @@ namespace EPLab.web.Controllers
         {
             if (Session["tableName"] == null)
                 return RedirectToAction("Index", "Table");
-            // todo !!... (2) row list of a table, including all fields, just like datatable
+            // todo (5) row list of a table, including all fields, just like datatable
             return View();
         }
     }

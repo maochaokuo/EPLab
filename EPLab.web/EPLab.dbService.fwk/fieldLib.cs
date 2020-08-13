@@ -21,12 +21,22 @@ namespace EPLab.dbService
                 return qry;
             }
         }
+        public List<T> Query<T>(string sql
+            , DynamicParameters paras)
+        {
+            using (var con = GetConn())
+            {
+                var qry = con.Query<T>(sql, paras).ToList();
+                return qry;
+            }
+        }
         public List<fields> FieldsByTableId(Guid tableId)
         {
             using (var con = GetConn())
             {
                 string sql = $"select * from fields " +
-                    $"where tableId=@TableId";
+                    $"where tableId=@TableId " +
+                    $"order by tableId, defaultOrder";
                 var qry = con.Query<fields>(sql,
                     new { TableId = tableId }).ToList();
                 return qry;

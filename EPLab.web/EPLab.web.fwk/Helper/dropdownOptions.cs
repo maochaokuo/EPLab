@@ -44,5 +44,22 @@ namespace EPLab.web.fwk.Helper
             }
             return new SelectList(_table, "Value", "Text", null);
         }
+        public SelectList fieldList(string tableId)
+        {
+            List<SelectListItem> _table = new List<SelectListItem>();
+            fieldLib flib = new fieldLib(connS);
+            List<fields> fieldList = flib.FieldsByTableId(
+                new Guid(tableId));
+            if (fieldList != null)
+            {
+                foreach (fields rec in fieldList)
+                    _table.Add(new SelectListItem()
+                    {
+                        Text = rec.fieldName,
+                        Value = rec.fieldId.ToString()
+                    });
+            }
+            return new SelectList(_table, "Value", "Text", null);
+        }
     }
 }

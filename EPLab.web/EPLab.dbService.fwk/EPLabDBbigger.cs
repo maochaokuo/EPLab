@@ -8,7 +8,7 @@ namespace EPLab.dbService
 {
     public class EPLabDBbigger
     {
-        /* undone (5) EPLabDBbigger, overlap with Dapper2DataTable
+        /* undone (3) EPLabDBbigger, overlap with Dapper2DataTable
          * query/insert./update delete for whole table, bigger view
          */
         protected string connS = "";

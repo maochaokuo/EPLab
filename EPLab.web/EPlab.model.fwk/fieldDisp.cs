@@ -8,6 +8,6 @@ namespace EPlab.model.fwk
 {
     public class fieldDisp : fields
     {
-        public string tableName { get; set; }
+        public string tableIdQ { get; set; }
     }
 }

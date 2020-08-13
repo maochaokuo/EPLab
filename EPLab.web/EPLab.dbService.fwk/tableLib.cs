@@ -24,11 +24,11 @@ namespace EPLab.dbService
                 return qry;
             }
         }
-        public List<T> Query<T>(string sql, DynamicParameters paras)
+        public List<T> Query<T>(string sql
+            , DynamicParameters paras)
         {
             using (var con = GetConn())
             {
-                //string sql = $"select * from tables {whereCond}";
                 var qry = con.Query<T>(sql, paras).ToList();
                 return qry;
             }
