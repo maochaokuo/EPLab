@@ -30,6 +30,7 @@ namespace EPLab.web.fwk.Helper
         //}
         public SelectList tableList()
         {
+            SelectList ret;
             List<SelectListItem> _table = new List<SelectListItem>();
             tableLib tlib = new tableLib(connS);
             List<tables> tableList = tlib.GetAll();//.getAll().ToList();
@@ -42,10 +43,12 @@ namespace EPLab.web.fwk.Helper
                         Value = rec.tableId.ToString()
                     });
             }
-            return new SelectList(_table, "Value", "Text", null);
+            ret= new SelectList(_table, "Value", "Text", null);
+            return ret;
         }
         public SelectList fieldList(string tableId)
         {
+            SelectList ret;
             List<SelectListItem> _table = new List<SelectListItem>();
             fieldLib flib = new fieldLib(connS);
             List<fields> fieldList = flib.FieldsByTableId(
@@ -59,7 +62,26 @@ namespace EPLab.web.fwk.Helper
                         Value = rec.fieldId.ToString()
                     });
             }
-            return new SelectList(_table, "Value", "Text", null);
+            ret= new SelectList(_table, "Value", "Text", null);
+            return ret;
+        }
+        public SelectList domainList()
+        {
+            SelectList ret;
+            List<SelectListItem> _domain = new List<SelectListItem>();
+            domainLib dlib = new domainLib(connS);
+            List<domains> domainList = dlib.GetAll();
+            if (domainList != null)
+            {
+                foreach (domains rec in domainList)
+                    _domain.Add(new SelectListItem()
+                    {
+                        Text = rec.domainName,
+                        Value = rec.domainId.ToString()
+                    });
+            }
+            ret= new SelectList(_domain, "Value", "Text", null);
+            return ret;
         }
     }
 }

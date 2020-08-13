@@ -42,6 +42,18 @@ namespace EPLab.dbService
                 return qry;
             }
         }
+        public List<fields> ForeighFieldsExcludeTable(Guid tableId)
+        {
+            using (var con = GetConn())
+            {
+                string sql = $"select * from fields " +
+                    $"where tableId<>@TableId and isnull(primaryOrder,0) > 0 " +
+                    $"order by tableId, defaultOrder";
+                var qry = con.Query<fields>(sql,
+                    new { TableId = tableId }).ToList();
+                return qry;
+            }
+        }
         public override fields GetOne(Guid gid)
         {
             using (var con = GetConn())
@@ -89,7 +101,7 @@ namespace EPLab.dbService
                     $"set TableId=@TableId, FieldName=@FieldName, " +
                     $"FieldDesc=@FieldDesc, PrimaryOrder=@PrimaryOrder," +
                     $"ForeignFieldId=@ForeignFieldId, " +
-                    $"DefaultValue=@DefaultValue" +
+                    $"DefaultValue=@DefaultValue " +
                     $"where FieldId=@FieldId";
                 con.Execute(sql,
                     new
