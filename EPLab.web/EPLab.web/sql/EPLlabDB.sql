@@ -1,11 +1,10 @@
 use EPLlabDB
 
 select *
-from tables
+from queries
 
 select *
-from fields 
-order by tableId, defaultOrder
+from queryFields
 
 select r.tableId, count(r.rowId) counts
 from [rows] r
@@ -13,6 +12,13 @@ join [tables] t on r.tableId=t.tableId
 group by r.tableId
 
 /*
+select *
+from fields 
+order by tableId, defaultOrder
+
+select *
+from tables
+
 select r.rowId, fv1.fieldValue dealdate, fv2.fieldValue [close], fv3.fieldValue sVolume, fv4.fieldValue aVolume
 	, fv5.fieldValue lastdate, fv6.fieldValue lastclose, fv7.fieldValue lastSvolume, fv8.fieldValue lastAvolume
 from [rows] r

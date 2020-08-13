@@ -16,6 +16,10 @@ Install-Package Microsoft.EntityFrameworkCore.Tools
 ```
 
 ## change log
+### 2020/8/14
+1. field crud done
+2. proceed to edit queries
+
 ### 2020/8/9
 1. query
 2. expression and operator
