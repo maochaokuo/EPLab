@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[expressions] (
     [expressionId]   UNIQUEIDENTIFIER CONSTRAINT [DF_expressions_expressionId] DEFAULT (newid()) NOT NULL,
-    [source]         VARCHAR (50)     NOT NULL,
+    [source]         VARCHAR (50)     CONSTRAINT [DF_expressions_source] DEFAULT ('sql server') NOT NULL,
     [expressionDesc] NVARCHAR (999)   NULL,
     [queryId]        UNIQUEIDENTIFIER NULL,
     [operatorId]     UNIQUEIDENTIFIER NOT NULL,
@@ -9,9 +9,10 @@
     [paraField3id]   UNIQUEIDENTIFIER NULL,
     [paraField4id]   UNIQUEIDENTIFIER NULL,
     [paraField5id]   UNIQUEIDENTIFIER NULL,
-    [resultFieldId]  UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_expressions] PRIMARY KEY CLUSTERED ([expressionId] ASC)
 );
+
+
 
 
 GO

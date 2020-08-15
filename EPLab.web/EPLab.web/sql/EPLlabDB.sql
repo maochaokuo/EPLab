@@ -6,6 +6,15 @@ from queries
 select *
 from queryFields
 
+select *
+from operators
+
+select * 
+from expressions
+
+select *
+from fields
+
 select r.tableId, count(r.rowId) counts
 from [rows] r
 join [tables] t on r.tableId=t.tableId

@@ -31,7 +31,5 @@ namespace EPlab.entity.fwk
         public Guid? paraField4id { get; set; }
 
         public Guid? paraField5id { get; set; }
-
-        public Guid resultFieldId { get; set; }
     }
 }

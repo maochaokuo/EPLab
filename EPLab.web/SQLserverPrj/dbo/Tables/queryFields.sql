@@ -1,12 +1,16 @@
-﻿CREATE TABLE [dbo].[queryFields] (
-    [queryFieldId] INT              IDENTITY (1, 1) NOT NULL,
+CREATE TABLE [dbo].[queryFields] (
+    [queryFieldId] UNIQUEIDENTIFIER NOT NULL,
     [queryId]      UNIQUEIDENTIFIER NOT NULL,
-    [fieldId]      UNIQUEIDENTIFIER NOT NULL,
+    [fieldId]      UNIQUEIDENTIFIER NULL,
     [displayOrder] INT              CONSTRAINT [DF_queryFields_displayOrder] DEFAULT ((0)) NOT NULL,
     [orderByOrder] INT              CONSTRAINT [DF_queryFields_orderByOrder] DEFAULT ((0)) NOT NULL,
-    [editable]     BIT              CONSTRAINT [DF_queryFields_editable] DEFAULT ((0)) NOT NULL,
-    CONSTRAINT [PK_queryFields] PRIMARY KEY CLUSTERED ([queryFieldId] ASC)
+    [pre1fieldId]  UNIQUEIDENTIFIER NULL,
+    [pre2fieldId]  UNIQUEIDENTIFIER NULL,
+    [expressionId] UNIQUEIDENTIFIER NULL,
+    CONSTRAINT [PK_queryFields_1] PRIMARY KEY CLUSTERED ([queryFieldId] ASC)
 );
+
+
 
 
 
@@ -20,5 +24,17 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'for display
 
 
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'1 editable, but displayOrder must > 0', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'queryFields', @level2type = N'COLUMN', @level2name = N'editable';
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'it will be a new calculated field if it is not from original data (when fieldId,pre1fieldId,pre2fieldId all = null)', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'queryFields', @level2type = N'COLUMN', @level2name = N'queryFieldId';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'in query result, field of fieldId in previous row of the previous row', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'queryFields', @level2type = N'COLUMN', @level2name = N'pre2fieldId';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'in query result, field of fieldId in previous row', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'queryFields', @level2type = N'COLUMN', @level2name = N'pre1fieldId';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'from expression of expressionId, if this is not from original field', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'queryFields', @level2type = N'COLUMN', @level2name = N'expressionId';
 

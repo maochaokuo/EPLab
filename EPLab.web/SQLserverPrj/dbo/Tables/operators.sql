@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[operators] (
     [operatorId]         UNIQUEIDENTIFIER NOT NULL,
-    [source]             VARCHAR (50)     NOT NULL,
+    [source]             VARCHAR (50)     CONSTRAINT [DF_operators_source] DEFAULT ('sql server') NOT NULL,
     [operatorDesc]       NVARCHAR (999)   NULL,
     [queryId]            UNIQUEIDENTIFIER NULL,
     [stringInSourceCode] NVARCHAR (50)    NOT NULL,
@@ -8,6 +8,8 @@
     [paraNum]            INT              CONSTRAINT [DF_operators_paraNum] DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_operators] PRIMARY KEY CLUSTERED ([operatorId] ASC)
 );
+
+
 
 
 GO
