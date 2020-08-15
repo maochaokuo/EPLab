@@ -15,14 +15,14 @@ namespace EPlab.entity.fwk
 
         public Guid? fieldId { get; set; }
 
+        public short? previousNo { get; set; }
+
         public int displayOrder { get; set; }
 
         public int orderByOrder { get; set; }
 
-        public Guid? pre1fieldId { get; set; }
-
-        public Guid? pre2fieldId { get; set; }
-
         public Guid? expressionId { get; set; }
+
+        public Guid? save2fieldId { get; set; }
     }
 }
