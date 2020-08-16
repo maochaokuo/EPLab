@@ -5,10 +5,13 @@
     [previousNo]   SMALLINT         CONSTRAINT [DF_queryFields_previousNo] DEFAULT ((0)) NULL,
     [displayOrder] INT              CONSTRAINT [DF_queryFields_displayOrder] DEFAULT ((0)) NOT NULL,
     [orderByOrder] INT              CONSTRAINT [DF_queryFields_orderByOrder] DEFAULT ((0)) NOT NULL,
+    [orderByDesc]  BIT              CONSTRAINT [DF_queryFields_orderByDesc] DEFAULT ((0)) NOT NULL,
     [expressionId] UNIQUEIDENTIFIER NULL,
     [save2fieldId] UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_queryFields_1] PRIMARY KEY CLUSTERED ([queryFieldId] ASC)
 );
+
+
 
 
 
@@ -53,4 +56,8 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'這是若ex
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'前面的fieldId, 要取query結果中的, 前第previousNo筆, 目前僅規劃0,1,2三種值', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'queryFields', @level2type = N'COLUMN', @level2name = N'previousNo';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'0 asc, 1 desc', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'queryFields', @level2type = N'COLUMN', @level2name = N'orderByDesc';
 

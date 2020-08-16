@@ -21,6 +21,8 @@ namespace EPlab.entity.fwk
 
         public int orderByOrder { get; set; }
 
+        public bool orderByDesc { get; set; }
+
         public Guid? expressionId { get; set; }
 
         public Guid? save2fieldId { get; set; }

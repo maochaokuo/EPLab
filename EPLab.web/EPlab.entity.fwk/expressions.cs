@@ -24,25 +24,25 @@ namespace EPlab.entity.fwk
 
         public Guid? paraField1id { get; set; }
 
-        public Guid? paraField2id { get; set; }
-
-        public Guid? paraField3id { get; set; }
-
-        public Guid? paraField4id { get; set; }
-
-        public Guid? paraField5id { get; set; }
-
         [StringLength(50)]
         public string para1externalName { get; set; }
+
+        public Guid? paraField2id { get; set; }
 
         [StringLength(50)]
         public string para2externalName { get; set; }
 
+        public Guid? paraField3id { get; set; }
+
         [StringLength(50)]
         public string para3externalName { get; set; }
 
+        public Guid? paraField4id { get; set; }
+
         [StringLength(50)]
         public string para4externalName { get; set; }
+
+        public Guid? paraField5id { get; set; }
 
         [StringLength(50)]
         public string para5externalName { get; set; }
