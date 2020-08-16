@@ -3,6 +3,11 @@
 ## introduction
 1. lab tool for EPL, hopefully
 
+## Selenium tips
+### Selenium WebDriver
+1. use NuGet Manager, download Selenium WebDriver
+2. also, download WebDriverChromeDriver
+3. now, 2 may replace by Selenium.WebDriver.ChromeDriver
 
 ## EntityFramework Core tips
 1. from existing database
