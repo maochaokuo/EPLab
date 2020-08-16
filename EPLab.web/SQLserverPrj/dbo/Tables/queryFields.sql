@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[queryFields] (
-    [queryFieldId] UNIQUEIDENTIFIER NOT NULL,
+    [queryFieldId] UNIQUEIDENTIFIER CONSTRAINT [DF_queryFields_queryFieldId] DEFAULT (newid()) NOT NULL,
     [queryId]      UNIQUEIDENTIFIER NOT NULL,
     [fieldId]      UNIQUEIDENTIFIER NULL,
     [previousNo]   SMALLINT         CONSTRAINT [DF_queryFields_previousNo] DEFAULT ((0)) NULL,
@@ -9,6 +9,8 @@
     [save2fieldId] UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_queryFields_1] PRIMARY KEY CLUSTERED ([queryFieldId] ASC)
 );
+
+
 
 
 

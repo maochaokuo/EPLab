@@ -5,6 +5,7 @@ from queries
 
 select *
 from queryFields
+order by displayOrder
 
 select *
 from operators
@@ -14,11 +15,13 @@ from expressions
 
 select *
 from fields
+where tableId='DDC58962-C0AE-4327-9ED9-D9E516244431'
 order by tableId, defaultOrder
 
 select r.tableId, t.tableName, count(r.rowId) counts
 from [rows] r
 join [tables] t on r.tableId=t.tableId
+where t.tableName='ohlc'
 group by r.tableId, t.tableName
 
 /*
