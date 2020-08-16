@@ -7,11 +7,12 @@ select *
 from queryFields
 order by displayOrder
 
-select *
-from operators
-
 select * 
 from expressions
+
+select e.expressionId, o.*
+from operators o
+join expressions e on e.operatorId=o.operatorId
 
 select *
 from fields

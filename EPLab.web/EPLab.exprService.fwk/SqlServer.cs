@@ -14,6 +14,10 @@ namespace EPLab.exprService.fwk
         SQL_SMALLER,
         SQL_GREATEROREQUAL,
         SQL_SMALLEROREQUAL,
+        SQL_NOT,
+        SQL_AND,
+        SQL_OR,
+        SQL_ISNULL,
     }
     public class SqlServer
     {
@@ -39,6 +43,18 @@ namespace EPLab.exprService.fwk
                     break;
                 case "SQL_SMALLEROREQUAL":
                     ret = "<=";
+                    break;
+                case "SQL_NOT":
+                    ret = "NOT";
+                    break;
+                case "SQL_AND":
+                    ret = "AND";
+                    break;
+                case "SQL_OR":
+                    ret = "OR";
+                    break;
+                case "SQL_ISNULL":
+                    ret = "IS NULL";
                     break;
                 default:
                     break;
