@@ -129,6 +129,7 @@
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\FieldValueController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\QueryController.cs" />
     <Compile Include="Controllers\RowController.cs" />
     <Compile Include="Controllers\TableController.cs" />
     <Compile Include="Global.asax.cs">
@@ -765,6 +766,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Query\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
