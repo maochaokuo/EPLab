@@ -6,14 +6,9 @@ using System.Web.Mvc;
 
 namespace EPLab.web.fwk.Controllers
 {
-    public class FieldValueController : ControllerBase
+    public class QueryFieldController : Controller
     {
-        public FieldValueController(
-            ) : base("fieldValueViewModel", "field value")
-        {
-        }
-
-        // todo (5) FieldValueController
+        // GET: QueryField
         public ActionResult Index()
         {
             return View();

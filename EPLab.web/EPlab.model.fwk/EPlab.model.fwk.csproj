@@ -44,6 +44,9 @@
     <Compile Include="fieldDisp.cs" />
     <Compile Include="fieldsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="queriesViewModel.cs" />
+    <Compile Include="queryDisp.cs" />
+    <Compile Include="queryViewViewModel.cs" />
     <Compile Include="tableDisp.cs" />
     <Compile Include="tablesViewModel.cs" />
     <Compile Include="ViewModelBase.cs" />

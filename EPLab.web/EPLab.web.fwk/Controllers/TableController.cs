@@ -7,7 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace EPLab.web.Controllers
+namespace EPLab.web.fwk.Controllers
 {
     public class TableController : ControllerBase
     //public class TableController : ControllerBase

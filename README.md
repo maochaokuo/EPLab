@@ -21,6 +21,11 @@ Install-Package Microsoft.EntityFrameworkCore.Tools
 ```
 
 ## change log
+### 2020/8/17
+1. just finish a simplest query prototype
+2. go on to build a query viewer
+3. then later continue about calculated fields
+
 ### 2020/8/14
 1. field crud done
 2. proceed to edit queries

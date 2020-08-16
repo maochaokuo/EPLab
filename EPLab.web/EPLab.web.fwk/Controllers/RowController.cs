@@ -4,10 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace EPLab.web.Controllers
+namespace EPLab.web.fwk.Controllers
 {
-    public class RowController : Controller
+    public class RowController : ControllerBase
     {
+        public RowController(
+            ) : base("rowViewModel", "row")
+        {
+        }
+
         public ActionResult Index()
         {
             if (Session["tableName"] == null)

@@ -126,10 +126,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="base\ControllerBase.cs" />
+    <Compile Include="Controllers\ExpressionController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\FieldValueController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QueryController.cs" />
+    <Compile Include="Controllers\QueryFieldController.cs" />
+    <Compile Include="Controllers\QueryViewController.cs" />
     <Compile Include="Controllers\RowController.cs" />
     <Compile Include="Controllers\TableController.cs" />
     <Compile Include="Global.asax.cs">
@@ -763,10 +766,13 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\FieldValue\Index.cshtml" />
     <Content Include="Views\Field\Index.cshtml" />
+    <Content Include="Views\Expression\Index.cshtml" />
+    <Content Include="Views\QueryField\Index.cshtml" />
+    <Content Include="Views\Query\Index.cshtml" />
+    <Content Include="Views\QueryView\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Query\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
