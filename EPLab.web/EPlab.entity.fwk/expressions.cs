@@ -22,7 +22,7 @@ namespace EPlab.entity.fwk
 
         public Guid operatorId { get; set; }
 
-        public Guid paraField1id { get; set; }
+        public Guid? paraField1id { get; set; }
 
         public Guid? paraField2id { get; set; }
 
@@ -31,5 +31,20 @@ namespace EPlab.entity.fwk
         public Guid? paraField4id { get; set; }
 
         public Guid? paraField5id { get; set; }
+
+        [StringLength(50)]
+        public string para1externalName { get; set; }
+
+        [StringLength(50)]
+        public string para2externalName { get; set; }
+
+        [StringLength(50)]
+        public string para3externalName { get; set; }
+
+        [StringLength(50)]
+        public string para4externalName { get; set; }
+
+        [StringLength(50)]
+        public string para5externalName { get; set; }
     }
 }

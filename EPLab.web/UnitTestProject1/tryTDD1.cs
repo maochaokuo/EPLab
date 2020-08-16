@@ -24,6 +24,7 @@ namespace UnitTestProject1
             tmpQohlcBydate.queryDesc = "query for table ohlc by dealdate";
             tmpQohlcBydate.tableId = new Guid("DDC58962-C0AE-4327-9ED9-D9E516244431");
             tmpQohlcBydate.tableAlias = "ohlc";
+            tmpQohlcBydate.whereExpressionId = new Guid("E0D487F4-7F90-47AE-B2CE-A1B9C5FE88B6");
 
             // later read from database
             return ret;
