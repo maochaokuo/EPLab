@@ -15,4 +15,11 @@
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="84.0.4147.3001" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EPLab.dbService.fwk\EPLab.dbService.fwk.csproj" />
+    <ProjectReference Include="..\EPlab.entity.fwk\EPlab.entity.fwk.csproj" />
+    <ProjectReference Include="..\EPlab.model.fwk\EPlab.model.fwk.csproj" />
+    <ProjectReference Include="..\EPLab.web.fwk\EPLab.web.fwk.csproj" />
+  </ItemGroup>
+
 </Project>

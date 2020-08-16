@@ -5,7 +5,7 @@ using OpenQA.Selenium.Chrome;
 namespace UnitTestProject1
 {
     [TestClass]
-    public class UnitTest1
+    public class seleniumEx
     {
         [TestMethod]
         public void TestMethod1()

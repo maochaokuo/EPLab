@@ -14,11 +14,12 @@ from expressions
 
 select *
 from fields
+order by tableId, defaultOrder
 
-select r.tableId, count(r.rowId) counts
+select r.tableId, t.tableName, count(r.rowId) counts
 from [rows] r
 join [tables] t on r.tableId=t.tableId
-group by r.tableId
+group by r.tableId, t.tableName
 
 /*
 select *

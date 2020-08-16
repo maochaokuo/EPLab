@@ -8,17 +8,20 @@ namespace EPlab.entity.fwk
 
     public partial class operators
     {
-        [Key]
         public Guid operatorId { get; set; }
 
-        [Required]
+        [Key]
+        [Column(Order = 0)]
         [StringLength(50)]
         public string source { get; set; }
 
+        [Key]
+        [Column(Order = 1)]
+        [StringLength(50)]
+        public string operatorName { get; set; }
+
         [StringLength(999)]
         public string operatorDesc { get; set; }
-
-        public Guid? queryId { get; set; }
 
         [Required]
         [StringLength(50)]
