@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EPlab.model.fwk
@@ -11,7 +12,7 @@ namespace EPlab.model.fwk
     public class bigQueryResult
     {
         public List<string> columnNames { get; set; }
-        public List<object> columnValues { get; set; }
+        public List<Dictionary<string, object>> rowsOfColumnValues { get; set; }
 
         public string fromDataTable(DataTable dt)
         {
@@ -25,11 +26,20 @@ namespace EPlab.model.fwk
             //todo !!...(2)bigQueryResult toDataTable
             return ret;
         }
-
-        public bigQueryResult()
+        protected void init()
         {
             columnNames = new List<string>();
-            columnValues = new List<object>();
+            rowsOfColumnValues = new List<Dictionary<string, object>>();
+        }
+        public bigQueryResult()
+        {
+            init();
+        }
+        public bigQueryResult(DataTable dt)
+        {
+            init();
+            string err = fromDataTable(dt);
+            Thread.Sleep(0);
         }
     }
 }

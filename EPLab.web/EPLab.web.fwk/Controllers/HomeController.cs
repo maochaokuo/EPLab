@@ -22,8 +22,8 @@ namespace EPLab.web.fwk.Controllers
         private string import2tables()
         {
             string ret = "";
-            Dapper2DataTable dtdSrc = new Dapper2DataTable(connIndices);
-            Dapper2DataTable dtdTar = new Dapper2DataTable(connEPLabDB);
+            AdoNet2DataTable dtdSrc = new AdoNet2DataTable(connIndices);
+            AdoNet2DataTable dtdTar = new AdoNet2DataTable(connEPLabDB);
             //            string sql = @"
             //select dealdate+dealtime dealdatetime, dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
             //from indices2.dbo.ohlc

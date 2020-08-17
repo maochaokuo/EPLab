@@ -7,7 +7,7 @@ declare @dealdate varchar(99)='20180629'
 
 -- 首先看where與order by 欄位, 有沒有該欄位沒有值的row(s)
 
-/*;
+;
 with fieldsMustHaveValue(mustHaveFieldId)
 as
 (
@@ -58,8 +58,8 @@ where fv.fieldValueId is null
 
 -- 若確定沒有，則查出所有符合資料的rows，並套上order by條件
 -- where條件
-select o.operatorName, e.paraField1id, f1.fieldName
-	, e.paraField2id, f2.fieldName, e.para2externalName
+select o.operatorName, e.paraField1id, f1.fieldName field1Name
+	, e.paraField2id, f2.fieldName field2Name, e.para2externalName
 from queries q
 join expressions e on q.whereExpressionId=e.expressionId
 join operators o on e.operatorId=o.operatorId
@@ -68,17 +68,19 @@ left join fields f2 on e.paraField2id=f2.fieldId
 where q.queryName=@queryName --and o.operatorName='SQL_EQUAL'
 
 -- order by 欄位
-select qf.fieldId, qf.orderByOrder
+select qf.fieldId, 
+	case when qf.orderByDesc=0 then 'asc' else 'desc' end ascDesc
+	, qf.orderByOrder
 from queryFields qf
 join queries q on q.queryId=qf.queryId
 where q.queryName=@queryName and orderByOrder>0
 order by orderByOrder
-*/
--- 所以這裡有點麻煩，得從資料庫讀出，再產生sql script
-select r.rowId
-from [rows] r
-join queries q on r.tableId=q.tableId
-join expressions e on q.whereExpressionId=e.expressionId
+
+	-- 所以這裡有點麻煩，得從資料庫讀出，再產生sql script
+	select r.rowId
+	from [rows] r
+	join queries q on r.tableId=q.tableId
+	join expressions e on q.whereExpressionId=e.expressionId
 join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
 join queryFields qfO1 on qfO1.queryId=q.queryId and qfO1.orderByOrder=1
 join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qfO1.fieldId=fvOrder1.fieldId

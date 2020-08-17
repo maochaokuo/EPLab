@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
-using System.Text;
-using System.Threading;
-using Dapper;
+//using Dapper;
 using EPlab.entity.fwk;
 
 namespace EPLab.dbService
 {
-    public class Dapper2DataTable : IDisposable
+    public class AdoNet2DataTable : IDisposable
     {
         protected string connS = "";
         protected SqlConnection conn = null;
@@ -30,7 +27,7 @@ namespace EPLab.dbService
         // dapper does not support
         //so we use pure ado.net
 
-        public Dapper2DataTable(string connS)
+        public AdoNet2DataTable(string connS)
         {
             this.connS = connS;
             dbBig = new EPLabDBbigger(connS);
@@ -44,8 +41,11 @@ namespace EPLab.dbService
             }
             return conn;
         }
-        public DataTable Select2DataTable(string sql)
+        public DataTable Select2DataTable(string sql
+            , List<SqlParameter> cmdPara=null)
         {
+            //undone (1) !!...
+            // https://stackoverflow.com/questions/23320701/how-to-create-sqlparametercollection-with-multiple-parameters
             DataTable dt = new DataTable();
             //using (var con = GetConn())
             //{
@@ -56,6 +56,8 @@ namespace EPLab.dbService
             SqlConnection conn = new SqlConnection(connS);
             SqlCommand cmd = new SqlCommand(sql, conn);
             conn.Open();
+            if (cmdPara != null && cmdPara.Count > 0)
+                cmd.Parameters.AddRange(cmdPara.ToArray());
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             da.Fill(dt);
             conn.Close();
