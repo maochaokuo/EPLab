@@ -78,7 +78,8 @@ where fv.fieldValueId is null
         {
             DataTable dt;
             string sql = string.Format(@"
-select o.operatorName, e.paraField1id, f1.fieldName field1Name
+select o.operatorName, o.stringInSourceCode, o.isPrefix, o.paraNum
+	, e.paraField1id, f1.fieldName field1Name
 	, e.paraField2id, f2.fieldName field2Name, e.para2externalName
 from queries q
 join expressions e on q.whereExpressionId=e.expressionId
@@ -123,9 +124,28 @@ order by orderByOrder
             dt = d2dt.Select2DataTable(sql, para);
             return dt;
         }
+        public static string sqlExpression(string operatorName
+            , string stringInSourceCode, string isPrefix
+            , string paraNum, string para1, string para2)
+        {
+            string sql = "";
+            if (paraNum == "2")
+                sql = para1 +" "+ stringInSourceCode +" "+ para2;
+            else
+            {
+                if (isPrefix == "1")
+                    sql = stringInSourceCode +" "+ para1;
+                else
+                    sql = para1 +" "+ stringInSourceCode;
+            }
+            return sql;
+        }
         public string rowsSql(string queryName)
         {
             string sql;
+            string sqlWhereJoin = "", sqlWhereCond = "";
+            string sqlOrderJoin = "", sqlOrderBy = "";
+
             // base part
             sql = @"
 select r.rowId
@@ -133,34 +153,61 @@ from [rows] r
 join queries q on r.tableId=q.tableId
 join expressions e on q.whereExpressionId=e.expressionId
 ";
+
             // where part
-            string sqlWhereJoin, sqlWhereCond;
             DataTable dtWhere = whereConditions(queryName);
             if (dtWhere == null || dtWhere.Rows.Count != 1)
                 throw new Exception("bad where condition");
             DataRow drWhere = dtWhere.Rows[0];
             string operatorName = drWhere["operatorName"] + "";
+            string stringInSourceCode = drWhere["stringInSourceCode"] + "";
+            string isPrefix = drWhere["isPrefix"] + "";
+            string paraNum = drWhere["paraNum"] + "";
             string paraField1id = drWhere["paraField1id"] + "";
-            string field1Name = drWhere["field1Name"] + "";
+            //string field1Name = drWhere["field1Name"] + "";
             string paraField2id = drWhere["paraField2id"] + "";
             string field2Name = drWhere["field2Name"] + "";
             string para2externalName = drWhere["para2externalName"] + "";
             int caseNo = 0;
             if (!string.IsNullOrWhiteSpace(paraField1id) &&
-                    !string.IsNullOrWhiteSpace(field1Name) &&
+                    //!string.IsNullOrWhiteSpace(field1Name) &&
                     paraField2id.Length == 0 &&
                     field2Name.Length == 0 &&
                     !string.IsNullOrWhiteSpace(para2externalName))
             {
                 caseNo = 1;
+                if (paraNum.CompareTo("2") != 0)
+                    throw new Exception($"wrong paraNum {paraNum} (case#{caseNo})");
+                sqlWhereJoin = @"
+join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
+";
+                sqlWhereCond = string.Format(@"
+where q.queryName=@queryName and {0}
+", sqlExpression(operatorName, stringInSourceCode, isPrefix, paraNum, 
+                "fvWhere.fieldValue", para2externalName));
             }
             else
                 throw new Exception("where condition not dealing with");
-            // caseNo 1 ....
-            //undone (1) !!...
+
             // orderBy part
             DataTable dtOrder = orderByFields(queryName);
+            int i = 0;
+            foreach(DataRow dr in dtOrder.Rows)
+            {
+                i++;
+                string ascDesc = dr["ascDesc"]+"";
+                sqlOrderJoin += string.Format(@"
+join queryFields qf{0} on qf{0}.queryId=q.queryId and qf{0}.orderByOrder={0}
+join fieldValues fvOrder{0} on r.rowId=fvOrder{0}.rowId and qf{0}.fieldId=fvOrder{0}.fieldId
+", i);
+                if (i == 1)
+                    sqlOrderBy = $"order by fvOrder1.fieldValue {ascDesc}" ;
+                else
+                    sqlOrderBy += $",fvOrder{i}.fieldValue {ascDesc}" ;
+            }
+
             // final
+            sql += sqlWhereJoin + sqlOrderJoin + sqlWhereCond + sqlOrderBy;
             return sql;
         }
         public DataTable displayFields(string queryName)

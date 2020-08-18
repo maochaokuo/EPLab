@@ -58,7 +58,8 @@ where fv.fieldValueId is null
 
 -- 若確定沒有，則查出所有符合資料的rows，並套上order by條件
 -- where條件
-select o.operatorName, e.paraField1id, f1.fieldName field1Name
+select o.operatorName, o.stringInSourceCode, o.isPrefix, o.paraNum
+	, e.paraField1id, f1.fieldName field1Name
 	, e.paraField2id, f2.fieldName field2Name, e.para2externalName
 from queries q
 join expressions e on q.whereExpressionId=e.expressionId
@@ -68,11 +69,12 @@ left join fields f2 on e.paraField2id=f2.fieldId
 where q.queryName=@queryName --and o.operatorName='SQL_EQUAL'
 
 -- order by 欄位
-select qf.fieldId, 
+select qf.fieldId, f.fieldName,
 	case when qf.orderByDesc=0 then 'asc' else 'desc' end ascDesc
 	, qf.orderByOrder
 from queryFields qf
 join queries q on q.queryId=qf.queryId
+join fields f on qf.fieldId=f.fieldId and q.tableId=f.tableId
 where q.queryName=@queryName and orderByOrder>0
 order by orderByOrder
 
@@ -81,10 +83,10 @@ order by orderByOrder
 	from [rows] r
 	join queries q on r.tableId=q.tableId
 	join expressions e on q.whereExpressionId=e.expressionId
-join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
+	join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
 join queryFields qfO1 on qfO1.queryId=q.queryId and qfO1.orderByOrder=1
 join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qfO1.fieldId=fvOrder1.fieldId
-where q.queryName=@queryName and fvWhere.fieldValue=@dealdate
+	where q.queryName=@queryName and fvWhere.fieldValue=@dealdate
 order by fvOrder1.fieldValue
 
 -- 再加上要顯示的欄位
