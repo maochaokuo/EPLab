@@ -105,9 +105,12 @@ where q.queryName=@queryName
         {
             DataTable dt;
             string sql = string.Format(@"
-select qf.fieldId, qf.orderByOrder
+select qf.fieldId, f.fieldName,
+	case when qf.orderByDesc=0 then 'asc' else 'desc' end ascDesc
+	, qf.orderByOrder
 from queryFields qf
 join queries q on q.queryId=qf.queryId
+join fields f on qf.fieldId=f.fieldId and q.tableId=f.tableId
 where q.queryName=@queryName and orderByOrder>0
 order by orderByOrder
 ");
@@ -140,11 +143,18 @@ order by orderByOrder
             }
             return sql;
         }
-        public string rowsSql(string queryName)
+        public static string externalParameter(string paraName)
+        {
+            string ret = $"@{paraName}";
+
+            return ret;
+        }
+        public string rowsSql(string queryName, out string sqlOrderBy)
         {
             string sql;
             string sqlWhereJoin = "", sqlWhereCond = "";
-            string sqlOrderJoin = "", sqlOrderBy = "";
+            string sqlOrderJoin = "";
+            sqlOrderBy = "";
 
             // base part
             sql = @"
@@ -184,7 +194,8 @@ join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraFiel
                 sqlWhereCond = string.Format(@"
 where q.queryName=@queryName and {0}
 ", sqlExpression(operatorName, stringInSourceCode, isPrefix, paraNum, 
-                "fvWhere.fieldValue", para2externalName));
+                "fvWhere.fieldValue", 
+                externalParameter( para2externalName)));
             }
             else
                 throw new Exception("where condition not dealing with");
@@ -207,7 +218,7 @@ join fieldValues fvOrder{0} on r.rowId=fvOrder{0}.rowId and qf{0}.fieldId=fvOrde
             }
 
             // final
-            sql += sqlWhereJoin + sqlOrderJoin + sqlWhereCond + sqlOrderBy;
+            sql += sqlWhereJoin + sqlOrderJoin + sqlWhereCond;// + sqlOrderBy;
             return sql;
         }
         public DataTable displayFields(string queryName)

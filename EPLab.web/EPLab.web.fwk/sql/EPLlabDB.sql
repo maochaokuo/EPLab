@@ -1,5 +1,22 @@
 use EPLlabDB
 
+declare @queryName varchar(99)='QohlcBydate'
+declare @dealdate varchar(99)='20180629'
+
+select r.rowId
+from [rows] r
+join queries q on r.tableId=q.tableId
+join expressions e on q.whereExpressionId=e.expressionId
+
+join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
+
+join queryFields qf1 on qf1.queryId=q.queryId and qf1.orderByOrder=1
+join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qf1.fieldId=fvOrder1.fieldId
+
+where q.queryName=@queryName and fvWhere.fieldValue = @dealdate
+order by fvOrder1.fieldValue asc
+
+/*
 select *
 from queries
 
@@ -25,7 +42,6 @@ join [tables] t on r.tableId=t.tableId
 where t.tableName='ohlc'
 group by r.tableId, t.tableName
 
-/*
 select *
 from fields 
 order by tableId, defaultOrder
