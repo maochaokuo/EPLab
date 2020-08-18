@@ -79,15 +79,15 @@ where q.queryName=@queryName and orderByOrder>0
 order by orderByOrder
 
 	-- 所以這裡有點麻煩，得從資料庫讀出，再產生sql script
-	select r.rowId
+	select r.rowId, fvOrder1.fieldValue fieldValueO1
 	from [rows] r
 	join queries q on r.tableId=q.tableId
 	join expressions e on q.whereExpressionId=e.expressionId
 	join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
-join queryFields qf1 on qf1.queryId=q.queryId and qf1.orderByOrder=1
-join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qf1.fieldId=fvOrder1.fieldId
+	join queryFields qf1 on qf1.queryId=q.queryId and qf1.orderByOrder=1
+	join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qf1.fieldId=fvOrder1.fieldId
 	where q.queryName=@queryName and fvWhere.fieldValue=@dealdate
-order by fvOrder1.fieldValue
+	order by fvOrder1.fieldValue
 
 -- 再加上要顯示的欄位
 -- 也是有點麻煩，只能讀出資料之後產生sql script
@@ -102,14 +102,22 @@ order by qf.displayOrder
 with rowsWhereOrder(rowId, fieldValueO1)
 as
 (
-select r.rowId, fvOrder1.fieldValue fieldValueO1
-from [rows] r
-join queries q on r.tableId=q.tableId
-join expressions e on q.whereExpressionId=e.expressionId
-join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
-join queryFields qfO1 on qfO1.queryId=q.queryId and qfO1.orderByOrder=1
-join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qfO1.fieldId=fvOrder1.fieldId
-where q.queryName=@queryName and fvWhere.fieldValue=@dealdate
+	select r.rowId, fvOrder1.fieldValue fieldValueO1
+	from [rows] r
+	join queries q on r.tableId=q.tableId
+	join expressions e on q.whereExpressionId=e.expressionId
+	join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
+	join queryFields qf1 on qf1.queryId=q.queryId and qf1.orderByOrder=1
+	join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qf1.fieldId=fvOrder1.fieldId
+	where q.queryName=@queryName and fvWhere.fieldValue=@dealdate
+--select r.rowId, fvOrder1.fieldValue fieldValueO1
+--from [rows] r
+--join queries q on r.tableId=q.tableId
+--join expressions e on q.whereExpressionId=e.expressionId
+--join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
+--join queryFields qfO1 on qfO1.queryId=q.queryId and qfO1.orderByOrder=1
+--join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qfO1.fieldId=fvOrder1.fieldId
+--where q.queryName=@queryName and fvWhere.fieldValue=@dealdate
 )
 select fwo.rowId, f1.fieldValue dealtime, f2.fieldValue [open], f3.fieldValue [high]
 	, f4.fieldValue [low], f5.fieldValue [close], f6.fieldValue volume

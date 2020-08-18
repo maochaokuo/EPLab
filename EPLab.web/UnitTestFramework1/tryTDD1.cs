@@ -19,6 +19,7 @@ namespace UnitTestFramework1
             queryExpressionLib qel = new queryExpressionLib(connS);
             string sqlOrderBy = "";
             string sql = qel.rowsSql("QohlcBydate", out sqlOrderBy);
+            //undone (1)!!... need test rowsql again
             Thread.Sleep(0);
         }
     }

@@ -151,17 +151,17 @@ order by orderByOrder
         }
         public string rowsSql(string queryName, out string sqlOrderBy)
         {
-            string sql;
+            string sql="", baseSqlFormat;
             string sqlWhereJoin = "", sqlWhereCond = "";
-            string sqlOrderJoin = "";
+            string sqlOrderJoin = "", orderByFields2query="";
             sqlOrderBy = "";
 
             // base part
-            sql = @"
-select r.rowId
-from [rows] r
-join queries q on r.tableId=q.tableId
-join expressions e on q.whereExpressionId=e.expressionId
+            baseSqlFormat = @"
+    select r.rowId{0}
+    from [rows] r
+    join queries q on r.tableId=q.tableId
+    join expressions e on q.whereExpressionId=e.expressionId
 ";
 
             // where part
@@ -189,10 +189,10 @@ join expressions e on q.whereExpressionId=e.expressionId
                 if (paraNum.CompareTo("2") != 0)
                     throw new Exception($"wrong paraNum {paraNum} (case#{caseNo})");
                 sqlWhereJoin = @"
-join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
+    join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
 ";
                 sqlWhereCond = string.Format(@"
-where q.queryName=@queryName and {0}
+    where q.queryName=@queryName and {0}
 ", sqlExpression(operatorName, stringInSourceCode, isPrefix, paraNum, 
                 "fvWhere.fieldValue", 
                 externalParameter( para2externalName)));
@@ -203,22 +203,27 @@ where q.queryName=@queryName and {0}
             // orderBy part
             DataTable dtOrder = orderByFields(queryName);
             int i = 0;
-            foreach(DataRow dr in dtOrder.Rows)
+            foreach (DataRow dr in dtOrder.Rows)
             {
                 i++;
-                string ascDesc = dr["ascDesc"]+"";
+                string ascDesc = dr["ascDesc"] + "";
                 sqlOrderJoin += string.Format(@"
-join queryFields qf{0} on qf{0}.queryId=q.queryId and qf{0}.orderByOrder={0}
-join fieldValues fvOrder{0} on r.rowId=fvOrder{0}.rowId and qf{0}.fieldId=fvOrder{0}.fieldId
+    join queryFields qf{0} on qf{0}.queryId=q.queryId and qf{0}.orderByOrder={0}
+    join fieldValues fvOrder{0} on r.rowId=fvOrder{0}.rowId and qf{0}.fieldId=fvOrder{0}.fieldId
 ", i);
                 if (i == 1)
-                    sqlOrderBy = $"order by fvOrder1.fieldValue {ascDesc}" ;
+                {
+                    sqlOrderBy = $"order by fvOrder1.fieldValue {ascDesc}";
+                    orderByFields2query = ", fvOrder1.fieldValue fieldValue1";
+                }
                 else
-                    sqlOrderBy += $",fvOrder{i}.fieldValue {ascDesc}" ;
+                {
+                    sqlOrderBy += $",fvOrder{i}.fieldValue {ascDesc}";
+                    orderByFields2query += $", fvOrder{i}.fieldValue fieldValue{i}";
+                }
             }
-
             // final
-            sql += sqlWhereJoin + sqlOrderJoin + sqlWhereCond;// + sqlOrderBy;
+            sql = string.Format(baseSqlFormat, orderByFields2query) + sqlWhereJoin + sqlOrderJoin + sqlWhereCond;// + sqlOrderBy;
             return sql;
         }
         public DataTable displayFields(string queryName)
@@ -242,6 +247,9 @@ order by qf.displayOrder
                     Value = queryName
                 }
             };
+            string sqlOrderBy = "";
+            string rowsSqlS = rowsSql(queryName, out sqlOrderBy);
+            //string 
             dt = d2dt.Select2DataTable(sql, para);
             return dt;
         }
