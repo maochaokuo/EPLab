@@ -255,15 +255,17 @@ order by qf.displayOrder
             dt = d2dt.Select2DataTable(sql, para);
             return dt;
         }
-        public string finalSql4query(string queryName, string orderAlias)
+        public string finalSql4query(string queryName)
         {
             string sql = "";
 
             string sqlOrderBy = "";
             string sqlOrderWith = "";
-            string rowsSqlS = rowsSql(queryName, orderAlias
+            string rowsSqlS = rowsSql(queryName, "fwo"
                 , out sqlOrderBy, out sqlOrderWith);
             string sqlWithPart = "";
+            string sqlSelectPart = "", sqlSelectFields = "";
+            string sqlJoinPart = "";
 
             // with part
             sqlWithPart = string.Format(@"
@@ -275,16 +277,33 @@ as
 ", sqlOrderWith, rowsSqlS);
             // select from with part
             DataTable displayDt = displayFields(queryName);
+            int i = 0;
             foreach(DataRow dr in displayDt.Rows)
             {
+                i++;
                 string fieldId = dr["fieldId"] + "";
                 string fieldName = dr["fieldName"] + "";
                 string displayOrder = dr["displayOrder"] + "";
-                //undone !!...(1) finalSql4query
+                sqlSelectFields += $", f{i}.fieldValue [{fieldName}]";
+                // join part
+                sqlJoinPart += $@"
+join 
+(
+	select fv.rowId, fv.fieldValue
+	from queries q
+	join queryFields qf on qf.queryId=q.queryId and q.queryName=@queryName
+		and qf.displayOrder={i}
+	join fieldValues fv on fv.fieldId=qf.fieldId
+) f{i} on fwo.rowId=f{i}.rowId
+";
             }
-            // join part
+            sqlSelectPart = string.Format(@"
+select fwo.rowId{0}
+from rowsWhereOrder fwo
+", sqlSelectFields);
 
-            // order by part
+            // order by part then finalSql4query
+            sql = sqlWithPart + sqlSelectPart + sqlJoinPart + sqlOrderBy;
             return sql;
         }
     }

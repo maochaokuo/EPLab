@@ -21,7 +21,14 @@ namespace UnitTestFramework1
             string sqlOrderWith = "";
             string sql = qel.rowsSql("QohlcBydate", "fwo"
                 , out sqlOrderBy, out sqlOrderWith);
-            //undone (1)!!... need test rowsql again
+            Thread.Sleep(0);
+        }
+        [TestMethod]
+        public void finalSql4query()
+        {
+            queryExpressionLib qel = new queryExpressionLib(connS);
+            string sql = qel.finalSql4query("QohlcBydate");
+            //undone (1)!!... need test finalSql4query
             Thread.Sleep(0);
         }
     }
