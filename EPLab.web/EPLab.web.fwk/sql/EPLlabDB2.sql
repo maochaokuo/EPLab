@@ -6,7 +6,7 @@ declare @dealdate varchar(99)='20180629'
 --declare @dealdate varchar(99)='20180702'
 
 -- 首先看where與order by 欄位, 有沒有該欄位沒有值的row(s)
-
+/*
 ;
 with fieldsMustHaveValue(mustHaveFieldId)
 as
@@ -88,7 +88,7 @@ order by orderByOrder
 	join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qf1.fieldId=fvOrder1.fieldId
 	where q.queryName=@queryName and fvWhere.fieldValue=@dealdate
 	order by fvOrder1.fieldValue
-
+*/
 -- 再加上要顯示的欄位
 -- 也是有點麻煩，只能讀出資料之後產生sql script
 select qf.fieldId, f.fieldName, qf.displayOrder
@@ -99,10 +99,10 @@ where q.queryName=@queryName and qf.displayOrder>0
 order by qf.displayOrder
 
 ;
-with rowsWhereOrder(rowId, fieldValueO1)
+with rowsWhereOrder(rowId, fieldValue1)
 as
 (
-	select r.rowId, fvOrder1.fieldValue fieldValueO1
+	select r.rowId, fvOrder1.fieldValue fieldValue1
 	from [rows] r
 	join queries q on r.tableId=q.tableId
 	join expressions e on q.whereExpressionId=e.expressionId
@@ -110,7 +110,7 @@ as
 	join queryFields qf1 on qf1.queryId=q.queryId and qf1.orderByOrder=1
 	join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qf1.fieldId=fvOrder1.fieldId
 	where q.queryName=@queryName and fvWhere.fieldValue=@dealdate
---select r.rowId, fvOrder1.fieldValue fieldValueO1
+--select r.rowId, fvOrder1.fieldValue fieldValue1
 --from [rows] r
 --join queries q on r.tableId=q.tableId
 --join expressions e on q.whereExpressionId=e.expressionId
@@ -187,7 +187,7 @@ join
 		and qf.displayOrder=8
 	join fieldValues fv on fv.fieldId=qf.fieldId
 ) f8 on fwo.rowId=f8.rowId
-order by fwo.fieldValueO1
+order by fwo.fieldValue1
 ;
 
 -- 於是，就可以進行計算欄位的處理，例如preTop, preBottom
