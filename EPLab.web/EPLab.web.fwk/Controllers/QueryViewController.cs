@@ -23,6 +23,9 @@ namespace EPLab.web.fwk.Controllers
          * 4. 已輸入參數的view便可以另存
          * 5. view也要可以選擇顯示的欄位, 這想一想, 還是在第一頁比較容易做, 第二頁就單純查詢
          * 6. 目前還沒有考慮到多組輸入參數，這可能要調整資料庫。另外view也要存到資料庫
+         * 7. 原則上view就是查詢欄位，順序? 還有排序欄位, 過濾欄位與值(多欄?)
+         * 8. 還是view就乾脆是queue的另存？但要加上多欄過濾條件
+         * 9. 若8, 則每query於畫面上要能有顯示所有欄位的選項，實際做法則select與join的所有欄位
          */
         public ActionResult Index()
         {

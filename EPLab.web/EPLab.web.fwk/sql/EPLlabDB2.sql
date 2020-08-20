@@ -88,7 +88,7 @@ order by orderByOrder
 	join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qf1.fieldId=fvOrder1.fieldId
 	where q.queryName=@queryName and fvWhere.fieldValue=@dealdate
 	order by fvOrder1.fieldValue
-*/
+
 -- 再加上要顯示的欄位
 -- 也是有點麻煩，只能讀出資料之後產生sql script
 select qf.fieldId, f.fieldName, qf.displayOrder
@@ -189,6 +189,15 @@ join
 ) f8 on fwo.rowId=f8.rowId
 order by fwo.fieldValue1
 ;
+*/
+
+-- 多組參數，應該也是從sql中查出，由where expression, 找到欄位, 然後再找相依欄位
+-- expression 中 externalName有字串的
+
+select *
+from queryFields
+select *
+from expressions
 
 -- 於是，就可以進行計算欄位的處理，例如preTop, preBottom
 

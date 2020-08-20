@@ -1,5 +1,6 @@
 use EPLlabDB
 
+/*
 declare @queryName varchar(99)='QohlcBydate'
 declare @dealdate varchar(99)='20180629'
 
@@ -16,7 +17,6 @@ join fieldValues fvOrder1 on r.rowId=fvOrder1.rowId and qf1.fieldId=fvOrder1.fie
 where q.queryName=@queryName and fvWhere.fieldValue = @dealdate
 order by fvOrder1.fieldValue asc
 
-/*
 select *
 from queries
 
