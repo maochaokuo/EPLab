@@ -195,6 +195,8 @@ order by fwo.fieldValue1
 -- expression ¤¤ externalName¦³¦r¦êªº
 
 select *
+from queries
+select *
 from queryFields
 select *
 from expressions

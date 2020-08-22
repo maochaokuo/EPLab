@@ -32,6 +32,9 @@ namespace EPlab.entity.fwk
         [StringLength(50)]
         public string para2externalName { get; set; }
 
+        [StringLength(50)]
+        public string para2constant { get; set; }
+
         public Guid? paraField3id { get; set; }
 
         [StringLength(50)]
