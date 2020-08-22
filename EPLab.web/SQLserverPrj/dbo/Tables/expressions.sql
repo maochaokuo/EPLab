@@ -31,6 +31,8 @@
 
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_expressions_2]
     ON [dbo].[expressions]([operatorId] ASC);
@@ -88,4 +90,14 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'para2name i
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'para1name if from external input', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'expressions', @level2type = N'COLUMN', @level2name = N'para1externalName';
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_expressions_4]
+    ON [dbo].[expressions]([subExpression2Id] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_expressions_3]
+    ON [dbo].[expressions]([subExpression1Id] ASC);
 
