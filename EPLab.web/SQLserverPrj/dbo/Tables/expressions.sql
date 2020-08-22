@@ -6,9 +6,11 @@
     [operatorId]        UNIQUEIDENTIFIER NOT NULL,
     [paraField1id]      UNIQUEIDENTIFIER NULL,
     [para1externalName] NVARCHAR (50)    NULL,
+    [subExpression1Id]  UNIQUEIDENTIFIER NULL,
     [paraField2id]      UNIQUEIDENTIFIER NULL,
     [para2externalName] NVARCHAR (50)    NULL,
     [para2constant]     NVARCHAR (50)    NULL,
+    [subExpression2Id]  UNIQUEIDENTIFIER NULL,
     [paraField3id]      UNIQUEIDENTIFIER NULL,
     [para3externalName] NVARCHAR (50)    NULL,
     [paraField4id]      UNIQUEIDENTIFIER NULL,
@@ -17,6 +19,8 @@
     [para5externalName] NVARCHAR (50)    NULL,
     CONSTRAINT [PK_expressions] PRIMARY KEY CLUSTERED ([expressionId] ASC)
 );
+
+
 
 
 
