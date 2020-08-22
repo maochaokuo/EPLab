@@ -9,16 +9,20 @@
     [subExpression1Id]  UNIQUEIDENTIFIER NULL,
     [paraField2id]      UNIQUEIDENTIFIER NULL,
     [para2externalName] NVARCHAR (50)    NULL,
-    [para2constant]     NVARCHAR (50)    NULL,
     [subExpression2Id]  UNIQUEIDENTIFIER NULL,
     [paraField3id]      UNIQUEIDENTIFIER NULL,
     [para3externalName] NVARCHAR (50)    NULL,
+    [subExpression3Id]  UNIQUEIDENTIFIER NULL,
     [paraField4id]      UNIQUEIDENTIFIER NULL,
     [para4externalName] NVARCHAR (50)    NULL,
+    [subExpression4Id]  UNIQUEIDENTIFIER NULL,
     [paraField5id]      UNIQUEIDENTIFIER NULL,
     [para5externalName] NVARCHAR (50)    NULL,
+    [subExpression5Id]  UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_expressions] PRIMARY KEY CLUSTERED ([expressionId] ASC)
 );
+
+
 
 
 

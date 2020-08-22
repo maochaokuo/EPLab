@@ -34,9 +34,6 @@ namespace EPlab.entity.fwk
         [StringLength(50)]
         public string para2externalName { get; set; }
 
-        [StringLength(50)]
-        public string para2constant { get; set; }
-
         public Guid? subExpression2Id { get; set; }
 
         public Guid? paraField3id { get; set; }
@@ -44,14 +41,20 @@ namespace EPlab.entity.fwk
         [StringLength(50)]
         public string para3externalName { get; set; }
 
+        public Guid? subExpression3Id { get; set; }
+
         public Guid? paraField4id { get; set; }
 
         [StringLength(50)]
         public string para4externalName { get; set; }
 
+        public Guid? subExpression4Id { get; set; }
+
         public Guid? paraField5id { get; set; }
 
         [StringLength(50)]
         public string para5externalName { get; set; }
+
+        public Guid? subExpression5Id { get; set; }
     }
 }

@@ -189,7 +189,6 @@ join
 ) f8 on fwo.rowId=f8.rowId
 order by fwo.fieldValue1
 ;
-*/
 
 -- 多組參數，應該也是從sql中查出，由where expression, 找到欄位, 然後再找相依欄位
 -- expression 中 externalName有字串的
@@ -199,7 +198,35 @@ from queries
 select *
 from queryFields
 select *
+from operators
+select *
+from fields
+where tableId='DDC58962-C0AE-4327-9ED9-D9E516244431'
+*/
+select *
 from expressions
+;
+with expressList
+as
+(
+	select a.*
+	from expressions a
+	join queries q on a.expressionId=q.whereExpressionId
+	where q.queryName=@queryName
+	union all
+	select b.*
+	from expressions b
+	join expressList c on c.subExpression1Id=b.expressionId
+	union all
+	select d.*
+	from expressions d
+	join expressList e on e.subExpression2Id=d.expressionId
+)
+select e.*
+from expressList e
+--join queries q on e.expressionId=q.whereExpressionId
+--where q.queryName=@queryName
+;
 
 -- 於是，就可以進行計算欄位的處理，例如preTop, preBottom
 
