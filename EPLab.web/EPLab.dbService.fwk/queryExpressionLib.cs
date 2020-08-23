@@ -409,5 +409,36 @@ from rowsWhereOrder fwo
             sql = sqlWithPart + sqlSelectPart + sqlJoinPart + sqlOrderBy;
             return sql;
         }
+        public List<string> formParameters(string queryName)
+        {
+            List<string> ret = null;
+            string sql = string.Format(@"
+with expressList
+as
+(
+	select a.*
+	from expressions a
+	join queries q on a.expressionId=q.whereExpressionId
+	where q.queryName=@queryName
+	union all
+	select b.*
+	from expressions b
+	join expressList c on c.subExpression1Id=b.expressionId
+	union all
+	select d.*
+	from expressions d
+	join expressList e on e.subExpression2Id=d.expressionId
+)
+select e.para1externalName externalPara
+from expressList e
+where e.para1externalName is not null
+union
+select e.para2externalName externalPara
+from expressList e
+where e.para2externalName is not null
+");
+            //undone (1)!!... formParameters
+            return ret;
+        }
     }
 }

@@ -239,7 +239,7 @@ where tableId='DDC58962-C0AE-4327-9ED9-D9E516244431'
 
 -- 多組參數，應該也是從sql中查出，由where expression, 找到欄位, 然後再找相依欄位
 -- expression 中 externalName有字串的
-
+*/
 -- 畫面輸入參數
 ;
 with expressList
@@ -268,6 +268,7 @@ where e.para2externalName is not null
 --join queries q on e.expressionId=q.whereExpressionId
 --where q.queryName=@queryName
 
+-- all expressions need in where condition
 ;
 with expressList
 as
@@ -288,6 +289,6 @@ as
 select *
 from expressList
 ;
-*/
+
 -- 於是，就可以進行計算欄位的處理，例如preTop, preBottom
 

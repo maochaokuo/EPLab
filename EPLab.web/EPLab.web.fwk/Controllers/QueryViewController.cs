@@ -15,7 +15,7 @@ namespace EPLab.web.fwk.Controllers
             ) : base("queryViewViewModel", "query view")
         {
         }
-        // todo !!... (1) 接下來query list, then pick 1 query, 輸入查詢欄位, 展示查詢值, 算是execute功能
+        // todo !!... (2) 接下來query list, then pick 1 query, 輸入查詢欄位, 展示查詢值, 算是execute功能
         /* spec:
          * 1. index選query or view, 
          * 2. 一開始view list為空, 建一個預設的view, 選取所有欄位

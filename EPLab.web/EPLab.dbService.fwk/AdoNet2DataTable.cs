@@ -44,7 +44,7 @@ namespace EPLab.dbService
         public DataTable Select2DataTable(string sql
             , List<SqlParameter> cmdPara=null)
         {
-            //undone (1) !!...
+            //
             // https://stackoverflow.com/questions/23320701/how-to-create-sqlparametercollection-with-multiple-parameters
             DataTable dt = new DataTable();
             //using (var con = GetConn())
