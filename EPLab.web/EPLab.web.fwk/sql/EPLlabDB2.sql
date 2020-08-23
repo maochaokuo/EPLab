@@ -55,19 +55,54 @@ join fieldsMustHaveValue fmhv on fmhv.mustHaveFieldId=f.fieldId
 left join fieldValues fv on fv.rowId=r.rowId and fv.fieldId=fmhv.mustHaveFieldId
 where fv.fieldValueId is null
 ;
-
+*/
+select *
+from queries
+select expressionId, expressionDesc, subExpression1Id, subExpression2Id
+from expressions
+select *
+from operators
+--select *
+--from queryFields
+select *
+from fields
+where tableId='DDC58962-C0AE-4327-9ED9-D9E516244431'
+order by defaultOrder
 -- 若確定沒有，則查出所有符合資料的rows，並套上order by條件
 -- where條件
-select o.operatorName, o.stringInSourceCode, o.isPrefix, o.paraNum
+;
+with expressList
+as
+(
+	select a.*, 1 isWhereExpressId
+	from expressions a
+	join queries q on a.expressionId=q.whereExpressionId
+	where q.queryName=@queryName
+	union all
+	select b.*, 0 isWhereExpressId
+	from expressions b
+	join expressList c on c.subExpression1Id=b.expressionId
+	where c.subExpression1Id is not null
+	union all
+	select d.*, 0 isWhereExpressId
+	from expressions d
+	join expressList e on e.subExpression2Id=d.expressionId
+	where e.subExpression2Id is not null
+)
+select e.isWhereExpressId,
+	e.expressionId, o.operatorName, o.stringInSourceCode, o.isPrefix, o.paraNum
 	, e.paraField1id, f1.fieldName field1Name
-	, e.paraField2id, f2.fieldName field2Name, e.para2externalName
-from queries q
-join expressions e on q.whereExpressionId=e.expressionId
+	, e.paraField2id, f2.fieldName field2Name
+	, e.para2externalName, e.subExpression1Id, e.subExpression2Id
+from /*queries q
+--join expressions e on q.whereExpressionId=e.expressionId
+join*/ expressList e --on q.whereExpressionId=e.expressionId
 join operators o on e.operatorId=o.operatorId
-join fields f1 on e.paraField1id=f1.fieldId
+left join fields f1 on e.paraField1id=f1.fieldId
 left join fields f2 on e.paraField2id=f2.fieldId
-where q.queryName=@queryName --and o.operatorName='SQL_EQUAL'
-
+--where q.queryName=@queryName --and o.operatorName='SQL_EQUAL'
+;
+/*
 -- order by 欄位
 select qf.fieldId, f.fieldName,
 	case when qf.orderByDesc=0 then 'asc' else 'desc' end ascDesc
@@ -190,9 +225,6 @@ join
 order by fwo.fieldValue1
 ;
 
--- 多組參數，應該也是從sql中查出，由where expression, 找到欄位, 然後再找相依欄位
--- expression 中 externalName有字串的
-
 select *
 from queries
 select *
@@ -200,11 +232,15 @@ from queryFields
 select *
 from operators
 select *
+from expressions
+select *
 from fields
 where tableId='DDC58962-C0AE-4327-9ED9-D9E516244431'
-*/
-select *
-from expressions
+
+-- 多組參數，應該也是從sql中查出，由where expression, 找到欄位, 然後再找相依欄位
+-- expression 中 externalName有字串的
+
+-- 畫面輸入參數
 ;
 with expressList
 as
@@ -222,11 +258,36 @@ as
 	from expressions d
 	join expressList e on e.subExpression2Id=d.expressionId
 )
-select e.*
+select e.para1externalName externalPara
 from expressList e
+where e.para1externalName is not null
+union
+select e.para2externalName externalPara
+from expressList e
+where e.para2externalName is not null
 --join queries q on e.expressionId=q.whereExpressionId
 --where q.queryName=@queryName
-;
 
+;
+with expressList
+as
+(
+	select a.*
+	from expressions a
+	join queries q on a.expressionId=q.whereExpressionId
+	where q.queryName=@queryName
+	union all
+	select b.*
+	from expressions b
+	join expressList c on c.subExpression1Id=b.expressionId
+	union all
+	select d.*
+	from expressions d
+	join expressList e on e.subExpression2Id=d.expressionId
+)
+select *
+from expressList
+;
+*/
 -- 於是，就可以進行計算欄位的處理，例如preTop, preBottom
 

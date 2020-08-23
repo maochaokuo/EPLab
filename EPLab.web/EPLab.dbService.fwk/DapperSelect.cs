@@ -10,8 +10,8 @@ namespace EPLab.dbService
 {
     public class DapperSelect<T> : IDisposable
     {
-        public string sql { get; set; }
-        public DynamicParameters whereParas { get; set; }
+        //public string sql { get; set; }
+        //public DynamicParameters whereParas { get; set; }
         //public DynamicParameters setParas { get; set; }
 
         protected string connS = "";
@@ -20,7 +20,7 @@ namespace EPLab.dbService
 
         public DapperSelect(string connS)
         {
-            whereParas = new DynamicParameters();
+            //whereParas = new DynamicParameters();
             //setParas = new DynamicParameters();
             this.connS = connS;
         }
@@ -33,7 +33,8 @@ namespace EPLab.dbService
             }
             return conn;
         }
-        public List<T> Select()
+        public List<T> Select(string sql
+            , DynamicParameters whereParas = null)
         {
             List<T> ret = null;
             using (var con=GetConn())

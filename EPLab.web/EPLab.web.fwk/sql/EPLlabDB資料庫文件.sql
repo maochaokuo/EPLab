@@ -35,6 +35,6 @@ select
 		--st.name in ('globalEvent')
 		--st.name in ('stateMachineEvent', 'globalEvent')
 		--st.name in ('stateMachine','stateMachineState','stateMachineEvent','stateMachineEvent2State')
-		--st.name in ('stateMachineEvent')--,'globalEvent','stateMachine')
-		st.name in ('tables')
+		st.name in ('operators','expressions','fields')
+		--st.name in ('tables')
 	order by st.name, sc.column_id
