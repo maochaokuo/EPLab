@@ -165,12 +165,19 @@ order by orderByOrder
             dt = d2dt.Select2DataTable(sql, para);
             return dt;
         }
+        protected static string fieldId2para(string fieldId
+            , Dictionary<string, int> whereFieldDict)
+        {
+            string ret = "";
+            //todo (1) !!... fieldId2para
+            return ret;
+        }
         public static string sqlExpression(
             //queryWhereRec theWhereRec, // no need
             string whereExpressId,
             //string para1, // no need
             Dictionary<string, queryWhereRec> whereDict,
-            ref Dictionary<string, string> whereFieldDict
+            ref Dictionary<string, int> whereFieldDict
             )
             //string operatorName
             //, string stringInSourceCode, string isPrefix
@@ -181,6 +188,22 @@ order by orderByOrder
 
             string para1 = "", para2 = "";
 
+            if (!string.IsNullOrWhiteSpace(rec.subExpression1Id))
+                para1 = sqlExpression(rec.subExpression1Id, whereDict, ref whereFieldDict);
+            else if (!string.IsNullOrWhiteSpace(rec.paraField1id))
+                para1 = fieldId2para(rec.paraField1id, whereFieldDict);
+            //else if (!string.IsNullOrWhiteSpace(rec.para2externalName))
+            //    para1 = rec.expressionId;
+            else
+                throw new Exception("para1 not defined!");
+            if (!string.IsNullOrWhiteSpace(rec.subExpression2Id))
+                para2 = sqlExpression(rec.subExpression2Id, whereDict, ref whereFieldDict);
+            else if (!string.IsNullOrWhiteSpace(rec.paraField2id))
+                para2 = fieldId2para(rec.paraField2id, whereFieldDict);
+            else if (!string.IsNullOrWhiteSpace(rec.para2externalName))
+                para2 = rec.expressionId;
+            else
+                throw new Exception("para2 not defined!");
 
             if (rec.paraNum == 2)
                 sql = para1 +" "+ rec.stringInSourceCode +" "+ para2;
@@ -207,6 +230,8 @@ order by orderByOrder
             string sqlOrderJoin = "", orderByFields2query="";
             sqlOrderBy = "";
             sqlOrderWith = "";
+            Dictionary<string, int> fieldDict =
+                new Dictionary<string, int>();
 
             // base part
             baseSqlFormat = @"
@@ -216,6 +241,34 @@ order by orderByOrder
     join expressions e on q.whereExpressionId=e.expressionId
 ";
 
+            // orderBy part
+            DataTable dtOrder = orderByFields(queryName);
+            int i = 0;
+            foreach (DataRow dr in dtOrder.Rows)
+            {
+                i++;
+                string fieldId = dr["fieldId"] + "";
+                string ascDesc = dr["ascDesc"] + "";
+                if (!fieldDict.ContainsKey(fieldId))
+                    fieldDict.Add(fieldId, fieldDict.Count + 1);
+                sqlOrderJoin += string.Format(@"
+    join queryFields qf{0} on qf{0}.queryId=q.queryId and qf{0}.orderByOrder={0}
+    join fieldValues fv{0} on r.rowId=fv{0}.rowId and qf{0}.fieldId=fv{0}.fieldId
+", i);
+                if (i == 1)
+                {
+                    sqlOrderBy = $"order by {orderAlias}.fieldValue1 {ascDesc}";
+                    sqlOrderWith = ", fieldValue1";
+                    orderByFields2query = ", fv1.fieldValue fieldValue1";
+                }
+                else
+                {
+                    sqlOrderBy += $",{orderAlias}.fieldValue{i} {ascDesc}";
+                    sqlOrderWith += $", fieldValue{i}";
+                    orderByFields2query += $", fv{i}.fieldValue fieldValue{i}";
+                }
+            }
+
             // where part
             List<queryWhereRec> whereList = whereConditions(queryName);
             if (whereList == null || whereList.Count <= 0)
@@ -223,8 +276,6 @@ order by orderByOrder
             //todo, add wheres to dictionary
             Dictionary<string, queryWhereRec> whereExpressDict =
                 new Dictionary<string, queryWhereRec>();
-            Dictionary<string, string> whereFieldDict =
-                new Dictionary<string, string>();
             //find whereExpressionId
             string whereExpressId = "";
             queryWhereRec theWhereRec = null;
@@ -265,43 +316,19 @@ order by orderByOrder
             //    if (paraNum.CompareTo("2") != 0)
             //        throw new Exception($"wrong paraNum {paraNum} (case#{caseNo})");
 
-            // undone (1) !!... get where join fields
-            sqlWhereJoin = @"
-    join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
-";
                 // undone (1) !!... where condition is not so easy now
-            string sqlExpr = sqlExpression( whereExpressId, whereExpressDict, ref whereFieldDict);
+            string sqlExpr = sqlExpression( whereExpressId, whereExpressDict, ref fieldDict);
             sqlWhereCond = string.Format(@"
     where q.queryName=@queryName and {0}
 ", sqlExpr);
+            // undone (1) !!... get where join fields by fieldDict
+            sqlWhereJoin = @"
+    join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
+";
             //}
             //else
             //    throw new Exception("where condition not dealing with");
 
-            // orderBy part
-            DataTable dtOrder = orderByFields(queryName);
-            int i = 0;
-            foreach (DataRow dr in dtOrder.Rows)
-            {
-                i++;
-                string ascDesc = dr["ascDesc"] + "";
-                sqlOrderJoin += string.Format(@"
-    join queryFields qf{0} on qf{0}.queryId=q.queryId and qf{0}.orderByOrder={0}
-    join fieldValues fvOrder{0} on r.rowId=fvOrder{0}.rowId and qf{0}.fieldId=fvOrder{0}.fieldId
-", i);
-                if (i == 1)
-                {
-                    sqlOrderBy = $"order by {orderAlias}.fieldValue1 {ascDesc}";
-                    sqlOrderWith = ", fieldValue1";
-                    orderByFields2query = ", fvOrder1.fieldValue fieldValue1";
-                }
-                else
-                {
-                    sqlOrderBy += $",{orderAlias}.fieldValue{i} {ascDesc}";
-                    sqlOrderWith += $", fieldValue{i}";
-                    orderByFields2query += $", fvOrder{i}.fieldValue fieldValue{i}";
-                }
-            }
             // final
             sql = string.Format(baseSqlFormat, orderByFields2query) + sqlWhereJoin + sqlOrderJoin + sqlWhereCond;// + sqlOrderBy;
             return sql;
