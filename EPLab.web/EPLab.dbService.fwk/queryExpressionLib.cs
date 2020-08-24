@@ -166,10 +166,19 @@ order by orderByOrder
             return dt;
         }
         protected static string fieldId2para(string fieldId
-            , Dictionary<string, int> whereFieldDict)
+            , ref Dictionary<string, int> whereFieldDict)
         {
             string ret = "";
-            //todo (1) !!... fieldId2para
+            int fieldNth = 0;
+            // fieldId2para
+            if (!whereFieldDict.ContainsKey(fieldId))
+                fieldNth = whereFieldDict[fieldId];
+            else
+            {
+                fieldNth = whereFieldDict.Count + 1;
+                whereFieldDict.Add(fieldId, fieldNth);
+            }
+            ret = $"fv{fieldNth}.fieldId";
             return ret;
         }
         public static string sqlExpression(
@@ -191,7 +200,7 @@ order by orderByOrder
             if (!string.IsNullOrWhiteSpace(rec.subExpression1Id))
                 para1 = sqlExpression(rec.subExpression1Id, whereDict, ref whereFieldDict);
             else if (!string.IsNullOrWhiteSpace(rec.paraField1id))
-                para1 = fieldId2para(rec.paraField1id, whereFieldDict);
+                para1 = fieldId2para(rec.paraField1id, ref whereFieldDict);
             //else if (!string.IsNullOrWhiteSpace(rec.para2externalName))
             //    para1 = rec.expressionId;
             else
@@ -199,20 +208,20 @@ order by orderByOrder
             if (!string.IsNullOrWhiteSpace(rec.subExpression2Id))
                 para2 = sqlExpression(rec.subExpression2Id, whereDict, ref whereFieldDict);
             else if (!string.IsNullOrWhiteSpace(rec.paraField2id))
-                para2 = fieldId2para(rec.paraField2id, whereFieldDict);
+                para2 = fieldId2para(rec.paraField2id, ref whereFieldDict);
             else if (!string.IsNullOrWhiteSpace(rec.para2externalName))
                 para2 = rec.expressionId;
             else
                 throw new Exception("para2 not defined!");
 
             if (rec.paraNum == 2)
-                sql = para1 +" "+ rec.stringInSourceCode +" "+ para2;
+                sql =$"({para1} {rec.stringInSourceCode} {para2})";
             else
             {
                 if (rec.isPrefix )//== "1")
-                    sql = rec.stringInSourceCode +" "+ para1;
+                    sql =$"({rec.stringInSourceCode} {para1})";
                 else
-                    sql = para1 +" "+ rec.stringInSourceCode;
+                    sql =$"({para1} {rec.stringInSourceCode})";
             }
             return sql;
         }
@@ -243,10 +252,10 @@ order by orderByOrder
 
             // orderBy part
             DataTable dtOrder = orderByFields(queryName);
-            int i = 0;
+            int orderFieldNum = 0;
             foreach (DataRow dr in dtOrder.Rows)
             {
-                i++;
+                orderFieldNum++;
                 string fieldId = dr["fieldId"] + "";
                 string ascDesc = dr["ascDesc"] + "";
                 if (!fieldDict.ContainsKey(fieldId))
@@ -254,8 +263,8 @@ order by orderByOrder
                 sqlOrderJoin += string.Format(@"
     join queryFields qf{0} on qf{0}.queryId=q.queryId and qf{0}.orderByOrder={0}
     join fieldValues fv{0} on r.rowId=fv{0}.rowId and qf{0}.fieldId=fv{0}.fieldId
-", i);
-                if (i == 1)
+", orderFieldNum);
+                if (orderFieldNum == 1)
                 {
                     sqlOrderBy = $"order by {orderAlias}.fieldValue1 {ascDesc}";
                     sqlOrderWith = ", fieldValue1";
@@ -263,9 +272,9 @@ order by orderByOrder
                 }
                 else
                 {
-                    sqlOrderBy += $",{orderAlias}.fieldValue{i} {ascDesc}";
-                    sqlOrderWith += $", fieldValue{i}";
-                    orderByFields2query += $", fv{i}.fieldValue fieldValue{i}";
+                    sqlOrderBy += $",{orderAlias}.fieldValue{orderFieldNum} {ascDesc}";
+                    sqlOrderWith += $", fieldValue{orderFieldNum}";
+                    orderByFields2query += $", fv{orderFieldNum}.fieldValue fieldValue{orderFieldNum}";
                 }
             }
 
@@ -322,9 +331,15 @@ order by orderByOrder
     where q.queryName=@queryName and {0}
 ", sqlExpr);
             // undone (1) !!... get where join fields by fieldDict
-            sqlWhereJoin = @"
-    join fieldValues fvWhere on r.rowId=fvWhere.rowId and fvWhere.fieldId=e.paraField1id
+            foreach(KeyValuePair<string, int> rec in fieldDict)
+            {
+                if (rec.Value > orderFieldNum)
+                {
+                    sqlWhereJoin += $@"
+    join fieldValues fv{rec.Value} on r.rowId=fvWhere.rowId and fv{rec.Value}.fieldId={rec.Key}
 ";
+                }
+            }
             //}
             //else
             //    throw new Exception("where condition not dealing with");
