@@ -1,62 +1,50 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
 
 namespace EPLab.dbService
 {
-    public class Repository<T> : IDisposable
+    public class DapperSelect<T> : IDisposable
     {
+        //public string sql { get; set; }
+        //public DynamicParameters whereParas { get; set; }
+        //public DynamicParameters setParas { get; set; }
+
         protected string connS = "";
         protected SqlConnection conn = null;
         private bool disposedValue;
 
-        public Repository(string connS)
+        public DapperSelect(string connS)
         {
+            //whereParas = new DynamicParameters();
+            //setParas = new DynamicParameters();
             this.connS = connS;
         }
         protected IDbConnection GetConn()
         {
-            if (conn==null || conn.State!=ConnectionState.Open)
+            if (conn == null || conn.State != ConnectionState.Open)
             {
                 conn = new SqlConnection(connS);
                 conn.Open();
             }
             return conn;
         }
-        public virtual List<T> GetAll()
+        public List<T> Select<T>(string sql
+            , DynamicParameters whereParas )
         {
-            List<T> ret = null; 
+            List<T> ret = null;
+            using (var con=GetConn())
+            {
+                var qry = con.Query<T>(sql, whereParas, commandType:CommandType.Text);
+                if (qry.Any())
+                    ret = qry.ToList();
+            }
             return ret;
         }
-        public virtual T GetOne(Guid gid)
-        {
-            T ret = default(T);
-            return ret;
-        }
-        public virtual string Insert(T obj)
-        {
-            string ret = "";
-            return ret;
-        }
-        public virtual string Update(T obj)
-        {
-            string ret = "";
-            return ret;
-        }
-        public virtual string Delete(T obj)
-        {
-            string ret = "";
-
-            return ret;
-        }
-        public virtual string DeleteByTag(string tag)
-        {
-            string ret = "";
-
-            return ret;
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -64,8 +52,6 @@ namespace EPLab.dbService
                 if (disposing)
                 {
                     // TO DO: dispose managed state (managed objects)
-                    conn.Close();
-                    conn = null;
                 }
 
                 // TO DO: free unmanaged resources (unmanaged objects) and override finalizer
@@ -75,7 +61,7 @@ namespace EPLab.dbService
         }
 
         // // TO DO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~Repository()
+        // ~DapperLib()
         // {
         //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         //     Dispose(disposing: false);

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading;
 
 namespace EPLab.dbService.fwk
 {
@@ -13,11 +14,13 @@ namespace EPLab.dbService.fwk
     {
         protected string connS = "";
         protected AdoNet2DataTable d2dt = null;
+        protected EFselect efs = null;
 
         public queryExpressionLib(string connS)
         {
             this.connS = connS;
             d2dt = new AdoNet2DataTable(connS);
+            efs = new EFselect(connS);
         }
         protected string MFVIsubSql(int nth)
         {
@@ -120,11 +123,18 @@ join operators o on e.operatorId=o.operatorId
 left join fields f1 on e.paraField1id=f1.fieldId
 left join fields f2 on e.paraField2id=f2.fieldId
 ";
-            DapperSelect<queryWhereRec> dp = new
-                DapperSelect<queryWhereRec>(connS);
-            DynamicParameters dpara = new DynamicParameters();
-            dpara.Add("@queryName", queryName, DbType.String);
-            ret = dp.Select(sql, dpara);
+            var qry = efs.select<queryWhereRec>(sql
+                , new SqlParameter("queryName", queryName));
+            Thread.Sleep(0);
+            //undone !!...(1) use EF instead
+            throw new Exception("use EF instead");
+            //DapperSelect<queryWhereRec> dp = new
+            //    DapperSelect<queryWhereRec>(connS);
+            //DynamicParameters dpara = new DynamicParameters();
+            //dpara.Add("@queryName", queryName, DbType.String);
+            //var qry = dp.Select<queryWhereRec>(sql, dpara);
+            //if (qry.Any())
+            //    ret = qry.ToList();
             return ret;
             // @queryName passed in 
             //List<SqlParameter> para = new List<SqlParameter>

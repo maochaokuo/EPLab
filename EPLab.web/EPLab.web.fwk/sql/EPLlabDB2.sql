@@ -55,7 +55,7 @@ join fieldsMustHaveValue fmhv on fmhv.mustHaveFieldId=f.fieldId
 left join fieldValues fv on fv.rowId=r.rowId and fv.fieldId=fmhv.mustHaveFieldId
 where fv.fieldValueId is null
 ;
-*/
+
 select *
 from queries
 select expressionId, expressionDesc, subExpression1Id, subExpression2Id
@@ -68,6 +68,7 @@ select *
 from fields
 where tableId='DDC58962-C0AE-4327-9ED9-D9E516244431'
 order by defaultOrder
+*/
 -- 若確定沒有，則查出所有符合資料的rows，並套上order by條件
 -- where條件
 ;

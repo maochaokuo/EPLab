@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace EPlab.model.fwk
 {
+    [Serializable]
     public class queryWhereRec
     {
         public bool isWhereExpressId { get; set; }
