@@ -10,17 +10,17 @@ namespace EPlab.model.fwk
     public class queryWhereRec
     {
         public bool isWhereExpressId { get; set; }
-        public string expressionId { get; set; }
+        public Guid expressionId { get; set; }
         public string operatorName { get; set; }
         public string stringInSourceCode { get; set; }
         public bool isPrefix { get; set; }
         public int paraNum { get; set; }
-        public string paraField1id { get; set; }
+        public Guid? paraField1id { get; set; }
         public string field1Name { get; set; }
-        public string paraField2id { get; set; }
+        public Guid? paraField2id { get; set; }
         public string field2Name { get; set; }
         public string para2externalName { get; set; }
-        public string subExpression1Id { get; set; }
-        public string subExpression2Id { get; set; }
+        public Guid? subExpression1Id { get; set; }
+        public Guid? subExpression2Id { get; set; }
     }
 }

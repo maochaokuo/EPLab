@@ -1,5 +1,35 @@
 use EPLlabDB
 
+declare @queryName varchar(99)='QohlcBydate'
+;
+with expressList
+as
+(
+	select a.*, cast (1 as bit) isWhereExpressId
+	from expressions a
+	join queries q on a.expressionId=q.whereExpressionId
+	where q.queryName=@queryName
+	union all
+	select b.*, cast (0 as bit) isWhereExpressId
+	from expressions b
+	join expressList c on c.subExpression1Id=b.expressionId
+	where c.subExpression1Id is not null
+	union all
+	select d.*, cast (0 as bit) isWhereExpressId
+	from expressions d
+	join expressList e on e.subExpression2Id=d.expressionId
+	where e.subExpression2Id is not null
+)
+select e.isWhereExpressId,
+	e.expressionId, o.operatorName, o.stringInSourceCode, o.isPrefix, o.paraNum
+	, e.paraField1id, f1.fieldName field1Name
+	, e.paraField2id, f2.fieldName field2Name
+	, e.para2externalName, e.subExpression1Id, e.subExpression2Id
+from expressList e 
+join operators o on e.operatorId=o.operatorId
+left join fields f1 on e.paraField1id=f1.fieldId
+left join fields f2 on e.paraField2id=f2.fieldId
+
 /*
 declare @queryName varchar(99)='QohlcBydate'
 declare @dealdate varchar(99)='20180629'

@@ -98,17 +98,17 @@ where fv.fieldValueId is null
 with expressList
 as
 (
-	select a.*, 1 isWhereExpressId
+	select a.*, cast (1 as bit) isWhereExpressId
 	from expressions a
 	join queries q on a.expressionId=q.whereExpressionId
 	where q.queryName=@queryName
 	union all
-	select b.*, 0 isWhereExpressId
+	select b.*, cast (0 as bit) isWhereExpressId
 	from expressions b
 	join expressList c on c.subExpression1Id=b.expressionId
 	where c.subExpression1Id is not null
 	union all
-	select d.*, 0 isWhereExpressId
+	select d.*, cast (0 as bit) isWhereExpressId
 	from expressions d
 	join expressList e on e.subExpression2Id=d.expressionId
 	where e.subExpression2Id is not null
@@ -123,18 +123,17 @@ join operators o on e.operatorId=o.operatorId
 left join fields f1 on e.paraField1id=f1.fieldId
 left join fields f2 on e.paraField2id=f2.fieldId
 ";
-            var qry = efs.select<queryWhereRec>(sql
-                , new SqlParameter("queryName", queryName));
-            Thread.Sleep(0);
-            //undone !!...(1) use EF instead
-            throw new Exception("use EF instead");
-            //DapperSelect<queryWhereRec> dp = new
-            //    DapperSelect<queryWhereRec>(connS);
-            //DynamicParameters dpara = new DynamicParameters();
-            //dpara.Add("@queryName", queryName, DbType.String);
-            //var qry = dp.Select<queryWhereRec>(sql, dpara);
-            //if (qry.Any())
-            //    ret = qry.ToList();
+            //EF hit as well
+            //var qry = efs.select<queryWhereRec>(sql
+            //    , new SqlParameter("queryName", queryName));
+
+            DapperSelect<queryWhereRec> dp = new
+                DapperSelect<queryWhereRec>(connS);
+            DynamicParameters dpara = new DynamicParameters();
+            dpara.Add("@queryName", queryName, DbType.String);
+            var qry = dp.Select<queryWhereRec>(sql, dpara);
+            if (qry.Any())
+                ret = qry.ToList();
             return ret;
             // @queryName passed in 
             //List<SqlParameter> para = new List<SqlParameter>
@@ -181,13 +180,14 @@ order by orderByOrder
             string ret = "";
             int fieldNth = 0;
             // fieldId2para
-            if (!whereFieldDict.ContainsKey(fieldId))
+            if (whereFieldDict.ContainsKey(fieldId))
                 fieldNth = whereFieldDict[fieldId];
             else
             {
                 fieldNth = whereFieldDict.Count + 1;
                 whereFieldDict.Add(fieldId, fieldNth);
             }
+            //ret = $"fv{fieldNth}.fieldValue";
             ret = $"fv{fieldNth}.fieldId";
             return ret;
         }
@@ -207,20 +207,20 @@ order by orderByOrder
 
             string para1 = "", para2 = "";
 
-            if (!string.IsNullOrWhiteSpace(rec.subExpression1Id))
-                para1 = sqlExpression(rec.subExpression1Id, whereDict, ref whereFieldDict);
-            else if (!string.IsNullOrWhiteSpace(rec.paraField1id))
-                para1 = fieldId2para(rec.paraField1id, ref whereFieldDict);
+            if (!string.IsNullOrWhiteSpace(rec.subExpression1Id.ToString()))
+                para1 = sqlExpression(rec.subExpression1Id.ToString(), whereDict, ref whereFieldDict);
+            else if (!string.IsNullOrWhiteSpace(rec.paraField1id.ToString()))
+                para1 = fieldId2para(rec.paraField1id.ToString(), ref whereFieldDict);
             //else if (!string.IsNullOrWhiteSpace(rec.para2externalName))
             //    para1 = rec.expressionId;
             else
                 throw new Exception("para1 not defined!");
-            if (!string.IsNullOrWhiteSpace(rec.subExpression2Id))
-                para2 = sqlExpression(rec.subExpression2Id, whereDict, ref whereFieldDict);
-            else if (!string.IsNullOrWhiteSpace(rec.paraField2id))
-                para2 = fieldId2para(rec.paraField2id, ref whereFieldDict);
+            if (!string.IsNullOrWhiteSpace(rec.subExpression2Id.ToString()))
+                para2 = sqlExpression(rec.subExpression2Id.ToString(), whereDict, ref whereFieldDict);
+            else if (!string.IsNullOrWhiteSpace(rec.paraField2id.ToString()))
+                para2 = fieldId2para(rec.paraField2id.ToString(), ref whereFieldDict);
             else if (!string.IsNullOrWhiteSpace(rec.para2externalName))
-                para2 = rec.expressionId;
+                para2 = rec.expressionId.ToString();
             else
                 throw new Exception("para2 not defined!");
 
@@ -292,7 +292,7 @@ order by orderByOrder
             List<queryWhereRec> whereList = whereConditions(queryName);
             if (whereList == null || whereList.Count <= 0)
                 throw new Exception("bad where condition");
-            //todo, add wheres to dictionary
+            // add wheres to dictionary
             Dictionary<string, queryWhereRec> whereExpressDict =
                 new Dictionary<string, queryWhereRec>();
             //find whereExpressionId
@@ -305,10 +305,10 @@ order by orderByOrder
                     if (!string.IsNullOrWhiteSpace(whereExpressId)
                              && theWhereRec != null)
                         throw new Exception("where expression id already assigned");
-                    whereExpressId = rec.expressionId;
+                    whereExpressId = rec.expressionId.ToString();
                     theWhereRec = rec;
                 }
-                whereExpressDict.Add(rec.expressionId, rec);
+                whereExpressDict.Add(rec.expressionId.ToString(), rec);
             }
             //get expression by whereExpressionId
             //DataRow drWhere = whereList.Rows[0];
@@ -335,12 +335,12 @@ order by orderByOrder
             //    if (paraNum.CompareTo("2") != 0)
             //        throw new Exception($"wrong paraNum {paraNum} (case#{caseNo})");
 
-                // undone (1) !!... where condition is not so easy now
+                // undone (2) !!... where condition is not so easy now
             string sqlExpr = sqlExpression( whereExpressId, whereExpressDict, ref fieldDict);
             sqlWhereCond = string.Format(@"
     where q.queryName=@queryName and {0}
 ", sqlExpr);
-            // undone (1) !!... get where join fields by fieldDict
+            // undone (2) !!... get where join fields by fieldDict
             foreach(KeyValuePair<string, int> rec in fieldDict)
             {
                 if (rec.Value > orderFieldNum)
@@ -462,7 +462,7 @@ select e.para2externalName externalPara
 from expressList e
 where e.para2externalName is not null
 ");
-            //undone (1)!!... formParameters
+            //undone (3)!!... formParameters
             return ret;
         }
     }

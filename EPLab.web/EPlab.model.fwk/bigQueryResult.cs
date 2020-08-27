@@ -17,13 +17,13 @@ namespace EPlab.model.fwk
         public string fromDataTable(DataTable dt)
         {
             string ret = "";
-            //todo !!...(2)bigQueryResult fromDataTable
+            //todo !!...(5)bigQueryResult fromDataTable
             return ret;
         }
         public DataTable toDataTable()
         {
             DataTable ret = null;
-            //todo !!...(2)bigQueryResult toDataTable
+            //todo !!...(5)bigQueryResult toDataTable
             return ret;
         }
         protected void init()

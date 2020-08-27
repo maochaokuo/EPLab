@@ -28,13 +28,13 @@ select
 	 where tc.CONSTRAINT_TYPE = 'PRIMARY KEY') p 
 		on p.TABLE_NAME=st.name and p.COLUMN_NAME=sc.name
     where 
-		--st.name in ('fieldValues')
+		st.name in ('expressions')
 		--st.name in ('allIdHistory')
 		--st.name in ('projectVersion')
 		--st.name in ('systemEntity', 'systems', 'systemTemplate')
 		--st.name in ('globalEvent')
 		--st.name in ('stateMachineEvent', 'globalEvent')
 		--st.name in ('stateMachine','stateMachineState','stateMachineEvent','stateMachineEvent2State')
-		st.name in ('operators','expressions','fields')
+		--st.name in ('operators','expressions','fields')
 		--st.name in ('tables')
 	order by st.name, sc.column_id

@@ -20,7 +20,7 @@ namespace EPlab.model.fwk
             Guid? expId = currentQuery.whereExpressionId;
             if (expId == null)
                 return ret;
-            expressions expr = null;//todo !!... (1) get by expId
+            expressions expr = null;//todo !!... (3) get by expId
             if (!string.IsNullOrWhiteSpace(expr.para1externalName))
                 ret.Add(expr.para1externalName.Trim());
             if (!string.IsNullOrWhiteSpace(expr.para2externalName))
