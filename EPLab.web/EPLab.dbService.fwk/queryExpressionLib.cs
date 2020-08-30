@@ -78,7 +78,7 @@ where fv.fieldValueId is null
             dt = d2dt.Select2DataTable(sql, para);
             return dt;
         }
-        public List<queryWhereRec> whereConditions(string queryName)
+        protected List<queryWhereRec> whereConditions(string queryName)
         {
             List<queryWhereRec> ret=null;
             string sql; 
@@ -148,7 +148,7 @@ left join fields f2 on e.paraField2id=f2.fieldId
             //dt = d2dt.Select2DataTable(sql, para);
             //return dt;
         }
-        public DataTable orderByFields(string queryName)
+        protected DataTable orderByFields(string queryName)
         {
             DataTable dt;
             string sql = string.Format(@"
@@ -191,7 +191,7 @@ order by orderByOrder
             //ret = $"fv{fieldNth}.fieldId";
             return ret;
         }
-        public static string sqlExpression(
+        protected static string sqlExpression(
             //queryWhereRec theWhereRec, // no need
             string whereExpressId,
             //string para1, // no need
@@ -251,7 +251,7 @@ order by orderByOrder
 
             return ret;
         }
-        public string rowsSql(string queryName, string orderAlias
+        protected string rowsSql(string queryName, string orderAlias
             , out string sqlOrderBy, out string sqlOrderWith)
         {
             string sql="", baseSqlFormat;
@@ -366,7 +366,7 @@ order by orderByOrder
             sql = string.Format(baseSqlFormat, orderByFields2query) + sqlWhereJoin + sqlOrderJoin + sqlWhereCond;// + sqlOrderBy;
             return sql;
         }
-        public DataTable displayFields(string queryName)
+        protected DataTable displayFields(string queryName)
         {
             DataTable dt;
             string sql = string.Format(@"
@@ -478,7 +478,6 @@ where e.para2externalName is not null
             var qry = dp.Select<string>(sql, dpara);
             if (qry.Any())
                 ret = qry.ToList();
-            return ret;
             return ret;
         }
     }

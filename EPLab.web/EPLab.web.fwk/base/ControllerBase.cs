@@ -11,6 +11,7 @@ namespace EPLab.web.fwk.Controllers
 {
 	public class ControllerBase : Controller
 	{
+		protected string connS = "";
 		protected string connEPLabDB = "";
 		protected dropdownOptions ddO = null;
 		protected const string PageStatus = "pageStatus";
@@ -19,7 +20,8 @@ namespace EPLab.web.fwk.Controllers
 		protected readonly string modelMessage;
 		public ControllerBase(string modelName, string modelMessage)
 		{
-			connEPLabDB = ConfigurationManager.ConnectionStrings["EPlabContext"].ConnectionString;
+			connS = ConfigurationManager.ConnectionStrings["EPlabContext"].ConnectionString;
+			connEPLabDB = connS;
 			ddO = new dropdownOptions(connEPLabDB);
 			this.modelName = modelName;
 			this.modelMessage = modelMessage;

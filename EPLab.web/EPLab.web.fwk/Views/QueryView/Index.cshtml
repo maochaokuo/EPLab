@@ -35,6 +35,42 @@
             @Html.DropDownListFor(m => m.queryIdselected, (SelectList)ViewBag.queryIdselected, "", new { @id = "queryIdselected", @class = "form-control disabled", @readonly = "readonly" })
         </div>
     </div>
+    @if (Model.queryPara != null)
+    {
+        <div class="row">
+            <div class="col-2">
+                parameters
+            </div>
+            <div class="col-10">
+                <table class="table table-borderless table-sm">
+                    @foreach (string para1 in Model.queryPara)
+                    {
+                        <tr>
+                            <td>
+                                @para1
+                            </td>
+                            <td>
+                                <input type="text" id="para_@para1" name="para_@para1" value="" />
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-10">
+            <button onclick="$('#cmd').val('execute');$('form').submit()"
+                    class="btn btn-primary">
+                Execute
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">&nbsp; </div>
+    </div>
+    @* todo (1) !!... result of a datatable *@
 </div>
 }
 

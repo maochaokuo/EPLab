@@ -1,6 +1,7 @@
 ﻿using EPlab.entity.fwk;
 using EPlab.model.fwk;
 using EPLab.dbService;
+using EPLab.dbService.fwk;
 using Newtonsoft.Json;
 using System;
 using System.Data;
@@ -38,12 +39,21 @@ namespace EPLab.web.fwk.Controllers
         {
             ActionResult ar;
             viewModel.clearMsg();
-            switch(viewModel.cmd)
+            queryExpressionLib qel = new queryExpressionLib(connS);
+            switch (viewModel.cmd)
             {
                 case "selectChange":
-                    //todo (1) !!...load parameters
-                    //todo (1) then type in parameter to execute query
+                    // load parameters
+                    viewModel.queryPara = qel.formParameters(viewModel.currentQuery.queryName);
                     //todo (2) parameter like dealdate can be a list as well
+                    ar = View(viewModel);
+                    break;
+                case "execute":
+                    //todo (1) then type in parameter to execute query
+                    string sql = qel.finalSql4query(viewModel.currentQuery.queryName);
+                    //DataTable dt = ... 
+                        // todo !!...(1)
+                    //viewModel.queryResult = dt;
                     ar = View(viewModel);
                     break;
                 default:

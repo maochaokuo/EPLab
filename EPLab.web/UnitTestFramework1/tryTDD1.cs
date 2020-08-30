@@ -13,16 +13,16 @@ namespace UnitTestFramework1
         {
             connS = "data source=.;initial catalog=EPLlabDB;persist security info=True;user id=sa;password=sa;MultipleActiveResultSets=True;App=EntityFramework";
         }
-        [TestMethod]
-        public void generate1stQuery()
-        {
-            queryExpressionLib qel = new queryExpressionLib(connS);
-            string sqlOrderBy = "";
-            string sqlOrderWith = "";
-            string sql = qel.rowsSql("QohlcBydate", "fwo"
-                , out sqlOrderBy, out sqlOrderWith);
-            Thread.Sleep(0);
-        }
+        //[TestMethod]
+        //public void generate1stQuery()
+        //{
+        //    queryExpressionLib qel = new queryExpressionLib(connS);
+        //    string sqlOrderBy = "";
+        //    string sqlOrderWith = "";
+        //    string sql = qel.rowsSql("QohlcBydate", "fwo"
+        //        , out sqlOrderBy, out sqlOrderWith);
+        //    Thread.Sleep(0);
+        //}
         [TestMethod]
         public void finalSql4query()
         {
