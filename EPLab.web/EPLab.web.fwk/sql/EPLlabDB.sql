@@ -1,6 +1,119 @@
 use EPLlabDB
 
 declare @queryName varchar(99)='QohlcBydate'
+declare @dealdate varchar(99)='20180629'
+declare @lowestOpen varchar(99)='10600'
+
+--select f.fieldName, qf.*
+--from queryFields qf
+--join queries q on q.queryId=qf.queryId
+--join fields f on qf.fieldId=f.fieldId
+--where q.queryName=@queryName
+--order by displayOrder
+;
+
+with rowsWhereOrder(rowId, fieldValue1)
+as
+(
+    
+    select r.rowId, fv1.fieldValue fieldValue1
+    from [rows] r
+    join queries q on r.tableId=q.tableId
+    join expressions e on q.whereExpressionId=e.expressionId
+
+    join fieldValues fv2 on r.rowId=fv2.rowId and fv2.fieldId='b205442e-d2e5-48da-be28-5b5a23aa0dcc'
+
+    join fieldValues fv3 on r.rowId=fv3.rowId and fv3.fieldId='9e7a1a9f-e8a6-4c39-8790-6bd5a263f623'
+
+    join fieldValues fv4 on r.rowId=fv4.rowId and fv4.fieldId='2593a7b0-29ba-45d8-a5f7-c112596a2d5b'
+
+    join queryFields qf1 on qf1.queryId=q.queryId and qf1.orderByOrder=1
+    join fieldValues fv1 on r.rowId=fv1.rowId and qf1.fieldId=fv1.fieldId
+
+    where q.queryName=@queryName and ((fv2.fieldValue = @dealdate) and ((fv3.fieldValue > @lowestOpen) or (fv3.fieldValue <= fv4.fieldValue)))
+
+)
+
+select fwo.rowId, f1.fieldValue [dealtime], f2.fieldValue [open], f3.fieldValue [high], f4.fieldValue [low], f5.fieldValue [close], f6.fieldValue [volume], f7.fieldValue [dealmonth], f8.fieldValue [section]
+from rowsWhereOrder fwo
+
+join 
+(
+	select fv.rowId, fv.fieldValue
+	from queries q
+	join queryFields qf on qf.queryId=q.queryId and q.queryName=@queryName
+		and qf.displayOrder=1
+	join fieldValues fv on fv.fieldId=qf.fieldId
+) f1 on fwo.rowId=f1.rowId
+
+join 
+(
+	select fv.rowId, fv.fieldValue
+	from queries q
+	join queryFields qf on qf.queryId=q.queryId and q.queryName=@queryName
+		and qf.displayOrder=2
+	join fieldValues fv on fv.fieldId=qf.fieldId
+) f2 on fwo.rowId=f2.rowId
+
+join 
+(
+	select fv.rowId, fv.fieldValue
+	from queries q
+	join queryFields qf on qf.queryId=q.queryId and q.queryName=@queryName
+		and qf.displayOrder=3
+	join fieldValues fv on fv.fieldId=qf.fieldId
+) f3 on fwo.rowId=f3.rowId
+
+join 
+(
+	select fv.rowId, fv.fieldValue
+	from queries q
+	join queryFields qf on qf.queryId=q.queryId and q.queryName=@queryName
+		and qf.displayOrder=4
+	join fieldValues fv on fv.fieldId=qf.fieldId
+) f4 on fwo.rowId=f4.rowId
+
+join 
+(
+	select fv.rowId, fv.fieldValue
+	from queries q
+	join queryFields qf on qf.queryId=q.queryId and q.queryName=@queryName
+		and qf.displayOrder=5
+	join fieldValues fv on fv.fieldId=qf.fieldId
+) f5 on fwo.rowId=f5.rowId
+
+join 
+(
+	select fv.rowId, fv.fieldValue
+	from queries q
+	join queryFields qf on qf.queryId=q.queryId and q.queryName=@queryName
+		and qf.displayOrder=6
+	join fieldValues fv on fv.fieldId=qf.fieldId
+) f6 on fwo.rowId=f6.rowId
+
+join 
+(
+	select fv.rowId, fv.fieldValue
+	from queries q
+	join queryFields qf on qf.queryId=q.queryId and q.queryName=@queryName
+		and qf.displayOrder=7
+	join fieldValues fv on fv.fieldId=qf.fieldId
+) f7 on fwo.rowId=f7.rowId
+
+join 
+(
+	select fv.rowId, fv.fieldValue
+	from queries q
+	join queryFields qf on qf.queryId=q.queryId and q.queryName=@queryName
+		and qf.displayOrder=8
+	join fieldValues fv on fv.fieldId=qf.fieldId
+) f8 on fwo.rowId=f8.rowId
+order by fwo.fieldValue1 asc
+/*
+select *
+from fieldValues
+
+declare @queryName varchar(99)='QohlcBydate'
 ;
 with expressList
 as
@@ -30,7 +143,6 @@ join operators o on e.operatorId=o.operatorId
 left join fields f1 on e.paraField1id=f1.fieldId
 left join fields f2 on e.paraField2id=f2.fieldId
 
-/*
 declare @queryName varchar(99)='QohlcBydate'
 declare @dealdate varchar(99)='20180629'
 

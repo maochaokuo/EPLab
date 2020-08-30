@@ -187,8 +187,8 @@ order by orderByOrder
                 fieldNth = whereFieldDict.Count + 1;
                 whereFieldDict.Add(fieldId, fieldNth);
             }
-            //ret = $"fv{fieldNth}.fieldValue";
-            ret = $"fv{fieldNth}.fieldId";
+            ret = $"fv{fieldNth}.fieldValue";
+            //ret = $"fv{fieldNth}.fieldId";
             return ret;
         }
         public static string sqlExpression(
@@ -206,11 +206,15 @@ order by orderByOrder
             queryWhereRec rec = whereDict[whereExpressId];
 
             string para1 = "", para2 = "";
+            bool needQuote = false;
 
             if (!string.IsNullOrWhiteSpace(rec.subExpression1Id.ToString()))
                 para1 = sqlExpression(rec.subExpression1Id.ToString(), whereDict, ref whereFieldDict);
             else if (!string.IsNullOrWhiteSpace(rec.paraField1id.ToString()))
+            {
                 para1 = fieldId2para(rec.paraField1id.ToString(), ref whereFieldDict);
+                needQuote = true;
+            }
             //else if (!string.IsNullOrWhiteSpace(rec.para2externalName))
             //    para1 = rec.expressionId;
             else
@@ -220,7 +224,13 @@ order by orderByOrder
             else if (!string.IsNullOrWhiteSpace(rec.paraField2id.ToString()))
                 para2 = fieldId2para(rec.paraField2id.ToString(), ref whereFieldDict);
             else if (!string.IsNullOrWhiteSpace(rec.para2externalName))
-                para2 = rec.expressionId.ToString();
+            {
+                para2 ="@"+ rec.para2externalName;
+                //if (needQuote)
+                //    para2 = $"'{rec.expressionId.ToString()}'";
+                //else
+                //    para2 = rec.expressionId.ToString();
+            }
             else
                 throw new Exception("para2 not defined!");
 
@@ -346,7 +356,7 @@ order by orderByOrder
                 if (rec.Value > orderFieldNum)
                 {
                     sqlWhereJoin += $@"
-    join fieldValues fv{rec.Value} on r.rowId=fvWhere.rowId and fv{rec.Value}.fieldId={rec.Key}
+    join fieldValues fv{rec.Value} on r.rowId=fv{rec.Value}.rowId and fv{rec.Value}.fieldId='{rec.Key}'
 ";
                 }
             }
