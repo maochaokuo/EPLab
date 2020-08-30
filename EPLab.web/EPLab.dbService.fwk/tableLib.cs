@@ -24,15 +24,15 @@ namespace EPLab.dbService
                 return qry;
             }
         }
-        public List<T> Query<T>(string sql
-            , DynamicParameters paras)
-        {
-            using (var con = GetConn())
-            {
-                var qry = con.Query<T>(sql, paras).ToList();
-                return qry;
-            }
-        }
+        //public List<T> Query<T>(string sql
+        //    , DynamicParameters paras)
+        //{
+        //    using (var con = GetConn())
+        //    {
+        //        var qry = con.Query<T>(sql, paras).ToList();
+        //        return qry;
+        //    }
+        //}
         public override tables GetOne(Guid gid)
         {
             using (var con = GetConn())

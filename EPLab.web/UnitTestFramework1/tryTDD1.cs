@@ -28,7 +28,6 @@ namespace UnitTestFramework1
         {
             queryExpressionLib qel = new queryExpressionLib(connS);
             string sql = qel.finalSql4query("QohlcBydate");
-            //undone (1)!!... need test finalSql4query
             Thread.Sleep(0);
         }
     }

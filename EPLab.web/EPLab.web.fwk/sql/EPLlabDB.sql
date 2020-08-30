@@ -1,5 +1,20 @@
 use EPLlabDB
 
+select r.*, a.createtime, a.allIdHistoryId
+from [rows] r
+left join allIdHistory a on r.rowId=a.uid
+order by a.allIdHistoryId
+
+select *
+from queries
+
+/*
+select *
+from domains
+
+select *
+from allIdHistory
+
 declare @queryName varchar(99)='QohlcBydate'
 declare @dealdate varchar(99)='20180629'
 declare @lowestOpen varchar(99)='10600'
@@ -109,7 +124,7 @@ join
 	join fieldValues fv on fv.fieldId=qf.fieldId
 ) f8 on fwo.rowId=f8.rowId
 order by fwo.fieldValue1 asc
-/*
+
 select *
 from fieldValues
 

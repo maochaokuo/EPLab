@@ -29,8 +29,8 @@ select
 		on p.TABLE_NAME=st.name and p.COLUMN_NAME=sc.name
     where 
 		--st.name in ('expressions')
-		st.name in ('fieldValues')
-		--st.name in ('projectVersion')
+		--st.name in ('fieldValues')
+		st.name in ('queries')
 		--st.name in ('systemEntity', 'systems', 'systemTemplate')
 		--st.name in ('globalEvent')
 		--st.name in ('stateMachineEvent', 'globalEvent')

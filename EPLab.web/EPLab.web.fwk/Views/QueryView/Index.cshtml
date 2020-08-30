@@ -1,4 +1,6 @@
-﻿
+﻿@using EPlab.model.fwk
+@model EPlab.model.fwk.queryViewViewModel
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,3 +8,50 @@
 
 <h2>Query View</h2>
 
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "geform" }))
+{
+    @Html.HiddenFor(m => m.cmd, new { id = "cmd" })
+    @Html.HiddenFor(m => m.singleSelect, new { id = "singleSelect" })
+    if (!string.IsNullOrWhiteSpace(Model.errorMsg))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.errorMsg
+        </div>
+    }
+    if (!string.IsNullOrWhiteSpace(Model.successMsg))
+    {
+        <div class="alert alert-success" role="alert">
+            @Model.successMsg
+        </div>
+    }
+<div class="container">
+    @Html.HiddenFor(m => m.currentQuery.queryId, new { id = "queryId" })
+    @Html.HiddenFor(m => m.currentQuery.queryName, new { id = "queryName" })
+    <div class="row">
+        <div class="col-2">
+            queries
+        </div>
+        <div class="col-4">
+            @Html.DropDownListFor(m => m.queryIdselected, (SelectList)ViewBag.queryIdselected, "", new { @id = "queryIdselected", @class = "form-control disabled", @readonly = "readonly" })
+        </div>
+    </div>
+</div>
+}
+
+<script>
+    var herror = $('#errorMsg').val();
+    var hmessage = $('#successMsg').val();
+    if (typeof (herror) !== 'undefined' && herror.length > 0)
+        $.notify({ message: herror }, { type: 'danger' });
+    if (typeof (hmessage) !== 'undefined' && hmessage.length > 0)
+        $.notify({ message: hmessage }, { type: 'success' });
+
+    $('#queryIdselected').change(function () {
+        $('#cmd').val('selectChange');
+        $('#queryId').val($('#queryIdselected').val() );
+        $('#queryName').val($("#queryIdselected option:selected").text() );
+        $('form').submit();
+        console.log('changed');
+    });
+    //$('#query2select').val();
+</script>

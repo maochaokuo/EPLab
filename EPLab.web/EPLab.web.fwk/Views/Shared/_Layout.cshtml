@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @*@Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/ckeditor")
-    @Scripts.Render("~/bundles/bootstrapnotify")*@
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/ckeditor")
+        @Scripts.Render("~/bundles/bootstrapnotify")*@
     <link rel="stylesheet" href="~/Content/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Content/css/site.css" />
+    <script src="~/Content/lib/jquery/dist/jquery.min.js"></script>
     @*<script src="~/Content/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/Content/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/Content/ckeditor/ckeditor.js"></script>
@@ -20,7 +21,7 @@
         <script src="~/Content/js/site.js" asp-append-version="true"></script>*@
 
     @*<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/css/site.css" />*@
+        <link rel="stylesheet" href="/css/site.css" />*@
 </head>
 <body>
     <header>
@@ -132,7 +133,6 @@
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
         @RenderSection("scripts", required: false)*@
-    <script src="~/Content/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/Content/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/Content/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0"></script>
 </body>

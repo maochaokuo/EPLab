@@ -345,12 +345,10 @@ order by orderByOrder
             //    if (paraNum.CompareTo("2") != 0)
             //        throw new Exception($"wrong paraNum {paraNum} (case#{caseNo})");
 
-                // undone (2) !!... where condition is not so easy now
             string sqlExpr = sqlExpression( whereExpressId, whereExpressDict, ref fieldDict);
             sqlWhereCond = string.Format(@"
     where q.queryName=@queryName and {0}
 ", sqlExpr);
-            // undone (2) !!... get where join fields by fieldDict
             foreach(KeyValuePair<string, int> rec in fieldDict)
             {
                 if (rec.Value > orderFieldNum)
@@ -472,7 +470,15 @@ select e.para2externalName externalPara
 from expressList e
 where e.para2externalName is not null
 ");
-            //undone (3)!!... formParameters
+            // formParameters
+            DapperSelect<string> dp = new
+                DapperSelect<string>(connS);
+            DynamicParameters dpara = new DynamicParameters();
+            dpara.Add("@queryName", queryName, DbType.String);
+            var qry = dp.Select<string>(sql, dpara);
+            if (qry.Any())
+                ret = qry.ToList();
+            return ret;
             return ret;
         }
     }

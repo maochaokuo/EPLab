@@ -29,7 +29,28 @@ namespace EPLab.web.fwk.Controllers
          */
         public ActionResult Index()
         {
-            return View();
+            queryViewViewModel viewModel = new queryViewViewModel();
+            ViewBag.queryIdselected = ddO.queryList();
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult Index(queryViewViewModel viewModel)
+        {
+            ActionResult ar;
+            viewModel.clearMsg();
+            switch(viewModel.cmd)
+            {
+                case "selectChange":
+                    //todo (1) !!...load parameters
+                    //todo (1) then type in parameter to execute query
+                    //todo (2) parameter like dealdate can be a list as well
+                    ar = View(viewModel);
+                    break;
+                default:
+                    ar = View(viewModel);
+                    break;
+            }
+            return ar;
         }
     }
 }

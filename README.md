@@ -21,6 +21,9 @@ Install-Package Microsoft.EntityFrameworkCore.Tools
 ```
 
 ## change log
+### 2020/8/30
+1. first version of editable recursive where expression done
+
 ### 2020/8/17
 1. just finish a simplest query prototype
 2. go on to build a query viewer

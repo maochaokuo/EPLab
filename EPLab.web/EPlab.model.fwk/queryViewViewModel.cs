@@ -9,7 +9,7 @@ namespace EPlab.model.fwk
     [Serializable]
     public class queryViewViewModel : ViewModelBase
     {
-        public List<queryDisp> query2select { get; set; }
+        public string queryIdselected { get; set; }
         public queryDisp currentQuery { get; set; }
         public List<string> queryPara ()
         {
@@ -36,7 +36,7 @@ namespace EPlab.model.fwk
 
         public queryViewViewModel()
         {
-            query2select = new List<queryDisp>();
+            //query2select = new List<queryDisp>();
             currentQuery = new queryDisp();
         }
     }

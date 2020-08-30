@@ -49,7 +49,7 @@ namespace EPLab.web.fwk.Controllers
             paras.Add("TableName", tmpModel.tableName+"", DbType.String);
             paras.Add("TableDesc", tmpModel.tableDesc+"", DbType.String);
             string sql = @"
-select * 
+select top 1000 * 
 from tables 
 where (@TableName='' or tablename=@TableName)
     and (@TableDesc='' or tableDesc=@TableDesc)

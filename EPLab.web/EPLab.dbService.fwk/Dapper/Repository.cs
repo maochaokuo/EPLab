@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace EPLab.dbService
 {
@@ -49,6 +51,17 @@ namespace EPLab.dbService
             throw new NotImplementedException();
         }
 
+        public List<T2> Query<T2>(string sql
+            , DynamicParameters paras)
+        {
+            using (var con = GetConn())
+            {
+                var qry = con.Query<T2>(sql, paras);//.ToList();
+                if (qry == null)
+                    return null;
+                return qry.ToList();
+            }
+        }
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

@@ -65,6 +65,25 @@ namespace EPLab.web.fwk.Helper
             ret= new SelectList(_table, "Value", "Text", null);
             return ret;
         }
+
+        public SelectList queryList()
+        {
+            SelectList ret;
+            List<SelectListItem> _query = new List<SelectListItem>();
+            queryLib qlib = new queryLib(connS);
+            List<queries> queryList = qlib.GetAll();//.getAll().ToList();
+            if (queryList != null)
+            {
+                foreach (queries rec in queryList)
+                    _query.Add(new SelectListItem()
+                    {
+                        Text = rec.queryName,
+                        Value = rec.queryId.ToString()
+                    });
+            }
+            ret = new SelectList(_query, "Value", "Text", null);
+            return ret;
+        }
         public SelectList domainList()
         {
             SelectList ret;
