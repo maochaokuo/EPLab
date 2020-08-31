@@ -1,5 +1,24 @@
 use EPLlabDB
 
+select --q.tableId,qf.fieldId, r.rowId,
+	 fv.fieldValue
+from queries q 
+join queryFields qf on q.queryId=qf.queryId
+join fields f on qf.fieldId=f.fieldId and f.fieldName='dealdate'
+join fieldValues fv on  fv.fieldId=qf.fieldId
+join [rows] r on fv.rowId=r.rowId and r.tableId=q.tableId
+where q.queryName='QohlcBydate'
+group by fv.fieldValue
+order by fv.fieldValue
+
+/*
+select *
+from [rows]
+where tableId='DDC58962-C0AE-4327-9ED9-D9E516244431'
+
+select *
+from fields
+
 select r.*, a.createtime, a.allIdHistoryId
 from [rows] r
 left join allIdHistory a on r.rowId=a.uid
@@ -8,7 +27,6 @@ order by a.allIdHistoryId
 select *
 from queries
 
-/*
 select *
 from domains
 

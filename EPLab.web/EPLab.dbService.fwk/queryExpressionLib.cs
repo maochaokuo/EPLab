@@ -480,5 +480,30 @@ where e.para2externalName is not null
                 ret = qry.ToList();
             return ret;
         }
+        public List<string> fieldDropdownList(string queryName
+            , string fieldName, string desc="desc")
+        {
+            List<string> ret = null;
+            string sql = string.Format(@"
+select fv.fieldValue
+from queries q 
+join queryFields qf on q.queryId=qf.queryId
+join fields f on qf.fieldId=f.fieldId and f.fieldName=@fieldName
+join fieldValues fv on  fv.fieldId=qf.fieldId
+join [rows] r on fv.rowId=r.rowId and r.tableId=q.tableId
+where q.queryName=@queryName
+group by fv.fieldValue
+order by fv.fieldValue {0}
+", desc);
+            DapperSelect<string> dp = new
+                DapperSelect<string>(connS);
+            DynamicParameters dpara = new DynamicParameters();
+            dpara.Add("@queryName", queryName, DbType.String);
+            dpara.Add("@fieldName", fieldName, DbType.String);
+            var qry = dp.Select<string>(sql, dpara);
+            if (qry.Any())
+                ret = qry.ToList();
+            return ret;
+        }
     }
 }

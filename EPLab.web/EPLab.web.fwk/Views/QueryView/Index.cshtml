@@ -47,10 +47,17 @@
                     {
                         <tr>
                             <td>
-                                @para1
+                                @para1.Key
                             </td>
                             <td>
+                                @* todo (1) !!... 這裡做partial view, textbox or dropdown *@
                                 <input type="text" id="para_@para1.Key" name="para_@para1.Key" value="" />
+
+                                <select class="form-control disabled" id="queryIdselected" name="queryIdselected" readonly="readonly">
+                                    <option value=""></option>
+                                    <option selected="selected" value="75732706-ee00-4ea4-be7a-44e7ed240177">QohlcBydate</option>
+                                </select>
+
                             </td>
                         </tr>
                     }
