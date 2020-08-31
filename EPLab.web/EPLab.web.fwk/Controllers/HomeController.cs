@@ -48,7 +48,8 @@ order by dealdate
         }
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "Table");
+            return RedirectToAction("Index", "QueryView");
+            //return RedirectToAction("Index", "Table");
             return View();
         }
 

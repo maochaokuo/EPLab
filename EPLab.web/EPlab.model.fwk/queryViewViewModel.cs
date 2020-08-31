@@ -12,7 +12,7 @@ namespace EPlab.model.fwk
     {
         public string queryIdselected { get; set; }
         public queryDisp currentQuery { get; set; }
-        public List<string> queryPara { get; set; }
+        public Dictionary<string, string> queryPara { get; set; }
         public DataTable queryResult { get; set; }
         //{
         //    List<string> ret = null;
