@@ -52,6 +52,8 @@
     <Compile Include="tableDisp.cs" />
     <Compile Include="tablesViewModel.cs" />
     <Compile Include="ViewModelBase.cs" />
+    <Compile Include="withViewTemplate\queryParameterViewModel.cs" />
+    <Compile Include="withViewTemplate\queryParasViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EPlab.entity.fwk\EPlab.entity.fwk.csproj">

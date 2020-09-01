@@ -1,9 +1,5 @@
-﻿
-using EPlab.entity.fwk;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
-using System.Text;
 
 namespace EPlab.model.fwk
 {
@@ -12,7 +8,9 @@ namespace EPlab.model.fwk
     {
         public string queryIdselected { get; set; }
         public queryDisp currentQuery { get; set; }
-        public Dictionary<string, string> queryPara { get; set; }
+        //public Dictionary<string, queryParameterViewModel> 
+        //    queryPara { get; set; }
+        public queryParasViewModel queryPara { get; set; }
         public DataTable queryResult { get; set; }
         //{
         //    List<string> ret = null;

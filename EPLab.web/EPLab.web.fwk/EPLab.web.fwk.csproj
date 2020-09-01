@@ -770,9 +770,11 @@
     <Content Include="Views\QueryField\Index.cshtml" />
     <Content Include="Views\Query\Index.cshtml" />
     <Content Include="Views\QueryView\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\queryParasViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

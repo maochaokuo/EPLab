@@ -1,0 +1,23 @@
+﻿@using EPlab.model.fwk
+@model EPlab.model.fwk.queryParasViewModel
+
+
+@foreach (KeyValuePair<string, queryParameterViewModel> para1 in Model.queryPara)
+{
+    <tr>
+        <td>
+            @para1.Key
+        </td>
+        <td>
+            @*@Html.EditorFor(para1.Value)*@
+            @* todo (1) !!... 這裡做partial view, textbox or dropdown *@
+            <input type="text" id="para_@para1.Key" name="para_@para1.Key" value="" />
+
+            <select class="form-control disabled" id="queryIdselected" name="queryIdselected" readonly="readonly">
+                <option value=""></option>
+                <option selected="selected" value="75732706-ee00-4ea4-be7a-44e7ed240177">QohlcBydate</option>
+            </select>
+
+        </td>
+    </tr>
+}

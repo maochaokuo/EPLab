@@ -1,12 +1,6 @@
-﻿using EPlab.entity.fwk;
-using EPlab.model.fwk;
-using EPLab.dbService;
+﻿using EPlab.model.fwk;
 using EPLab.dbService.fwk;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace EPLab.web.fwk.Controllers
@@ -41,7 +35,7 @@ namespace EPLab.web.fwk.Controllers
             ActionResult ar;
             queryExpressionLib qel = new queryExpressionLib(connS);
             if (viewModel.queryPara == null && TempData.ContainsKey("queryPara"))
-                viewModel.queryPara =(Dictionary<string,string>) TempData["queryPara"];
+                viewModel.queryPara = (queryParasViewModel) TempData["queryPara"];
             viewModel.clearMsg();
             ViewBag.queryIdselected = ddO.queryList();
             switch (viewModel.cmd)
@@ -49,14 +43,15 @@ namespace EPLab.web.fwk.Controllers
                 case "selectChange":
                     if (string.IsNullOrWhiteSpace(viewModel.currentQuery.queryName))
                     {
+                        TempData.Remove("queryPara");
                         ar = View(viewModel);
                         break;
                     }
                     // load parameters
                     List<string> strLst = qel.formParameters(viewModel.currentQuery.queryName);
-                    viewModel.queryPara = new Dictionary<string, string>();
+                    viewModel.queryPara = new queryParasViewModel ();
                     foreach (string str1 in strLst)
-                        viewModel.queryPara.Add(str1, "");
+                        viewModel.queryPara.queryPara.Add(str1, null);
                     //todo (2) parameter like dealdate can be a list as well
                     ar = View(viewModel);
                     break;
@@ -77,11 +72,13 @@ namespace EPLab.web.fwk.Controllers
                                 viewModel.errorMsg = $"parameter {key} cannot be empty!";
                                 break;
                             }
+                            queryParameterViewModel valObj = 
+                                new queryParameterViewModel(theValue);
                             string key2 = key.Replace("para_", "");
-                            if (viewModel.queryPara.ContainsKey(key2))
-                                viewModel.queryPara[key2] = theValue;
+                            if (viewModel.queryPara.queryPara.ContainsKey(key2))
+                                viewModel.queryPara.queryPara[key2] = valObj;
                             else
-                                viewModel.queryPara.Add(key2, theValue);
+                                viewModel.queryPara.queryPara.Add(key2, valObj);
                         }
                     }
                     if (!string.IsNullOrWhiteSpace(viewModel.errorMsg))
@@ -89,7 +86,7 @@ namespace EPLab.web.fwk.Controllers
                         ar = View(viewModel);
                         break;
                     }
-                    //todo (1) then type in parameter to execute query
+                    // then type in parameter to execute query
                     string sql = qel.finalSql4query(viewModel.currentQuery.queryName);
                     //DataTable dt = ... 
                         // todo !!...(1)

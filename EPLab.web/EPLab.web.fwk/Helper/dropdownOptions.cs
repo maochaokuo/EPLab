@@ -28,6 +28,22 @@ namespace EPLab.web.fwk.Helper
         //    ret = new SelectList(_item, "Value", "Text", null);
         //    return ret;
         //}
+        public static SelectList fromKeyValueList(
+            List<KeyValuePair<string, string>> kvl)
+        {
+            SelectList ret;
+            List<SelectListItem> _items = new List<SelectListItem>();
+            foreach(KeyValuePair<string, string> pair in kvl)
+            {
+                _items.Add(new SelectListItem()
+                {
+                    Text = pair.Value,
+                    Value = pair.Key
+                });
+            }
+            ret = new SelectList(_items, "Value", "Text", null);
+            return ret;
+        }
         public SelectList tableList()
         {
             SelectList ret;
