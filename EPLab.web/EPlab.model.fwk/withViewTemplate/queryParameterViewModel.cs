@@ -8,7 +8,7 @@ namespace EPlab.model.fwk
 {
     public class queryParameterViewModel
     {
-        public string paraName { get; set; }
+        public string paraValue { get; set; }
         public List<KeyValuePair<string, string>>
             comboboxSource { get; set; }
         protected void init()
@@ -21,7 +21,7 @@ namespace EPlab.model.fwk
         }
         public queryParameterViewModel(string paraName)
         {
-            this.paraName = paraName;
+            this.paraValue = paraName;
             init();
         }
     }

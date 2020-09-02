@@ -1,6 +1,9 @@
 ﻿using EPlab.model.fwk;
+using EPLab.dbService;
 using EPLab.dbService.fwk;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Threading;
 using System.Web.Mvc;
 
@@ -8,11 +11,13 @@ namespace EPLab.web.fwk.Controllers
 {
     public class QueryViewController : ControllerBase
     {
-        protected queryExpressionLib qel; 
+        protected queryExpressionLib qel;
+        protected AdoNet2DataTable a2dt;
         public QueryViewController(
             ) : base("queryViewViewModel", "query view")
         {
             qel = new queryExpressionLib(connS);
+            a2dt = new AdoNet2DataTable(connS);
         }
         // todo !!... (2) 接下來query list, then pick 1 query, 輸入查詢欄位, 展示查詢值, 算是execute功能
         /* spec:
@@ -37,16 +42,20 @@ namespace EPLab.web.fwk.Controllers
             string ret = "";
             if (viewModel.queryPara.queryPara.ContainsKey("dealdate"))
             {
-                List<string> dealdates = qel.fieldDropdownList(
-                    "QohlcBydate", "dealdate", "");
-                queryParameterViewModel subvm = new queryParameterViewModel();
-                List<KeyValuePair<string, string>> comboSource =
-                    new List<KeyValuePair<string, string>>();
-                foreach (string dealdate in dealdates)
-                    comboSource.Add(new KeyValuePair<string, string>(dealdate, dealdate));
-                subvm.comboboxSource = comboSource;
-                viewModel.queryPara.queryPara["dealdate"] = subvm;
-                Thread.Sleep(0);
+                if (viewModel.queryPara.queryPara["dealdate"].comboboxSource == null
+                    || viewModel.queryPara.queryPara["dealdate"].comboboxSource.Count == 0)
+                {
+                    List<string> dealdates = qel.fieldDropdownList(
+                        "QohlcBydate", "dealdate", "");
+                    //queryParameterViewModel subvm = new queryParameterViewModel();
+                    List<KeyValuePair<string, string>> comboSource =
+                        new List<KeyValuePair<string, string>>();
+                    foreach (string dealdate in dealdates)
+                        comboSource.Add(new KeyValuePair<string, string>(dealdate, dealdate));
+                    viewModel.queryPara.queryPara["dealdate"].comboboxSource = comboSource;
+                    //viewModel.queryPara.queryPara["dealdate"] = subvm;
+                    Thread.Sleep(0);
+                }
             }
             return ret;
         }
@@ -58,7 +67,6 @@ namespace EPLab.web.fwk.Controllers
                 viewModel.queryPara = (queryParasViewModel)TempData["queryPara"];
             else
                 viewModel.queryPara = new queryParasViewModel();
-            string err = loadCombo4vm(ref viewModel);
             viewModel.clearMsg();
             ViewBag.queryIdselected = ddO.queryList();
             switch (viewModel.cmd)
@@ -68,7 +76,7 @@ namespace EPLab.web.fwk.Controllers
                     {
                         TempData.Remove("queryPara");
                         ar = View(viewModel);
-                        break;
+                        return ar;
                     }
                     // load parameters
                     List<string> strLst = qel.formParameters(viewModel.currentQuery.queryName);
@@ -76,6 +84,7 @@ namespace EPLab.web.fwk.Controllers
                     foreach (string str1 in strLst)
                         viewModel.queryPara.queryPara.Add(str1, 
                             new queryParameterViewModel());
+                    string err = loadCombo4vm(ref viewModel);
                     //todo (2) parameter like dealdate can be a list as well
                     ar = View(viewModel);
                     break;
@@ -103,6 +112,7 @@ namespace EPLab.web.fwk.Controllers
                                 viewModel.queryPara.queryPara[key2] = valObj;
                             else
                                 viewModel.queryPara.queryPara.Add(key2, valObj);
+                            err = loadCombo4vm(ref viewModel);
                         }
                     }
                     if (!string.IsNullOrWhiteSpace(viewModel.errorMsg))
@@ -112,8 +122,25 @@ namespace EPLab.web.fwk.Controllers
                     }
                     // then type in parameter to execute query
                     string sql = qel.finalSql4query(viewModel.currentQuery.queryName);
-                    //DataTable dt = ... 
-                        // todo !!...(1)
+
+                    // @queryName passed in 
+                    List<SqlParameter> para = new List<SqlParameter>
+                    {
+                        new SqlParameter
+                        {
+                            ParameterName = "@queryName",
+                            SqlDbType = SqlDbType.NVarChar,
+                            Value = viewModel.currentQuery.queryName
+                        },
+                        new SqlParameter
+                        {
+                            ParameterName = "@dealdate",
+                            SqlDbType = SqlDbType.NVarChar,
+                            Value = viewModel.queryPara.queryPara["dealdate"].paraValue
+                        }
+                    };
+                    DataTable dt = a2dt.Select2DataTable(sql, para);
+                        // todo !!...(1) dt render to view
                     //viewModel.queryResult = dt;
                     ar = View(viewModel);
                     break;
