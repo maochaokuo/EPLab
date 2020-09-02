@@ -1,15 +1,18 @@
 ﻿using EPlab.model.fwk;
 using EPLab.dbService.fwk;
 using System.Collections.Generic;
+using System.Threading;
 using System.Web.Mvc;
 
 namespace EPLab.web.fwk.Controllers
 {
     public class QueryViewController : ControllerBase
     {
+        protected queryExpressionLib qel; 
         public QueryViewController(
             ) : base("queryViewViewModel", "query view")
         {
+            qel = new queryExpressionLib(connS);
         }
         // todo !!... (2) 接下來query list, then pick 1 query, 輸入查詢欄位, 展示查詢值, 算是execute功能
         /* spec:
@@ -29,13 +32,33 @@ namespace EPLab.web.fwk.Controllers
             ViewBag.queryIdselected = ddO.queryList();
             return View(viewModel);
         }
+        protected string loadCombo4vm(ref queryViewViewModel viewModel)
+        {
+            string ret = "";
+            if (viewModel.queryPara.queryPara.ContainsKey("dealdate"))
+            {
+                List<string> dealdates = qel.fieldDropdownList(
+                    "QohlcBydate", "dealdate", "");
+                queryParameterViewModel subvm = new queryParameterViewModel();
+                List<KeyValuePair<string, string>> comboSource =
+                    new List<KeyValuePair<string, string>>();
+                foreach (string dealdate in dealdates)
+                    comboSource.Add(new KeyValuePair<string, string>(dealdate, dealdate));
+                subvm.comboboxSource = comboSource;
+                viewModel.queryPara.queryPara["dealdate"] = subvm;
+                Thread.Sleep(0);
+            }
+            return ret;
+        }
         [HttpPost]
         public ActionResult Index(queryViewViewModel viewModel)
         {
             ActionResult ar;
-            queryExpressionLib qel = new queryExpressionLib(connS);
             if (viewModel.queryPara == null && TempData.ContainsKey("queryPara"))
-                viewModel.queryPara = (queryParasViewModel) TempData["queryPara"];
+                viewModel.queryPara = (queryParasViewModel)TempData["queryPara"];
+            else
+                viewModel.queryPara = new queryParasViewModel();
+            string err = loadCombo4vm(ref viewModel);
             viewModel.clearMsg();
             ViewBag.queryIdselected = ddO.queryList();
             switch (viewModel.cmd)
@@ -51,7 +74,8 @@ namespace EPLab.web.fwk.Controllers
                     List<string> strLst = qel.formParameters(viewModel.currentQuery.queryName);
                     viewModel.queryPara = new queryParasViewModel ();
                     foreach (string str1 in strLst)
-                        viewModel.queryPara.queryPara.Add(str1, null);
+                        viewModel.queryPara.queryPara.Add(str1, 
+                            new queryParameterViewModel());
                     //todo (2) parameter like dealdate can be a list as well
                     ar = View(viewModel);
                     break;

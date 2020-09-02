@@ -10,5 +10,9 @@ namespace EPlab.model.fwk
     {
         public Dictionary<string, queryParameterViewModel>
             queryPara { get; set; }
+        public queryParasViewModel()
+        {
+            queryPara = new Dictionary<string, queryParameterViewModel>();
+        }
     }
 }

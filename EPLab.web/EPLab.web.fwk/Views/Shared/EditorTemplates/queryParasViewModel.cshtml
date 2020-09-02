@@ -1,7 +1,6 @@
 ﻿@using EPlab.model.fwk
 @model EPlab.model.fwk.queryParasViewModel
 
-
 @foreach (KeyValuePair<string, queryParameterViewModel> para1 in Model.queryPara)
 {
     <tr>
@@ -17,11 +16,21 @@
             }
             else
             {
-                <select class="form-control disabled" id="para_@para1.Key" name="para_@para1.Key" 
-                        readonly="readonly">
-                    <option value=""></option>
-                    <option selected="selected" value="75732706-ee00-4ea4-be7a-44e7ed240177">QohlcBydate</option>
-                </select>
+        <select class="form-control" id="para_@para1.Key" name="para_@para1.Key">
+            @foreach (KeyValuePair<string, string> pair in para1.Value.comboboxSource)
+            {
+                if (pair.Key == para1.Key)
+                {
+                    <option selected="selected" value="@pair.Key">@pair.Key</option>
+                }
+                else
+                {
+                    <option value="@pair.Key">@pair.Key</option>
+                }
+            }
+            @*<option value=""></option>
+            <option selected="selected" value="75732706-ee00-4ea4-be7a-44e7ed240177">QohlcBydate</option>*@
+        </select>
             }
         </td>
     </tr>
