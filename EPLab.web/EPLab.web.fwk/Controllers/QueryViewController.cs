@@ -121,7 +121,9 @@ namespace EPLab.web.fwk.Controllers
                         break;
                     }
                     // then type in parameter to execute query
-                    string sql = qel.finalSql4query(viewModel.currentQuery.queryName);
+                    string sqlCount = "";
+                    string sql1000 = qel.finalSql4query(viewModel.currentQuery.queryName
+                        , out sqlCount);
 
                     // @queryName passed in 
                     List<SqlParameter> para = new List<SqlParameter>
@@ -139,9 +141,13 @@ namespace EPLab.web.fwk.Controllers
                             Value = viewModel.queryPara.queryPara["dealdate"].paraValue
                         }
                     };
-                    DataTable dt = a2dt.Select2DataTable(sql, para);
-                        // todo !!...(1) dt render to view
-                    //viewModel.queryResult = dt;
+                    int tmpRecords = 0;
+                    viewModel.queryResult = a2dt.Select2DataTable(sqlCount, sql1000
+                        , out tmpRecords, para);
+                    viewModel.result2display = new bigQueryResult(
+                        viewModel.queryResult);
+                    viewModel.totalRecords = tmpRecords;
+                        // dt render to view
                     ar = View(viewModel);
                     break;
                 default:

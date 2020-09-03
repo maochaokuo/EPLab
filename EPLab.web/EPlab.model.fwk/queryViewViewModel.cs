@@ -11,7 +11,12 @@ namespace EPlab.model.fwk
         //public Dictionary<string, queryParameterViewModel> 
         //    queryPara { get; set; }
         public queryParasViewModel queryPara { get; set; }
+
+        public int totalRecords { get; set; }
         public DataTable queryResult { get; set; }
+
+        public bigQueryResult result2display { get; set; }
+
         //{
         //    List<string> ret = null;
         //    if (currentQuery == null)

@@ -43,7 +43,7 @@
             </div>
             <div class="col-10">
                 <table class="table table-borderless table-sm">
-                    @Html.EditorFor(m=>m.queryPara)
+                    @Html.EditorFor(m => m.queryPara)
                 </table>
             </div>
         </div>
@@ -52,13 +52,47 @@
         <div class="col-2"></div>
         <div class="col-10">
             <button onclick="$('#cmd').val('execute');$('form').submit()" id="execute"
-                    class="btn btn-primary" >
+                    class="btn btn-primary">
                 Execute
             </button>
         </div>
     </div>
     <div class="row">
         <div class="col-12">&nbsp; </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-hover table-striped table-sm">
+                <thead>
+                    <tr>
+                        @foreach(string colname in Model.result2display.columnNames)
+                        {
+                            <td>@colname</td>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(bigQueryResultRow rowRec in Model.result2display.rowsOfColumnValues)
+                    {
+                        <tr>
+                            @foreach(string colname2 in Model.result2display.columnNames)
+                            {
+                                <td>
+                                    @rowRec.fields1row[colname2]
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="@Model.result2display.columnNames.Count">
+                            total records: @Model.totalRecords
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
     @* todo (1) !!... result of a datatable *@
 </div>

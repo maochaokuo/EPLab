@@ -27,7 +27,8 @@ namespace UnitTestFramework1
         public void finalSql4query()
         {
             queryExpressionLib qel = new queryExpressionLib(connS);
-            string sql = qel.finalSql4query("QohlcBydate");
+            string sqlCount = "";
+            string sql1000 = qel.finalSql4query("QohlcBydate", out sqlCount);
             Thread.Sleep(0);
         }
     }

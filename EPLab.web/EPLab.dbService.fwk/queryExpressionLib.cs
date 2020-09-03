@@ -36,7 +36,36 @@ namespace EPLab.dbService.fwk
             string queryName)
         {
             DataTable dt;
-            string sql = string.Format(@"
+            string sqlCount = string.Format(@"
+with fieldsMustHaveValue(mustHaveFieldId)
+as
+(
+	{0}
+	union
+	{1}
+	union
+	{2}
+	union
+	{3}
+	union
+	{4}
+	union
+	select qf.fieldId
+	from queryFields qf
+	join fields f on qf.fieldId=f.fieldId
+	join queries q on qf.queryId=q.queryId
+	where q.queryName=@queryName and qf.orderByOrder>0
+)
+select count(*) counts
+from queries q
+join [rows] r on r.tableId=q.tableId and q.queryName=@queryName
+join fields f on f.tableId=q.tableId
+join fieldsMustHaveValue fmhv on fmhv.mustHaveFieldId=f.fieldId
+left join fieldValues fv on fv.rowId=r.rowId and fv.fieldId=fmhv.mustHaveFieldId
+where fv.fieldValueId is null
+", MFVIsubSql(1), MFVIsubSql(2), MFVIsubSql(3), MFVIsubSql(4), MFVIsubSql(5)
+);
+            string sql1000 = string.Format(@"
 with fieldsMustHaveValue(mustHaveFieldId)
 as
 (
@@ -75,7 +104,8 @@ where fv.fieldValueId is null
                     Value = queryName
                 }
             };
-            dt = d2dt.Select2DataTable(sql, para);
+            int counts = 0;
+            dt = d2dt.Select2DataTable(sqlCount, sql1000, out counts, para);
             return dt;
         }
         protected List<queryWhereRec> whereConditions(string queryName)
@@ -151,7 +181,15 @@ left join fields f2 on e.paraField2id=f2.fieldId
         protected DataTable orderByFields(string queryName)
         {
             DataTable dt;
-            string sql = string.Format(@"
+            string sqlCount = string.Format(@"
+select count(*) counts
+from queryFields qf
+join queries q on q.queryId=qf.queryId
+join fields f on qf.fieldId=f.fieldId and q.tableId=f.tableId
+where q.queryName=@queryName and orderByOrder>0
+order by orderByOrder
+");
+            string sql1000 = string.Format(@"
 select qf.fieldId, f.fieldName,
 	case when qf.orderByDesc=0 then 'asc' else 'desc' end ascDesc
 	, qf.orderByOrder
@@ -171,7 +209,8 @@ order by orderByOrder
                     Value = queryName
                 }
             };
-            dt = d2dt.Select2DataTable(sql, para);
+            int counts = 0;
+            dt = d2dt.Select2DataTable(sqlCount, sql1000, out counts, para);
             return dt;
         }
         protected static string fieldId2para(string fieldId
@@ -369,8 +408,16 @@ order by orderByOrder
         protected DataTable displayFields(string queryName)
         {
             DataTable dt;
-            string sql = string.Format(@"
-select qf.fieldId, f.fieldName, qf.displayOrder
+            string sqlCount = string.Format(@"
+select count(*) counts
+from queryFields qf
+join queries q on qf.queryId=q.queryId
+join fields f on qf.fieldId=f.fieldId
+where q.queryName=@queryName and qf.displayOrder>0
+order by qf.displayOrder
+");
+            string sql1000 = string.Format(@"
+select top 1000 qf.fieldId, f.fieldName, qf.displayOrder
 from queryFields qf
 join queries q on qf.queryId=q.queryId
 join fields f on qf.fieldId=f.fieldId
@@ -388,12 +435,14 @@ order by qf.displayOrder
                 }
             };
             //string 
-            dt = d2dt.Select2DataTable(sql, para);
+            int counts = 0;
+            dt = d2dt.Select2DataTable(sqlCount, sql1000, out counts, para);
             return dt;
         }
-        public string finalSql4query(string queryName)
+        public string finalSql4query(string queryName, out string sqlCount)
         {
-            string sql = "";
+            string sql1000 = "";
+            sqlCount="";
 
             string sqlOrderBy = "";
             string sqlOrderWith = "";
@@ -439,8 +488,8 @@ from rowsWhereOrder fwo
 ", sqlSelectFields);
 
             // order by part then finalSql4query
-            sql = sqlWithPart + sqlSelectPart + sqlJoinPart + sqlOrderBy;
-            return sql;
+            sql1000 = sqlWithPart + sqlSelectPart + sqlJoinPart + sqlOrderBy;
+            return sql1000;
         }
         public List<string> formParameters(string queryName)
         {

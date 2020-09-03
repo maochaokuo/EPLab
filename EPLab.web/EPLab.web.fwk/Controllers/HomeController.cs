@@ -34,13 +34,21 @@ namespace EPLab.web.fwk.Controllers
             //            string err = dtdTar.ImportDataTableSaveas(dt
             //                , "ohlc");
 
-            string sql2 = @"
-SELECT dealdate, [close], sVolume, aVolume, lastdate, lastclose, lastSvolume, lastAvolume
+            string sql2a = @"
+SELECT count(*) counts
 FROM [indices2].[dbo].[dealdates]
 where dealdate between '20180628' and '20200807' 
 order by dealdate
 ";
-            DataTable dt2 = dtdSrc.Select2DataTable(sql2);
+            string sql2b = @"
+SELECT top 1000 dealdate, [close], sVolume, aVolume, lastdate, lastclose, lastSvolume, lastAvolume
+FROM [indices2].[dbo].[dealdates]
+where dealdate between '20180628' and '20200807' 
+order by dealdate
+";
+            int counts = 0;
+            DataTable dt2 = dtdSrc.Select2DataTable(sql2a
+                , sql2b, out counts);
             string err2 = dtdTar.ImportDataTableSaveas(dt2
                 , "dealdates");
 

@@ -41,28 +41,36 @@ namespace EPLab.dbService
             }
             return conn;
         }
-        public DataTable Select2DataTable(string sql
-            , List<SqlParameter> cmdPara=null)
+        public DataTable Select2DataTable(string sqlCount, string sql1000
+            , out int recordCount, List<SqlParameter> cmdPara=null)
         {
-            //
             // https://stackoverflow.com/questions/23320701/how-to-create-sqlparametercollection-with-multiple-parameters
-            DataTable dt = new DataTable();
-            //using (var con = GetConn())
-            //{
-            //    dt = (DataTable)con.Query(sql);
-            //}
-            // change to ado.net to implement
+            DataTable dtCount = new DataTable();
+            DataTable dt1000 = new DataTable();
 
             SqlConnection conn = new SqlConnection(connS);
-            SqlCommand cmd = new SqlCommand(sql, conn);
             conn.Open();
+
+            SqlCommand cmdCount = new SqlCommand(sqlCount, conn);
             if (cmdPara != null && cmdPara.Count > 0)
-                cmd.Parameters.AddRange(cmdPara.ToArray());
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            da.Fill(dt);
+                cmdCount.Parameters.AddRange(cmdPara.ToArray());
+            SqlDataAdapter daCount = new SqlDataAdapter(cmdCount);
+            daCount.Fill(dtCount);
+            if (dtCount.Rows.Count != 1)
+                throw new Exception($"dtCount.Rows.Count={dtCount.Rows.Count}");
+            DataRow drCount = dtCount.Rows[0];
+            recordCount =int.Parse( drCount["counts"]+"");
+            daCount.Dispose();
+
+            SqlCommand cmd1000 = new SqlCommand(sql1000, conn);
+            if (cmdPara != null && cmdPara.Count > 0)
+                cmd1000.Parameters.AddRange(cmdPara.ToArray());
+            SqlDataAdapter da1000 = new SqlDataAdapter(cmd1000);
+            da1000.Fill(dt1000);
+            da1000.Dispose();
+
             conn.Close();
-            da.Dispose();
-            return dt;
+            return dt1000;
         }
         protected string DataTableName(DataTable dt)
         {
