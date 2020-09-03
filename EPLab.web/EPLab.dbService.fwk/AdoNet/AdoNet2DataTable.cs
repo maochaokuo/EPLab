@@ -60,6 +60,8 @@ namespace EPLab.dbService
                 throw new Exception($"dtCount.Rows.Count={dtCount.Rows.Count}");
             DataRow drCount = dtCount.Rows[0];
             recordCount =int.Parse( drCount["counts"]+"");
+            cmdCount.Parameters.Clear();
+            cmdCount = null;
             daCount.Dispose();
 
             SqlCommand cmd1000 = new SqlCommand(sql1000, conn);

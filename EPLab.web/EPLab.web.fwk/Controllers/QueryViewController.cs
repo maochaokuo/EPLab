@@ -126,6 +126,8 @@ namespace EPLab.web.fwk.Controllers
                         , out sqlCount);
 
                     // @queryName passed in 
+                    //undone !!...(1) 這下可好了，本來都做完了，後來想拿掉rowId, dealMonth, section,
+                    //從queryfield刪掉第一筆與最後兩筆，失敗後再加回第一筆，就變現在這樣
                     List<SqlParameter> para = new List<SqlParameter>
                     {
                         new SqlParameter

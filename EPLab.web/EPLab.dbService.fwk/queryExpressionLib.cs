@@ -85,7 +85,7 @@ as
 	join queries q on qf.queryId=q.queryId
 	where q.queryName=@queryName and qf.orderByOrder>0
 )
-select fmhv.mustHaveFieldId, r.rowId
+select top 1000 fmhv.mustHaveFieldId, r.rowId
 from queries q
 join [rows] r on r.tableId=q.tableId and q.queryName=@queryName
 join fields f on f.tableId=q.tableId
@@ -165,18 +165,6 @@ left join fields f2 on e.paraField2id=f2.fieldId
             if (qry.Any())
                 ret = qry.ToList();
             return ret;
-            // @queryName passed in 
-            //List<SqlParameter> para = new List<SqlParameter>
-            //{
-            //    new SqlParameter
-            //    {
-            //        ParameterName = "@queryName",
-            //        SqlDbType = SqlDbType.NVarChar,
-            //        Value = queryName
-            //    }
-            //};
-            //dt = d2dt.Select2DataTable(sql, para);
-            //return dt;
         }
         protected DataTable orderByFields(string queryName)
         {
@@ -187,10 +175,9 @@ from queryFields qf
 join queries q on q.queryId=qf.queryId
 join fields f on qf.fieldId=f.fieldId and q.tableId=f.tableId
 where q.queryName=@queryName and orderByOrder>0
-order by orderByOrder
 ");
             string sql1000 = string.Format(@"
-select qf.fieldId, f.fieldName,
+select top 1000 qf.fieldId, f.fieldName,
 	case when qf.orderByDesc=0 then 'asc' else 'desc' end ascDesc
 	, qf.orderByOrder
 from queryFields qf
@@ -414,7 +401,6 @@ from queryFields qf
 join queries q on qf.queryId=q.queryId
 join fields f on qf.fieldId=f.fieldId
 where q.queryName=@queryName and qf.displayOrder>0
-order by qf.displayOrder
 ");
             string sql1000 = string.Format(@"
 select top 1000 qf.fieldId, f.fieldName, qf.displayOrder
@@ -442,14 +428,14 @@ order by qf.displayOrder
         public string finalSql4query(string queryName, out string sqlCount)
         {
             string sql1000 = "";
-            sqlCount="";
+            //sqlCount="";
 
             string sqlOrderBy = "";
             string sqlOrderWith = "";
             string rowsSqlS = rowsSql(queryName, "fwo"
                 , out sqlOrderBy, out sqlOrderWith);
             string sqlWithPart = "";
-            string sqlSelectPart = "", sqlSelectFields = "";
+            string sqlSelect1000 = "", sqlSelectFields = "";
             string sqlJoinPart = "";
 
             // with part
@@ -482,13 +468,18 @@ join
 ) f{i} on fwo.rowId=f{i}.rowId
 ";
             }
-            sqlSelectPart = string.Format(@"
+            string sqlSelectCount = string.Format(@"
+select count(*) counts
+from rowsWhereOrder fwo
+");
+            sqlSelect1000 = string.Format(@"
 select fwo.rowId{0}
 from rowsWhereOrder fwo
 ", sqlSelectFields);
 
             // order by part then finalSql4query
-            sql1000 = sqlWithPart + sqlSelectPart + sqlJoinPart + sqlOrderBy;
+            sql1000 = sqlWithPart + sqlSelect1000 + sqlJoinPart + sqlOrderBy;
+            sqlCount = sqlWithPart + sqlSelectCount + sqlJoinPart;
             return sql1000;
         }
         public List<string> formParameters(string queryName)

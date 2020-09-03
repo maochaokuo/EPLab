@@ -12,6 +12,10 @@ namespace EPlab.model.fwk
     public class bigQueryResultRow
     {
         public Dictionary<string, object> fields1row { get; set; }
+        public bigQueryResultRow()
+        {
+            fields1row = new Dictionary<string, object>();
+        }
     }
     public class bigQueryResult
     {
@@ -22,14 +26,21 @@ namespace EPlab.model.fwk
         {
             string ret = "";
             init();
+            Dictionary<string, int> nameIndex = new Dictionary<string, int>();
+            int i = 0;
             foreach (DataColumn dc in dt.Columns)
+            {
                 columnNames.Add(dc.ColumnName);
+                nameIndex.Add(dc.ColumnName, i++);
+            }
             foreach(DataRow dr in dt.Rows)
             {
                 bigQueryResultRow onerow = new bigQueryResultRow();
                 foreach (string col in columnNames)
                 {
-                    onerow.fields1row.Add(col, dr[col]);
+                    int indexOfName = nameIndex[col];
+                    object obj = dr[indexOfName];
+                    onerow.fields1row.Add(col, obj);
                 }
                 rowsOfColumnValues.Add(onerow);
             }

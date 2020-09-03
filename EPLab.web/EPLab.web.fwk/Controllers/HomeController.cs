@@ -24,21 +24,11 @@ namespace EPLab.web.fwk.Controllers
             string ret = "";
             AdoNet2DataTable dtdSrc = new AdoNet2DataTable(connIndices);
             AdoNet2DataTable dtdTar = new AdoNet2DataTable(connEPLabDB);
-            //            string sql = @"
-            //select dealdate+dealtime dealdatetime, dealdate, dealtime, [open], high, low, [close], volume, dealmonth, section
-            //from indices2.dbo.ohlc
-            //where dealdate between '20180628' and '20200807' and section=1
-            //order by dealdate, dealtime
-            //            ";
-            //            DataTable dt = dtdSrc.Select2DataTable(sql);
-            //            string err = dtdTar.ImportDataTableSaveas(dt
-            //                , "ohlc");
 
             string sql2a = @"
 SELECT count(*) counts
 FROM [indices2].[dbo].[dealdates]
 where dealdate between '20180628' and '20200807' 
-order by dealdate
 ";
             string sql2b = @"
 SELECT top 1000 dealdate, [close], sVolume, aVolume, lastdate, lastclose, lastSvolume, lastAvolume

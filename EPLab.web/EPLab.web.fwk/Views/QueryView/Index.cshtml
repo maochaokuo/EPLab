@@ -62,39 +62,42 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <table class="table table-hover table-striped table-sm">
-                <thead>
-                    <tr>
-                        @foreach(string colname in Model.result2display.columnNames)
-                        {
-                            <td>@colname</td>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(bigQueryResultRow rowRec in Model.result2display.rowsOfColumnValues)
-                    {
+            @* result of a datatable *@
+            @if (Model.result2display != null && Model.result2display.columnNames != null && Model.result2display.columnNames.Count > 0)
+            {
+                <table class="table table-hover table-striped">
+                    <thead>
                         <tr>
-                            @foreach(string colname2 in Model.result2display.columnNames)
+                            @foreach (string colname in Model.result2display.columnNames)
                             {
-                                <td>
-                                    @rowRec.fields1row[colname2]
-                                </td>
+                                <td>@colname</td>
                             }
                         </tr>
-                    }
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="@Model.result2display.columnNames.Count">
-                            total records: @Model.totalRecords
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (bigQueryResultRow rowRec in Model.result2display.rowsOfColumnValues)
+                        {
+                            <tr>
+                                @foreach (string colname2 in Model.result2display.columnNames)
+                                {
+                                    <td>
+                                        @rowRec.fields1row[colname2]
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="@Model.result2display.columnNames.Count">
+                                total records: @Model.totalRecords
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            }
         </div>
     </div>
-    @* todo (1) !!... result of a datatable *@
 </div>
 }
 
