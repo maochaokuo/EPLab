@@ -16,6 +16,7 @@ namespace EPlab.model.fwk
     public class ViewModelBase
     {
         public string cmd { get; set; }
+        public string tableWidth { get; set; }
         private string _errorMsg = "";
         public string errorMsg
         {
@@ -54,7 +55,7 @@ namespace EPlab.model.fwk
         }
         public ViewModelBase()
         {
-            //pageStatus = PAGE_STATUS.SAVED;
+            tableWidth = "100%";
         }
         public void clearMsg()
         {

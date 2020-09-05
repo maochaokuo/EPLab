@@ -34,6 +34,12 @@
         <div class="col-4">
             @Html.DropDownListFor(m => m.queryIdselected, (SelectList)ViewBag.queryIdselected, "", new { @id = "queryIdselected", @class = "form-control disabled", @readonly = "readonly" })
         </div>
+        <div class="col-2">
+            table width
+        </div>
+        <div class="col-4">
+            @Html.DropDownListFor(m => m.tableWidth, (SelectList)ViewBag.tableWidthList, null, new { @id = "tableWidthList", @class = "form-control" })
+        </div>
     </div>
     @if (Model.queryPara != null)
     {
@@ -65,26 +71,44 @@
             @* result of a datatable *@
             @if (Model.result2display != null && Model.result2display.columnNames != null && Model.result2display.columnNames.Count > 0)
             {
+                int i = 0;
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
                             @foreach (string colname in Model.result2display.columnNames)
                             {
-                                <td>@colname</td>
+                                if (i++ == 0)
+                                {
+                                    <td style="display:none">@colname</td>
+                                }
+                                else
+                                {
+                                    <td>@colname</td>
+                                }
                             }
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (bigQueryResultRow rowRec in Model.result2display.rowsOfColumnValues)
                         {
-                            <tr>
-                                @foreach (string colname2 in Model.result2display.columnNames)
+                            int j = 0;
+                        <tr>
+                            @foreach (string colname2 in Model.result2display.columnNames)
+                            {
+                                if (j++ == 0)
+                                {
+                                    <td style="display:none">
+                                        @rowRec.fields1row[colname2]
+                                    </td>
+                                }
+                                else
                                 {
                                     <td>
                                         @rowRec.fields1row[colname2]
                                     </td>
                                 }
-                            </tr>
+                            }
+                        </tr>
                         }
                     </tbody>
                     <tfoot>

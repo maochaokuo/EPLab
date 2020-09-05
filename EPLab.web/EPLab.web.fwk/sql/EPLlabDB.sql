@@ -1,5 +1,57 @@
 use EPLlabDB
 
+select q.queryName, f.fieldName,t.tableName
+from queryFields qf
+join queries q on q.queryId=qf.queryId
+join fields f on qf.fieldId=f.fieldId
+join tables t on q.tableId=t.tableId
+/*
+declare @fieldName varchar(99)='dealdate'
+declare @queryName varchar(99)='QohlcBydate'
+
+select fv.fieldValue --,fv.rowId, q.tableId
+from queries q 
+join queryFields qf on q.queryId=qf.queryId
+join fields f on qf.fieldId=f.fieldId and f.fieldName=@fieldName
+join fieldValues fv on  fv.fieldId=qf.fieldId
+join [rows] r on fv.rowId=r.rowId and r.tableId=q.tableId
+where q.queryName=@queryName
+group by fv.fieldValue
+order by fv.fieldValue --{0}
+
+select *
+from [rows]
+where rowId='D521F9AC-3506-405D-BB1E-38DF7AF0E8DA'
+	--tableId='DDC58962-C0AE-4327-9ED9-D9E516244431'
+
+select *
+from fields
+where tableId='DDC58962-C0AE-4327-9ED9-D9E516244431'
+
+select *
+from tables
+
+select fv.fieldValue
+from queries q 
+join queryFields qf on q.queryId=qf.queryId
+join fields f on qf.fieldId=f.fieldId and f.fieldName=@fieldName
+join fieldValues fv on  fv.fieldId=qf.fieldId
+join [rows] r on fv.rowId=r.rowId and r.tableId=q.tableId
+where q.queryName=@queryName
+group by fv.fieldValue
+order by fv.fieldValue 
+
+select f.fieldName, qf.*
+from queryFields qf
+join fields f on qf.fieldId=f.fieldId
+
+select *
+from tables
+
+select * 
+from fields
+where tableId='889CD40E-BA39-4985-A434-902E69EC8B7A'
+
 select --q.tableId,qf.fieldId, r.rowId,
 	 fv.fieldValue
 from queries q 
@@ -11,7 +63,6 @@ where q.queryName='QohlcBydate'
 group by fv.fieldValue
 order by fv.fieldValue
 
-/*
 select *
 from [rows]
 where tableId='DDC58962-C0AE-4327-9ED9-D9E516244431'

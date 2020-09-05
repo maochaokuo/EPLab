@@ -35,15 +35,16 @@ namespace EPLab.web.fwk.Controllers
         {
             queryViewViewModel viewModel = new queryViewViewModel();
             ViewBag.queryIdselected = ddO.queryList();
+            ViewBag.tableWidthList = ddO.tableWidthList();
             return View(viewModel);
         }
         protected string loadCombo4vm(ref queryViewViewModel viewModel)
         {
             string ret = "";
-            if (viewModel.queryPara.queryPara.ContainsKey("dealdate"))
+            if (viewModel.queryPara.queryParaInternal.ContainsKey("dealdate"))
             {
-                if (viewModel.queryPara.queryPara["dealdate"].comboboxSource == null
-                    || viewModel.queryPara.queryPara["dealdate"].comboboxSource.Count == 0)
+                if (viewModel.queryPara.queryParaInternal["dealdate"].comboboxSource == null
+                    || viewModel.queryPara.queryParaInternal["dealdate"].comboboxSource.Count == 0)
                 {
                     List<string> dealdates = qel.fieldDropdownList(
                         "QohlcBydate", "dealdate", "");
@@ -52,7 +53,7 @@ namespace EPLab.web.fwk.Controllers
                         new List<KeyValuePair<string, string>>();
                     foreach (string dealdate in dealdates)
                         comboSource.Add(new KeyValuePair<string, string>(dealdate, dealdate));
-                    viewModel.queryPara.queryPara["dealdate"].comboboxSource = comboSource;
+                    viewModel.queryPara.queryParaInternal["dealdate"].comboboxSource = comboSource;
                     //viewModel.queryPara.queryPara["dealdate"] = subvm;
                     Thread.Sleep(0);
                 }
@@ -69,6 +70,7 @@ namespace EPLab.web.fwk.Controllers
                 viewModel.queryPara = new queryParasViewModel();
             viewModel.clearMsg();
             ViewBag.queryIdselected = ddO.queryList();
+            ViewBag.tableWidthList = ddO.tableWidthList();
             switch (viewModel.cmd)
             {
                 case "selectChange":
@@ -82,7 +84,7 @@ namespace EPLab.web.fwk.Controllers
                     List<string> strLst = qel.formParameters(viewModel.currentQuery.queryName);
                     viewModel.queryPara = new queryParasViewModel ();
                     foreach (string str1 in strLst)
-                        viewModel.queryPara.queryPara.Add(str1, 
+                        viewModel.queryPara.queryParaInternal.Add(str1, 
                             new queryParameterViewModel());
                     string err = loadCombo4vm(ref viewModel);
                     //todo (2) parameter like dealdate can be a list as well
@@ -108,10 +110,10 @@ namespace EPLab.web.fwk.Controllers
                             queryParameterViewModel valObj = 
                                 new queryParameterViewModel(theValue);
                             string key2 = key.Replace("para_", "");
-                            if (viewModel.queryPara.queryPara.ContainsKey(key2))
-                                viewModel.queryPara.queryPara[key2] = valObj;
+                            if (viewModel.queryPara.queryParaInternal.ContainsKey(key2))
+                                viewModel.queryPara.queryParaInternal[key2] = valObj;
                             else
-                                viewModel.queryPara.queryPara.Add(key2, valObj);
+                                viewModel.queryPara.queryParaInternal.Add(key2, valObj);
                             err = loadCombo4vm(ref viewModel);
                         }
                     }
@@ -140,7 +142,7 @@ namespace EPLab.web.fwk.Controllers
                         {
                             ParameterName = "@dealdate",
                             SqlDbType = SqlDbType.NVarChar,
-                            Value = viewModel.queryPara.queryPara["dealdate"].paraValue
+                            Value = viewModel.queryPara.queryParaInternal["dealdate"].paraValue
                         }
                     };
                     int tmpRecords = 0;

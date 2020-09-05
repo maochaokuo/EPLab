@@ -16,18 +16,6 @@ namespace EPLab.web.fwk.Helper
         {
             this.connS = connS;
         }
-        //public static SelectList systemTypeList()
-        //{
-        //    SelectList ret;
-        //    List<SelectListItem> _item = new List<SelectListItem>();
-        //    _item.Add(new SelectListItem() { Text = "Web", Value = "Web", Selected = true });
-        //    _item.Add(new SelectListItem() { Text = "Console", Value = "Console", Selected = true });
-        //    _item.Add(new SelectListItem() { Text = "Windows", Value = "Windows", Selected = true });
-        //    _item.Add(new SelectListItem() { Text = "WindowService", Value = "WindowService", Selected = true });
-        //    _item.Add(new SelectListItem() { Text = "Library", Value = "Library", Selected = true });
-        //    ret = new SelectList(_item, "Value", "Text", null);
-        //    return ret;
-        //}
         public static SelectList fromKeyValueList(
             List<KeyValuePair<string, string>> kvl)
         {
@@ -98,6 +86,30 @@ namespace EPLab.web.fwk.Helper
                     });
             }
             ret = new SelectList(_query, "Value", "Text", null);
+            return ret;
+        }
+        //public static SelectList systemTypeList()
+        //{
+        //    SelectList ret;
+        //    List<SelectListItem> _item = new List<SelectListItem>();
+        //    _item.Add(new SelectListItem() { Text = "Web", Value = "Web", Selected = true });
+        //    _item.Add(new SelectListItem() { Text = "Console", Value = "Console", Selected = true });
+        //    _item.Add(new SelectListItem() { Text = "Windows", Value = "Windows", Selected = true });
+        //    _item.Add(new SelectListItem() { Text = "WindowService", Value = "WindowService", Selected = true });
+        //    _item.Add(new SelectListItem() { Text = "Library", Value = "Library", Selected = true });
+        //    ret = new SelectList(_item, "Value", "Text", null);
+        //    return ret;
+        //}
+        public SelectList tableWidthList()
+        {
+            SelectList ret;
+            List<SelectListItem> _item = new List<SelectListItem>();
+            _item.Add(new SelectListItem() { Text = "100%", Value = "100%", Selected = true });
+            _item.Add(new SelectListItem() { Text = "200%", Value = "200%", Selected = true });
+            _item.Add(new SelectListItem() { Text = "300%", Value = "300%", Selected = true });
+            _item.Add(new SelectListItem() { Text = "500%", Value = "500%", Selected = true });
+            _item.Add(new SelectListItem() { Text = "1000%", Value = "1000%", Selected = true });
+            ret = new SelectList(_item, "Value", "Text", null);
             return ret;
         }
         public SelectList domainList()

@@ -541,7 +541,8 @@ order by fv.fieldValue {0}
             dpara.Add("@queryName", queryName, DbType.String);
             dpara.Add("@fieldName", fieldName, DbType.String);
             var qry = dp.Select<string>(sql, dpara);
-            if (qry.Any())
+            //undone !!...(1) null now
+            if (qry!=null && qry.Any())
                 ret = qry.ToList();
             return ret;
         }
