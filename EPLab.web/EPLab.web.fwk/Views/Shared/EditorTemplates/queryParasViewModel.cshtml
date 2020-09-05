@@ -19,7 +19,7 @@
         <select class="form-control" id="para_@para1.Key" name="para_@para1.Key">
             @foreach (KeyValuePair<string, string> pair in para1.Value.comboboxSource)
             {
-                if (pair.Key == para1.Key)
+                if (pair.Key == para1.Key || pair.Key==para1.Value.paraValue)
                 {
                     <option selected="selected" value="@pair.Key">@pair.Key</option>
                 }
