@@ -1,11 +1,12 @@
 use EPLlabDB
 
+/*
 select q.queryName, f.fieldName,t.tableName
 from queryFields qf
 join queries q on q.queryId=qf.queryId
 join fields f on qf.fieldId=f.fieldId
 join tables t on q.tableId=t.tableId
-/*
+
 declare @fieldName varchar(99)='dealdate'
 declare @queryName varchar(99)='QohlcBydate'
 

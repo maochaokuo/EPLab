@@ -63,6 +63,17 @@ namespace EPLab.web.fwk.Controllers
         [HttpPost]
         public ActionResult Index(queryViewViewModel viewModel)
         {
+            //todo !!....(0) 抓取前一前兩筆資料
+            //todo !!... (0) 不想用script寫, 所以不要在記憶體運算，例如存session, 還是要? 
+            //若不存session, 就得存資料庫. 還是指定部分欄位存session, 計算結果才存資料庫?
+            //其實資料庫或session只能某時間統一用其中一種, 先線上運算, 通通放session中, 算
+            //好再存指定的欄位
+            //如此是否要一次算全部的資料?怕會太慢吃太多記憶體, 先試試看
+            //若是這樣, query or expression editor要一起做
+            //todo !!... (1) calculated field
+            //todo !!... (1) query editor
+            //todo !!... (2) csv export
+            //todo !!... (4) csv import from market history data
             ActionResult ar;
             if (viewModel.queryPara == null && TempData.ContainsKey("queryPara"))
                 viewModel.queryPara = (queryParasViewModel)TempData["queryPara"];
@@ -87,7 +98,7 @@ namespace EPLab.web.fwk.Controllers
                         viewModel.queryPara.queryParaInternal.Add(str1, 
                             new queryParameterViewModel());
                     string err = loadCombo4vm(ref viewModel);
-                    //todo (2) parameter like dealdate can be a list as well
+                    // parameter like dealdate can be a list as well
                     ar = View(viewModel);
                     break;
                 case "execute":
@@ -128,7 +139,7 @@ namespace EPLab.web.fwk.Controllers
                         , out sqlCount);
 
                     // @queryName passed in 
-                    //undone !!...(1) 這下可好了，本來都做完了，後來想拿掉rowId, dealMonth, section,
+                    // 拿掉rowId, dealMonth, section,
                     //從queryfield刪掉第一筆與最後兩筆，失敗後再加回第一筆，就變現在這樣
                     List<SqlParameter> para = new List<SqlParameter>
                     {

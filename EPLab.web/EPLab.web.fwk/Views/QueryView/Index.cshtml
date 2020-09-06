@@ -137,13 +137,15 @@
         $('#cmd').val('selectChange');
         $('#queryId').val($('#queryIdselected').val());
         var queryName = $("#queryIdselected option:selected").text();
-        //if (queryName.trim().length == 0)
-        //    $('#execute').prop('disabled', true);
-        //else
-        //    $('#execute').prop('disabled', false);
+        $('#execute').prop('disabled', true);
         $('#queryName').val(queryName );
         $('form').submit();
         console.log('changed');
+    });
+    $('.paraCombo').change(function () {
+        $('#execute').prop('disabled', true);
+        $('#cmd').val('execute');
+        $('form').submit();
     });
     //$('#query2select').val();
 </script>

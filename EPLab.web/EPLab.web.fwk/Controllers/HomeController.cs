@@ -21,6 +21,10 @@ namespace EPLab.web.fwk.Controllers
         }
         private string import2tables()
         {
+            //todo !!...(1) 這啦。所以有幾件事要變更，
+            //1. 日後要持續重新匯入，每周更新之後
+            //2. 只要匯入一個表，直接算出正確大趨勢，可用sp產新資料表
+            //   另外直接帶入pre n pre2 high/low, 只做單筆判斷，先這樣做試試
             string ret = "";
             AdoNet2DataTable dtdSrc = new AdoNet2DataTable(connIndices);
             AdoNet2DataTable dtdTar = new AdoNet2DataTable(connEPLabDB);

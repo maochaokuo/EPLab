@@ -9,7 +9,6 @@ namespace EPLab.dbService
     public class tableLib : Repository<tables>
     {
         // 不想用ef, 出問題很難查, 就用dapper吧
-        // todo (9) 研究一下dynamic parameter,
         //看看能否把各method都抽象化，傳入sql or table name, 然後
         //dynamic parameter array
         public tableLib(string connS) : base(connS)
