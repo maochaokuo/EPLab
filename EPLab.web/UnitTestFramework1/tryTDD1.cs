@@ -11,7 +11,8 @@ namespace UnitTestFramework1
         protected readonly string connS;
         public tryTDD1()
         {
-            connS = "data source=.;initial catalog=EPLlabDB;persist security info=True;user id=sa;password=sa;MultipleActiveResultSets=True;App=EntityFramework";
+            //connS = "data source=.;initial catalog=EPLlabDB;persist security info=True;user id=sa;password=sa;MultipleActiveResultSets=True;App=EntityFramework";
+            connS = "data source=.;initial catalog=EPLlabDB2;persist security info=True;user id=sa;password=sa;MultipleActiveResultSets=True;App=EntityFramework";
         }
         //[TestMethod]
         //public void generate1stQuery()

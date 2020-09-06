@@ -1,4 +1,4 @@
-﻿use EPLlabDB
+﻿--use EPLlabDB
 
 select 
         st.name [Table],

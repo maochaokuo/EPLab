@@ -12,7 +12,7 @@
 ## EntityFramework Core tips
 1. from existing database
 ```
-Scaffold-DbContext "Server=.;Database=EPLlabDB;User Id=sa;Password=sa;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+Scaffold-DbContext "Server=.;Database=EPLlabDB2;User Id=sa;Password=sa;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
 ```
 2. if Model directory already exist, use -Force
 3. if Scaffold-DbContext not recognized, run:
