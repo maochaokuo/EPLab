@@ -27,8 +27,18 @@ select
 	   and kcu.TABLE_NAME = tc.TABLE_NAME
 	 where tc.CONSTRAINT_TYPE = 'PRIMARY KEY') p 
 		on p.TABLE_NAME=st.name and p.COLUMN_NAME=sc.name
-    --where 
-		--st.name in ('expressions')
+    where 
+		--sc.max_length in ( 16)
+		--sc.max_length in ( 20)
+		--sc.name like '%card%no' and st.name<>'tbl_CM_Operation_Log'
+		( --sc.name like '%id' or 
+		--convert(varchar(99), sep.value) like '%歸戶%' or convert(varchar(99), sep.value) like '%客戶%' or convert(varchar(99), sep.value) like '%身分證%'
+			--or 
+			sc.name in ('Belong_ID','CUST_ID', 'Customer_ID', 'Holder_Card_ID', 'Holder_ID' --, 'PrivateID'
+			)
+			)
+		and st.name<>'tbl_CM_Operation_Log'
+		--st.name in ('tbl_VIP_DP_Transaction')
 		--st.name in ('fieldValues')
 		--st.name in ('queries')
 		--st.name in ('systemEntity', 'systems', 'systemTemplate')
@@ -37,4 +47,5 @@ select
 		--st.name in ('stateMachine','stateMachineState','stateMachineEvent','stateMachineEvent2State')
 		--st.name in ('operators','expressions','fields')
 		--st.name in ('tables')
-	order by st.name, sc.column_id
+	--order by st.name, sc.column_id
+	order by sc.name, st.name
